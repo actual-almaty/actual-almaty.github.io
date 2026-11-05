@@ -120,7 +120,41 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt = n => String(Math.round(+n||0)).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₸";
 const wa = text => "https://wa.me/" + SHOP_WA + "?text=" + encodeURIComponent(text);
+const TRACK = "https://actual.app.n8n.cloud/webhook/shop-track";
+const rid = n => { const a = "abcdefghijkmnpqrstuvwxyz23456789"; let r = ""; try { crypto.getRandomValues(new Uint8Array(n)).forEach(b => r += a[b % 32]); } catch(e) { for (let i = 0; i < n; i++) r += a[Math.floor(Math.random() * 32)]; } return r; };
+let VID = "", SID = "";
+try { VID = localStorage.getItem("a_vid") || ""; if (!VID) { VID = rid(12); localStorage.setItem("a_vid", VID); } } catch(e) { VID = VID || rid(12); }
+try { SID = sessionStorage.getItem("a_sid") || ""; } catch(e) {}
+const FIRST = !SID;
+if (!SID) { SID = rid(10); try { sessionStorage.setItem("a_sid", SID); } catch(e) {} }
+const SRC = (() => {
+  let saved = ""; try { saved = sessionStorage.getItem("a_src") || ""; } catch(e) {}
+  if (saved) return saved;
+  const q = new URLSearchParams(location.search), u = (q.get("utm_source") || q.get("src") || "").toLowerCase(), ua = navigator.userAgent || "", r = document.referrer || "";
+  let s = "Прямой заход";
+  if (/insta|^ig$/.test(u) || /Instagram/i.test(ua) || /instagram\./i.test(r)) s = "Instagram";
+  else if (/tiktok/.test(u) || /TikTok|musical_ly|Bytedance/i.test(ua) || /tiktok\./i.test(r)) s = "TikTok";
+  else if (/whats|^wa$/.test(u) || /whatsapp/i.test(r)) s = "WhatsApp";
+  else if (/2gis/.test(u) || /2gis\./i.test(r)) s = "2ГИС";
+  else if (/telegram|^tg$/.test(u) || /Telegram/i.test(ua) || /t\.me|telegram/i.test(r)) s = "Telegram";
+  else if (/FBAN|FBAV/i.test(ua) || /facebook\./i.test(r)) s = "Facebook";
+  else if (/google\.|yandex\.|bing\./i.test(r)) s = "Поиск Google/Яндекс";
+  else if (u) s = u.slice(0, 24);
+  else if (r && !/actual-almaty\.github\.io/.test(r)) s = "Другие сайты";
+  try { sessionStorage.setItem("a_src", s); } catch(e) {}
+  return s;
+})();
+const Q = FIRST ? [{ t: "visit" }] : [];
+function flush(){
+  if (!Q.length) return;
+  const body = new URLSearchParams({ d: JSON.stringify({ v: VID, s: SID, src: SRC, e: Q.splice(0, 40) }) });
+  try { if (!(navigator.sendBeacon && navigator.sendBeacon(TRACK, body))) fetch(TRACK, { method: "POST", body, mode: "no-cors", keepalive: true }); } catch(e) {}
+}
+function track(e){ Q.push(e); if (Q.length >= 8) flush(); }
+addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
+addEventListener("pagehide", flush);
 $("#waTop").href = wa("Здравствуйте! Пишу с сайта ACTUAL.");
+$("#waTop").addEventListener("click", function(){ const o = rid(4).toUpperCase(); this.href = wa("Здравствуйте! Пишу с сайта ACTUAL.\nКод: " + o); track({ t: "wa", n: "Вопрос с сайта", o }); flush(); });
 
 const PRODUCTS = DATA.map(r => { let v = {}; try { v = JSON.parse(r.variants || "{}"); } catch(e){} return { key: r.model_key, title: r.title, type: r.category_id, price: +r.price, img: r.image_url, colors: v.colors || [], code: v.code || "", desc: v.desc || "" }; })
   .filter(p => p.colors.length);
@@ -169,6 +203,7 @@ function product(p){
   </div>`;
   const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmt(price)}\n${location.href}`;
   $("#waAsk").href = wa(askText);
+  $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
   $("#back").onclick = () => { location.hash = ""; };
   if ($("#fit")) $("#fit").onclick = () => fitSheet(p, c);
   document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; product(p); });
@@ -199,11 +234,12 @@ function fitSheet(p, c){
     if (has) $("#fpick").onclick = () => { state.size = r.main; closeSheet(); product(p); };
   };
 }
+let lastView = "";
 function render(){
   chips();
   const m = location.hash.match(/^#p=(.+)$/);
   const p = m && PRODUCTS.find(x => x.key === decodeURIComponent(m[1]));
-  if (p) product(p); else list();
+  if (p) { product(p); if (lastView !== p.key) { lastView = p.key; track({ t: "view", k: p.key, n: p.title }); } } else { lastView = ""; list(); }
   scrollTo(0, 0);
 }
 addEventListener("hashchange", () => { state.color = 0; state.size = null; render(); });
