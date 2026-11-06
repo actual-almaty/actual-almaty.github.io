@@ -6,7 +6,6 @@ const clean = v => String(v || '').trim().replace(/^Bearer\s+/i, '').replace(/^[
 const RAW_KEY = clean(process.env.PALOMA_API_KEY), RAW_MCP = clean(process.env.PALOMA_MCP_TOKEN);
 const kind = v => !v ? 'пусто' : ((/^pp[a-z]{2}_/.test(v) ? v.slice(0, 5) : 'другой формат') + ', ' + v.length + ' символов');
 console.log('PALOMA_API_KEY:', kind(RAW_KEY), '| PALOMA_MCP_TOKEN:', kind(RAW_MCP));
-const MCP = RAW_MCP || RAW_KEY;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 // Пробуем оба ключа для каталога товаров
 const CANDIDATES = [...new Set([RAW_KEY, RAW_MCP].filter(Boolean))];
@@ -49,7 +48,15 @@ async function loadItems() {
 }
 
 async function loadStock() {
-  if (!MCP) { console.log('Нет PALOMA_MCP_TOKEN — остатки не загружаем'); return null; }
+  // для остатков подходит тот ключ, который не открыл каталог
+  const order = [...new Set([...CANDIDATES.filter(k => k !== KEY), KEY].filter(Boolean))];
+  let MCP = '', last = '';
+  for (const k of order) {
+    const r = await fetch('https://mcp.paloma365.com/mcp', { method: 'POST', headers: { Authorization: 'Bearer ' + k, Accept: 'application/json, text/event-stream', 'Content-Type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }) });
+    if (r.ok) { MCP = k; console.log('Остатки открылись ключом', kind(k)); break; }
+    last = r.status + ' ' + (await r.text()).slice(0, 150);
+  }
+  if (!MCP) throw new Error('Ни один ключ не подошёл для остатков: ' + last);
   const rows = [];
   for (let offset = 0; offset < 20000; offset += 500) {
     const body = { jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'report_stock_remainder', arguments: { warehouse_id: 1, limit: 500, offset, only_nonzero: true } } };
