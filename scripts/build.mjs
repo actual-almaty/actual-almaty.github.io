@@ -1,6 +1,7 @@
 // Обновление сайта ACTUAL: товары, фото и остатки из Paloma365 → index.html 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const clean = v => String(v || '').trim().replace(/^Bearer\s+/i, '').replace(/^["']|["']$/g, '');
 const RAW_KEY = clean(process.env.PALOMA_API_KEY), RAW_MCP = clean(process.env.PALOMA_MCP_TOKEN);
@@ -94,10 +95,38 @@ function loadSitePhotos() {
   return out;
 }
 
+
+// Остатки для кабинета сотрудников: шифруются публичным ключом, открыть могут только сотрудники
+function writeTeamStock(pages, stock) {
+  const pubPath = 'team/d/stock-pub.txt';
+  if (!stock || !fs.existsSync(pubPath)) return;
+  const qty = {};
+  for (const s of stock) qty[s.json.item_id] = (qty[s.json.item_id] || 0) + Number(s.json.quantity || 0);
+  const rows = []; const seen = new Set();
+  for (const p of pages) for (const r of (p.json.data || [])) {
+    if (!r || r.deleted === true || !r.name) continue;
+    const id = String(r.id); if (seen.has(id)) continue; seen.add(id);
+    rows.push([id, String(r.name).replace(/\\+/g, '/').replace(/\s+/g, ' ').trim(), qty[id] || 0, Math.round(Number(r.price) || 0), (Array.isArray(r.barcodes) ? r.barcodes : []).join(' ')]);
+  }
+  const json = JSON.stringify(rows);
+  const hash = crypto.createHash('sha256').update(json).digest('hex').slice(0, 16);
+  let old = {}; try { old = JSON.parse(fs.readFileSync('team/d/stock-meta.json', 'utf8')); } catch (e) {}
+  if (old.hash === hash) { console.log('Остатки сотрудников без изменений'); return; }
+  const version = new Date().toISOString();
+  const ecdh = crypto.createECDH('prime256v1'); ecdh.generateKeys();
+  const key = crypto.createHash('sha256').update(ecdh.computeSecret(Buffer.from(fs.readFileSync(pubPath, 'utf8').trim(), 'base64'))).digest();
+  const iv = crypto.randomBytes(12); const c = crypto.createCipheriv('aes-256-gcm', key, iv);
+  const ct = Buffer.concat([c.update(json, 'utf8'), c.final(), c.getAuthTag()]);
+  fs.writeFileSync('team/d/stock.json', JSON.stringify({ version, synced: version, epk: ecdh.getPublicKey().toString('base64'), iv: iv.toString('base64'), ct: ct.toString('base64') }));
+  fs.writeFileSync('team/d/stock-meta.json', JSON.stringify({ version, hash, count: rows.length }));
+  console.log('Остатки сотрудников обновлены:', rows.length);
+}
+
 const pages = await loadItems();
 let stock = null;
 try { stock = await loadStock(); } catch (e) { console.error('Остатки не загрузились:', e.message); }
 const photos = loadSitePhotos();
+try { writeTeamStock(pages, stock); } catch (e) { console.error('Остатки сотрудников не записались:', e.message); }
 
 const nodes = { 'Загрузить товары Paloma365': pages, 'Остатки из таблицы': stock || [], 'Фото сайта': photos };
 const $ = n => ({ all: () => nodes[n], first: () => nodes[n][0] });

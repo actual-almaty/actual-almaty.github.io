@@ -37,7 +37,7 @@ jobs:
           { echo "Запуск: $(TZ=Asia/Almaty date '+%Y-%m-%d %H:%M')"; echo "Ключ API: ${{ secrets.PALOMA_API_KEY != '' && 'есть' || 'НЕТ' }}"; echo "Ключ остатков: ${{ secrets.PALOMA_MCP_TOKEN != '' && 'есть' || 'НЕТ' }}"; tail -n 20 build.log 2>/dev/null || echo "нет журнала"; } > status.txt
           git config user.name "actual-bot"
           git config user.email "actual-bot@users.noreply.github.com"
-          git add index.html status.txt
+          git add index.html status.txt team/d/stock.json team/d/stock-meta.json 2>/dev/null || git add index.html status.txt
           if git diff --cached --quiet; then echo "Без изменений"; exit 0; fi
           git commit -m "Обновление каталога $(TZ=Asia/Almaty date '+%Y-%m-%d %H:%M')"
           git push
