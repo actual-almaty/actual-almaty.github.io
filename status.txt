@@ -1,4 +1,4 @@
-Запуск: 2026-11-06 17:05
+Запуск: 2026-11-06 17:07
 Ключ API: есть
 Ключ остатков: есть
 PALOMA_API_KEY: другой формат, 43 символов | PALOMA_MCP_TOKEN: ppik_, 48 символов
@@ -6,3 +6,19 @@ PALOMA_API_KEY: другой формат, 43 символов | PALOMA_MCP_TOKE
 Товаров из Paloma: 7721 страниц: 39
 Остатки не загрузились: Ни один ключ не подошёл для остатков: 401 {"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Invalid bearer token"}}
 Изменений нет
+--- probe
+404 / {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1).","retryable":false,"request_id":"req_347b0b47a33bf98369c192d4","details":{}}}
+404 /stock {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stock).","retryable":false,"request_id":"req_1777b6e61fc6526f5896d6c8","details":{}}}
+404 /stocks {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stocks).","retryable":false,"request_id":"req_21a9f2934e723448b6e1637c","details":{}}}
+404 /stock-balances {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stock-balances).","retryable":false,"request_id":"req_7d6467db32b506bf9d6e23a7","details":{}}}
+404 /stock_balances {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stock_balances).","retryable":false,"request_id":"req_990d191cd6745049c97d5500","details":{}}}
+404 /balances {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/balances).","retryable":false,"request_id":"req_db03ef812d38cdc7ed1bf3b0","details":{}}}
+404 /inventory {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/inventory).","retryable":false,"request_id":"req_c094520af6ece82ed2f4e4dc","details":{}}}
+404 /remains {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/remains).","retryable":false,"request_id":"req_ea763b63e3904ac33a4d0385","details":{}}}
+404 /leftovers {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/leftovers).","retryable":false,"request_id":"req_e2ee6a259d46ac7f8dc5916d","details":{}}}
+404 /warehouses {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/warehouses).","retryable":false,"request_id":"req_e413a9b590221cc996ba0049","details":{}}}
+404 /stores {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stores).","retryable":false,"request_id":"req_5a0b908467d1e8b8b2119cfa","details":{}}}
+404 /items/stock {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/items/stock).","retryable":false,"request_id":"req_d2d58b505b3c6164dcfea9b4","details":{}}}
+404 /reports/stock {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/reports/stock).","retryable":false,"request_id":"req_4a12d60da5694b74a220a822","details":{}}}
+404 /stock/levels {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stock/levels).","retryable":false,"request_id":"req_b030ada38d08d125da81ef95","details":{}}}
+404 /stock-levels {"error":{"code":"not_found","message":"Unrecognized request URL (GET /platform/v1/stock-levels).","retryable":false,"request_id":"req_e73dd16470916dc9bea93dbe","details":{}}}
