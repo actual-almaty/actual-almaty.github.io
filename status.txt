@@ -1,15 +1,8 @@
-Запуск: 2026-11-06 17:02
+Запуск: 2026-11-06 17:03
 Ключ API: есть
 Ключ остатков: есть
-PALOMA_API_KEY: ba564… (43 символов) | PALOMA_MCP_TOKEN: ppik_… (48 символов)
-file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:33
-  throw new Error('Paloma items: ' + last);
-        ^
-
-Error: Paloma items: 401 {"error":{"code":"invalid_token","message":"The access token is missing, expired or revoked.","retryable":false,"request_id":"req_3b5dc549c1ed78d167c89f1f","details":{}}}
-    at getItemsPage (file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:33:9)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async loadItems (file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:40:15)
-    at async file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:91:15
-
-Node.js v20.20.2
+PALOMA_API_KEY: другой формат, 43 символов | PALOMA_MCP_TOKEN: ppik_, 48 символов
+Каталог открылся ключом ppik_, 48 символов
+Товаров из Paloma: 7721 страниц: 39
+Остатки не загрузились: Paloma остатки: 401 {"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Invalid bearer token"}}
+Сайт обновлён, моделей: 35
