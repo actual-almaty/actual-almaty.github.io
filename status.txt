@@ -1,0 +1,14 @@
+Запуск: 2026-11-06 17:00
+Ключ API: есть
+Ключ остатков: есть
+file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:28
+  throw new Error('Paloma items: ' + last);
+        ^
+
+Error: Paloma items: 401 {"error":{"code":"invalid_token","message":"Missing access token. Send Authorization: Bearer ppat_…","retryable":false,"request_id":"req_bb90fa73033d2880171c9faa","details":{}}}
+    at getItemsPage (file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:28:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async loadItems (file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:35:15)
+    at async file:///home/runner/work/actual-almaty.github.io/actual-almaty.github.io/scripts/build.mjs:86:15
+
+Node.js v20.20.2
