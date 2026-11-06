@@ -1,4 +1,4 @@
-// Обновление сайта ACTUAL: товары и фото из Paloma365 → index.html
+// Обновление сайта ACTUAL: товары, фото и остатки из Paloma365 → index.html
 import fs from 'node:fs';
 import path from 'node:path';
 
