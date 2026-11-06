@@ -1,0 +1,38 @@
+name: Проверка сайта
+
+on:
+  workflow_run:
+    workflows: ["pages-build-deployment"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Открыть страницы
+        run: |
+          sleep 20
+          B=https://actual-almaty.github.io
+          {
+            echo "Проверка: $(TZ=Asia/Almaty date '+%Y-%m-%d %H:%M')"
+            echo "Публикация Pages: ${{ github.event.workflow_run.conclusion || 'ручной запуск' }}"
+            for p in "/" "/team/" "/team/d/users.json" "/team/d/stock-meta.json" "/gift/" "/gift/photo.jpg"; do
+              code=$(curl -s -o /tmp/body -w '%{http_code}' "$B$p?t=$(date +%s)")
+              echo "$code $(wc -c < /tmp/body) $p"
+            done
+            echo "Каталог: $(curl -s "$B/?t=$(date +%s)" | grep -o '"model_key"' | wc -l) моделей"
+            echo "Остатки сотрудников: $(curl -s "$B/team/d/stock-meta.json?t=$(date +%s)")"
+          } > /tmp/check.txt
+          cat /tmp/check.txt
+      - name: Записать результат в ветку status
+        run: |
+          cd /tmp && rm -rf st && mkdir st && cd st && git init -q
+          cp /tmp/check.txt .
+          git config user.name actual-bot; git config user.email actual-bot@users.noreply.github.com
+          git add -A && git commit -qm "Проверка сайта" || exit 0
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:status
