@@ -2,12 +2,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const KEY = process.env.PALOMA_API_KEY || '';
-const MCP = process.env.PALOMA_MCP_TOKEN || '';
+const clean = v => String(v || '').trim().replace(/^Bearer\s+/i, '').replace(/^["']|["']$/g, '');
+const RAW_KEY = clean(process.env.PALOMA_API_KEY), RAW_MCP = clean(process.env.PALOMA_MCP_TOKEN);
+const kind = v => !v ? 'пусто' : (v.slice(0, 5) + '… (' + v.length + ' символов)');
+console.log('PALOMA_API_KEY:', kind(RAW_KEY), '| PALOMA_MCP_TOKEN:', kind(RAW_MCP));
+// Ключ для товаров начинается с ppat_; если ключи перепутаны местами — поменяем
+const KEY = RAW_KEY.startsWith('ppat_') || !RAW_MCP.startsWith('ppat_') ? RAW_KEY : RAW_MCP;
+const MCP = KEY === RAW_KEY ? RAW_MCP : RAW_KEY;
 if (!KEY) { console.error('Нет секрета PALOMA_API_KEY'); process.exit(1); }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const AUTHS = [k => ({ Authorization: 'Bearer ' + k }), k => ({ 'X-API-Key': k }), k => ({ Authorization: k })];
+const AUTHS = [k => ({ Authorization: 'Bearer ' + k })];
 let authIx = -1;
 
 async function getItemsPage(cursor) {
