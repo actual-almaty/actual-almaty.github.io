@@ -108,3 +108,4 @@ const data = JSON.stringify(rows.map(r => ({ model_key: r.model_key, title: r.ti
 const html = fs.readFileSync('scripts/template.html', 'utf8').replace('__DATA__', () => data);
 const old = fs.existsSync('index.html') ? fs.readFileSync('index.html', 'utf8') : '';
 if (old === html) { console.log('Изменений нет'); } else { fs.writeFileSync('index.html', html); console.log('Сайт обновлён, моделей:', rows.length); }
+// 2026-11-06T12:00:31Z
