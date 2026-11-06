@@ -4,14 +4,13 @@ import path from 'node:path';
 
 const clean = v => String(v || '').trim().replace(/^Bearer\s+/i, '').replace(/^["']|["']$/g, '');
 const RAW_KEY = clean(process.env.PALOMA_API_KEY), RAW_MCP = clean(process.env.PALOMA_MCP_TOKEN);
-const kind = v => !v ? 'пусто' : (v.slice(0, 5) + '… (' + v.length + ' символов)');
+const kind = v => !v ? 'пусто' : ((/^pp[a-z]{2}_/.test(v) ? v.slice(0, 5) : 'другой формат') + ', ' + v.length + ' символов');
 console.log('PALOMA_API_KEY:', kind(RAW_KEY), '| PALOMA_MCP_TOKEN:', kind(RAW_MCP));
-// Ключ для товаров начинается с ppat_; если ключи перепутаны местами — поменяем
-const KEY = RAW_KEY.startsWith('ppat_') || !RAW_MCP.startsWith('ppat_') ? RAW_KEY : RAW_MCP;
-const MCP = KEY === RAW_KEY ? RAW_MCP : RAW_KEY;
-if (!KEY) { console.error('Нет секрета PALOMA_API_KEY'); process.exit(1); }
-
+const MCP = RAW_MCP || RAW_KEY;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+// Пробуем оба ключа для каталога товаров
+const CANDIDATES = [...new Set([RAW_KEY, RAW_MCP].filter(Boolean))];
+let KEY = '';
 const AUTHS = [k => ({ Authorization: 'Bearer ' + k })];
 let authIx = -1;
 
@@ -19,12 +18,12 @@ async function getItemsPage(cursor) {
   const u = new URL('https://connect.paloma365.com/platform/v1/items');
   u.searchParams.set('limit', '200');
   if (cursor) u.searchParams.set('cursor', cursor);
-  const tries = authIx >= 0 ? [authIx] : AUTHS.map((_, i) => i);
+  const tries = KEY ? [KEY] : CANDIDATES;
   let last = '';
-  for (const i of tries) {
+  for (const k of tries) {
     for (let attempt = 0; attempt < 3; attempt++) {
-      const r = await fetch(u, { headers: { Accept: 'application/json', ...AUTHS[i](KEY) } });
-      if (r.ok) { authIx = i; return r.json(); }
+      const r = await fetch(u, { headers: { Accept: 'application/json', Authorization: 'Bearer ' + k } });
+      if (r.ok) { if (!KEY) console.log('Каталог открылся ключом', kind(k)); KEY = k; return r.json(); }
       last = r.status + ' ' + (await r.text()).slice(0, 200);
       if (r.status === 401 || r.status === 403) break;
       await sleep(2000 * (attempt + 1));
