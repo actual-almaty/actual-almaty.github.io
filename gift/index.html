@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACTUAL · Подарочный сертификат</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Manrope:wght@300;400;500;600&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0B; --ink2:#131315; --line:#2A2620;
+  --gold:#C9A45C; --gold-l:#EBD49C; --gold-d:#8E6B2E;
+  --ivory:#EFE8DA; --muted:#A39A88;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --sans:"Manrope", system-ui, sans-serif;
+  --cond:"Oswald", "Arial Narrow", sans-serif;
+  --script:"Great Vibes", cursive;
+  --foil:linear-gradient(100deg,#8E6B2E 0%,#C9A45C 22%,#F6E7B8 38%,#C9A45C 52%,#9A7533 70%,#E9D49A 86%,#8E6B2E 100%);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-variant-numeric:lining-nums;background:var(--ink);color:var(--ivory);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.hidden{display:none!important}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.foil{background:var(--foil);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:foil 6s ease-in-out infinite}
+@keyframes foil{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ===== envelope ===== */
+#intro{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;padding:32px 20px;text-align:center;
+  background:radial-gradient(60% 40% at 50% 45%,rgba(201,164,92,.10),transparent 70%)}
+.intro-brand{font-family:var(--serif);font-weight:500;font-size:20px;letter-spacing:.44em;padding-left:.44em}
+.intro-h{margin:16px 0 0;font-family:var(--cond);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--muted)}
+.intro-name{display:block;margin-top:8px;font-family:var(--script);font-size:clamp(40px,12vw,56px);line-height:1.1;color:var(--ivory);text-transform:none;letter-spacing:0}
+.book-btn{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;perspective:1800px}
+.book{position:relative;width:min(290px,74vw);aspect-ratio:380/540;animation:float 4s ease-in-out infinite;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.65,.05,.25,1)}
+@keyframes float{0%,100%{transform:translateY(0) rotateX(4deg)}50%{transform:translateY(-8px) rotateX(4deg)}}
+.book .inner{position:absolute;inset:0;overflow:visible!important;border-radius:3px 9px 9px 3px;background:#0D0D0E;box-shadow:0 40px 70px -25px rgba(0,0,0,.95),inset 0 0 0 1px rgba(201,164,92,.25);overflow:hidden}
+.book .paper{position:absolute;inset:9% 8%;border:1px solid rgba(201,164,92,.55);background:linear-gradient(180deg,rgba(10,10,11,.8),rgba(10,10,11,.55) 45%,rgba(10,10,11,.9)),url(photo.jpg) 50% 20%/cover;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .9s cubic-bezier(.3,1.3,.4,1) .75s,box-shadow .9s .75s}
+.book .paper .lock .big{font-size:42px;color:var(--gold)}
+.book .paper .lock .scr{font-size:46px;color:var(--ivory)}
+.book .paper small{font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
+.cover{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform 1.15s cubic-bezier(.65,.05,.25,1);z-index:2}
+.cover .face{position:absolute;inset:0;border-radius:3px 9px 9px 3px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+  background:radial-gradient(120% 80% at 30% 20%,#1E1D1C 0%,#111112 55%,#0A0A0B 100%);
+  box-shadow:inset 0 0 0 1px rgba(201,164,92,.35),inset 0 0 40px rgba(0,0,0,.7),0 40px 70px -25px rgba(0,0,0,.95)}
+.cover .face::before{content:"";position:absolute;top:0;bottom:0;left:0;width:16px;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.04) 60%,transparent);border-right:1px solid rgba(201,164,92,.18)}
+.cover .face::after{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 40% 30%,rgba(255,255,255,.012) 0 1px,transparent 1px 3px);pointer-events:none}
+.cover .frame{position:absolute;inset:16px 16px 16px 30px;border:1px solid rgba(201,164,92,.6)}
+.cover .frame::before{content:"";position:absolute;inset:5px;border:1px solid rgba(201,164,92,.22)}
+.cover .content{position:absolute;inset:16px 16px 16px 30px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:34px 0 30px}
+.cover .content .t{font-family:var(--serif);font-weight:500;font-size:22px;letter-spacing:.42em;padding-left:.42em}
+.cover .seal2{width:64px;height:64px;border-radius:50%;border:1px solid rgba(201,164,92,.7);display:flex;align-items:center;justify-content:center;font-family:var(--script);font-size:38px;color:var(--gold);box-shadow:0 0 0 5px rgba(201,164,92,.08)}
+.cover .content small{font-size:9px;letter-spacing:.38em;padding-left:.38em;text-transform:uppercase;color:var(--gold)}
+.cover .back{transform:rotateY(180deg);background:linear-gradient(270deg,#0E0E0F,#1C1B1A);box-shadow:inset 0 0 0 1px rgba(201,164,92,.4),inset -18px 0 30px rgba(0,0,0,.6)}
+.cover .back::after{content:"";position:absolute;inset:16px 30px 16px 16px;border:1px solid rgba(201,164,92,.35);background:none}
+.cover .back::before{display:none}
+.tap{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;animation:pulse 2s ease-in-out infinite}
+.tap::before,.tap::after{content:"";width:26px;height:1px;background:var(--gold-d)}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+#intro.opening .book{animation:none;transform:rotateX(0) translateX(32%) scale(.64)}
+#intro.opening .cover{transform:rotateY(-168deg)}
+#intro.opening .paper{transform:translateY(-24%) scale(1.06);box-shadow:0 30px 50px -20px rgba(0,0,0,.9)}
+#intro.opening .tap{opacity:0;animation:none}
+#intro.leaving{transition:opacity .45s,transform .45s;opacity:0;transform:scale(1.04)}
+
+/* ===== online card ===== */
+#view{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:34px 18px 56px;gap:26px}
+.stage{perspective:1400px;width:100%;display:flex;justify-content:center}
+.oc{container-type:inline-size;position:relative;width:min(380px,100%);aspect-ratio:380/640;border-radius:6px;overflow:hidden;
+  background:repeating-linear-gradient(135deg,rgba(201,164,92,.03) 0 1px,transparent 1px 10px),#0C0C0D;
+  box-shadow:0 50px 90px -30px rgba(0,0,0,.95),0 0 0 1px rgba(201,164,92,.3);transition:transform .25s ease-out}
+.oc.enter{animation:certIn 1.1s cubic-bezier(.2,.9,.25,1) both}
+@keyframes certIn{0%{opacity:0;transform:translateY(60px) rotateX(18deg) scale(.9);filter:blur(8px)}100%{opacity:1;transform:none;filter:none}}
+.oc .ph{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,11,.9) 0%,rgba(10,10,11,.62) 30%,rgba(10,10,11,.5) 50%,rgba(10,10,11,.88) 74%,rgba(10,10,11,.96) 100%),url(photo.jpg) 50% 20%/cover no-repeat}
+.oc .wm{position:absolute;top:0;right:0;height:100%;width:22cqw;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.oc .wm span{display:block;transform:rotate(90deg);white-space:nowrap;font-family:var(--serif);font-weight:300;font-size:30cqw;line-height:1;color:var(--gold);opacity:.09;letter-spacing:.01em}
+.oc .shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 44%,rgba(255,240,200,.08) 49%,rgba(255,240,200,.18) 50%,rgba(255,240,200,.08) 51%,transparent 56%);transform:translateX(-60%);animation:shine 6s ease-in-out 1.6s infinite;pointer-events:none}
+@keyframes shine{0%{transform:translateX(-60%)}35%,100%{transform:translateX(60%)}}
+.oc .in{position:relative;height:100%;display:flex;flex-direction:column;padding:10cqw 9cqw 8cqw}
+.oc .brand{font-family:var(--serif);font-weight:500;font-size:5cqw;letter-spacing:.42em;color:var(--gold)}
+.lock{position:relative;display:inline-block;line-height:.86}
+.lock .big{font-family:var(--cond);font-weight:600;text-transform:uppercase;letter-spacing:-.005em;display:block}
+.lock .scr{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%) rotate(-9deg);font-family:var(--script);white-space:nowrap;line-height:1;text-shadow:0 0 .15em rgba(0,0,0,.55)}
+.oc .lock{margin-top:10cqw;align-self:center}
+.oc .lock .big{font-size:16.4cqw;color:var(--gold)}
+.oc .lock .scr{font-size:19cqw;color:var(--ivory)}
+.oc .sub{align-self:center;padding-left:.38em;margin-top:8cqw;font-size:2.8cqw;letter-spacing:.38em;text-transform:uppercase;color:var(--muted)}
+.oc .amt{margin-top:auto;font-family:var(--cond);font-weight:500;letter-spacing:.01em;font-size:14.5cqw;line-height:1;white-space:nowrap}
+.oc .amt small{font-size:.55em;margin-left:.1em}
+.oc .lbl{font-size:2.6cqw;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.oc .for{margin-top:7cqw}
+.oc .name{font-family:var(--script);font-size:12cqw;line-height:1.15;color:var(--ivory);border-bottom:1px solid rgba(201,164,92,.6);padding-bottom:1.5cqw;margin-top:1cqw;overflow-wrap:anywhere}
+.oc .msg{margin-top:3cqw;font-family:var(--serif);font-style:italic;font-size:4.4cqw;line-height:1.3;color:var(--gold-l);overflow-wrap:anywhere}
+.oc .msg em{font-style:normal;font-family:var(--sans);font-size:2.8cqw;letter-spacing:.1em;color:var(--muted);display:block;margin-top:1cqw}
+.oc .meta{margin-top:6cqw;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3cqw}
+.oc .meta b{display:block;margin-top:1.2cqw;font-family:var(--cond);font-weight:500;font-size:4.4cqw;color:var(--ivory);letter-spacing:.02em}
+.oc .meta div:last-child{text-align:right}
+
+/* client panel */
+.panel{width:min(380px,100%);display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(16px);transition:opacity .7s ease .9s,transform .7s ease .9s}
+.panel.show{opacity:1;transform:none}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 20px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.05em;border:1px solid rgba(201,164,92,.45);color:var(--ivory);background:transparent;cursor:pointer;transition:background .2s,border-color .2s}
+.btn:hover{border-color:var(--gold);background:rgba(201,164,92,.07)}
+.btn.primary{background:var(--foil);background-size:200% 100%;color:#1E160A;border:0;font-weight:600;animation:foil 6s ease-in-out infinite}
+.btn svg{width:18px;height:18px;flex:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.info{padding:18px 20px;border:1px solid var(--line);border-radius:14px;font-size:13px;line-height:1.6;color:var(--muted)}
+.info p{margin:0 0 8px;display:flex;gap:10px;align-items:center}.info p:last-child{margin:0}
+.info svg{width:16px;height:16px;color:var(--gold);flex:none}
+.info a{color:var(--ivory);text-decoration:none}
+.again{align-self:center;background:none;border:0;color:var(--gold);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;min-height:44px;padding:0 12px}
+
+/* ===== print card (1050×495 = 210×99 мм) ===== */
+.pc{font-variant-numeric:lining-nums;position:relative;width:1050px;height:495px;overflow:hidden;font-family:var(--sans)}
+.pc.dark{--p-bg:#0B0B0C;--p-main:#C9A45C;--p-scr:#EFE8DA;--p-ink:#EFE8DA;--p-mut:#A39A88;--p-line:rgba(201,164,92,.7);--p-wm:rgba(201,164,92,.10);--p-sh:rgba(0,0,0,.55)}
+.pc.light{--p-bg:#F3EFE7;--p-main:#0B0B0C;--p-scr:#A9853F;--p-ink:#0B0B0C;--p-mut:#6B6357;--p-line:rgba(11,11,12,.55);--p-wm:rgba(169,133,63,.16);--p-sh:transparent}
+.pc{background:var(--p-bg);color:var(--p-ink)}
+.pc .lock .big{color:var(--p-main)}
+.pc .lock .scr{color:var(--p-scr);text-shadow:0 0 .12em var(--p-sh)}
+.pc .brand{font-family:var(--serif);font-weight:500;letter-spacing:.44em;color:var(--p-main)}
+.pc .mut{color:var(--p-mut)}
+.pc.dark .f-ph{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,12,.86),rgba(11,11,12,.66) 50%,rgba(11,11,12,.86)),url(photo.jpg) 50% 34%/cover no-repeat}
+.pc.light .f-ph{display:none}
+.f-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.f-in .brand{font-size:24px;padding-left:.44em}
+.f-in .lock{margin:34px 0 58px}
+.f-in .lock .big{font-size:150px}
+.f-in .lock .scr{font-size:160px}
+.f-in .cap{font-size:13px;letter-spacing:.44em;padding-left:.44em;text-transform:uppercase}
+.f-in .cap b{font-weight:600;color:var(--p-ink)}
+.f-corner{position:absolute;font-size:11px;letter-spacing:.3em;text-transform:uppercase}
+.b-grid{position:absolute;inset:0;display:grid;grid-template-columns:600px 1fr}
+.b-left{padding:52px 0 46px 60px;display:flex;flex-direction:column}
+.b-left .lock{align-self:flex-start}
+.b-left .lock .big{font-size:62px}
+.b-left .lock .scr{font-size:66px}
+.b-left .brand{font-size:14px;margin-top:30px}
+.b-lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--p-mut)}
+.b-name{margin-top:6px;font-family:var(--script);font-size:50px;line-height:1.15;border-bottom:1px solid var(--p-line);padding-bottom:6px;white-space:nowrap;overflow:hidden}
+.b-amt{display:flex;align-items:baseline;justify-content:space-between;margin-top:22px}
+.b-amt strong{font-family:var(--cond);font-weight:500;letter-spacing:.01em;font-size:40px;line-height:1;color:var(--p-main)}
+.b-meta{margin-top:20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;border-top:1px solid var(--p-line);padding-top:14px}
+.b-meta b{display:block;margin-top:6px;font-family:var(--cond);font-weight:500;font-size:20px;letter-spacing:.03em}
+.b-right{position:relative;padding:52px 60px 46px 40px;display:flex;flex-direction:column;justify-content:flex-end;gap:18px}
+.b-wm{position:absolute;top:0;right:0;width:150px;height:100%;display:flex;align-items:center;justify-content:center}
+.b-wm span{display:block;transform:rotate(90deg);white-space:nowrap;font-family:var(--serif);font-weight:300;font-size:168px;line-height:1;color:var(--p-wm)}
+.qr{position:relative;width:150px;height:150px;background:#F3EFE7;padding:12px;border-radius:4px;outline:1px solid var(--p-line);outline-offset:5px}
+.qr svg{width:100%;height:100%;display:block}
+.b-contacts{position:relative;font-size:14px;line-height:1.7}
+.b-contacts .ig{font-weight:600;letter-spacing:.04em}
+.b-terms{position:relative;font-size:12px;line-height:1.5;color:var(--p-mut);max-width:260px}
+
+/* ===== maker ===== */
+#maker{max-width:1180px;margin:0 auto;padding:30px 20px 64px}
+.mk-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:26px}
+.mk-head .wm{font-family:var(--serif);font-size:24px;letter-spacing:.4em;color:var(--gold)}
+.mk-head p{margin:0;color:var(--muted);font-size:13px;letter-spacing:.08em}
+.mode{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:26px}
+.mode button{min-height:76px;border-radius:14px;border:1px solid var(--line);background:var(--ink2);cursor:pointer;text-align:left;padding:14px 18px;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,background .2s}
+.mode button b{font-family:var(--cond);font-weight:500;font-size:18px;letter-spacing:.06em;text-transform:uppercase}
+.mode button span{font-size:12px;color:var(--muted)}
+.mode button[aria-pressed="true"]{border-color:var(--gold);background:rgba(201,164,92,.10)}
+.mode button[aria-pressed="true"] b{color:var(--gold-l)}
+.mk-grid{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.mk-form{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:18px;max-width:520px}
+.mk-prev{flex:999 1 420px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:16px}
+.mk-prev .oc{width:min(330px,100%)}
+.cap2{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.pwrap{width:100%;position:relative;overflow:hidden;border-radius:4px;box-shadow:0 30px 60px -30px rgba(0,0,0,.9),0 0 0 1px rgba(201,164,92,.18)}
+.pwrap .pc{position:absolute;top:0;left:0;transform-origin:0 0}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld label,.fld .l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.fld input,.fld textarea{width:100%;background:var(--ink2);border:1px solid var(--line);border-radius:12px;color:var(--ivory);font:inherit;font-size:16px;padding:13px 16px;min-height:50px;outline:none;transition:border-color .2s;color-scheme:dark}
+.fld textarea{resize:vertical;min-height:76px}
+.fld input:focus,.fld textarea:focus{border-color:var(--gold)}
+.hint{font-size:12px;color:#8C8475}
+.hint b{color:var(--gold-l);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:14px}
+.chip[aria-pressed="true"]{border-color:var(--gold);background:rgba(201,164,92,.12);color:var(--gold-l)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:520px){.two{grid-template-columns:1fr}.mode button{min-height:64px}}
+.out{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--ink2)}
+.out code{font-size:12px;color:var(--gold-l);word-break:break-all;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ivory);color:var(--ink);padding:12px 20px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+#render{position:fixed;left:-20000px;top:0}
+.tabs{display:flex;gap:8px}
+.tabs button{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:13px;letter-spacing:.08em}
+.tabs button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-l);background:rgba(201,164,92,.1)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+@media (max-width:720px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--ink2)}
+.kpi span{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.kpi b{display:block;margin-top:6px;font-family:var(--cond);font-weight:500;font-size:26px;color:var(--gold-l)}
+.htools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.htools input{flex:1 1 220px;background:var(--ink2);border:1px solid var(--line);border-radius:12px;color:var(--ivory);font:inherit;font-size:15px;padding:12px 14px;min-height:46px;outline:none}
+.hlist{display:flex;flex-direction:column;gap:10px}
+.hrow{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--ink2);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.hrow .h-main{flex:1 1 220px;min-width:0}
+.hrow .h-name{font-size:16px;font-weight:500}
+.hrow .h-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.hrow .h-amt{font-family:var(--cond);font-size:22px;color:var(--gold-l);min-width:110px}
+.badge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px;border:1px solid}
+.b-active{color:#9FD8A8;border-color:#3E6B47}.b-used{color:#A39A88;border-color:#4A443B}.b-expired{color:#E5A07A;border-color:#7A4A31}
+.hrow .h-act{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(201,164,92,.4);background:transparent;cursor:pointer;font-size:12px;color:var(--ivory)}
+.sbtn:hover{border-color:var(--gold)}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+details.add{border:1px solid var(--line);border-radius:14px;padding:0 16px;margin-bottom:16px;background:var(--ink2)}
+details.add summary{cursor:pointer;min-height:50px;display:flex;align-items:center;font-size:13px;letter-spacing:.08em;color:var(--gold-l);list-style:none}
+details.add summary::-webkit-details-marker{display:none}
+details.add .addf{display:flex;flex-direction:column;gap:12px;padding-bottom:16px}
+@media (prefers-reduced-motion:reduce){.foil,.shine,.book,.btn.primary,.tap{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<section id="intro" class="hidden" aria-label="Подарок">
+  <div>
+    <div class="intro-brand foil">ACTUAL</div>
+    <h1 class="intro-h">Для вас подарок<span class="intro-name" id="introName"></span></h1>
+  </div>
+  <button class="book-btn" id="openBtn" aria-label="Открыть подарочный сертификат">
+    <div class="book">
+      <div class="inner"><div class="paper"><div class="lock"><span class="big">Certificate</span><span class="scr">Gift</span></div><small>ACTUAL</small></div></div>
+      <div class="cover">
+        <div class="face"><div class="frame"></div><div class="content"><div class="t foil">ACTUAL</div><div class="seal2">A</div><small>Gift certificate</small></div></div>
+        <div class="face back"></div>
+      </div>
+    </div>
+  </button>
+  <div class="tap">Нажмите, чтобы открыть</div>
+</section>
+
+<section id="view" class="hidden">
+  <div class="stage"><div class="oc" id="cert"></div></div>
+  <div class="panel" id="panel">
+    <a class="btn primary" id="waBtn" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/><path d="M9 8.8c.2 2.6 2.6 5 5.2 5.2l1-1.2-1.8-.9-.8.7a4 4 0 0 1-2.2-2.2l.7-.8-.9-1.8z"/></svg>
+      Подобрать образ в WhatsApp
+    </a>
+    <div class="row2">
+      <a class="btn" href="https://instagram.com/actual.almaty" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a class="btn" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        Маршрут
+      </a>
+    </div>
+    <div class="info">
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Алматы, ТРЦ Riviera Park, бутик ACTUAL</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+77776111082">+7 777 611 1082</a></p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span id="termLine"></span></p>
+    </div>
+    <button class="again" id="againBtn">Ещё раз конфетти</button>
+  </div>
+</section>
+
+<section id="maker" class="hidden">
+  <div class="mk-head">
+    <div class="wm">ACTUAL</div>
+    <div class="tabs" role="group" aria-label="Раздел"><button type="button" data-tab="new" aria-pressed="true">Новый</button><button type="button" data-tab="hist" aria-pressed="false">Журнал</button></div>
+  </div>
+  <div id="newView">
+  <div class="mode" role="group" aria-label="Вид сертификата">
+    <button type="button" data-mode="online" aria-pressed="true"><b>Онлайн</b><span>Ссылка клиенту: конверт, конфетти, анимация</span></button>
+    <button type="button" data-mode="offline" aria-pressed="false"><b>Офлайн</b><span>PDF для печати на бумаге · 210×99 мм</span></button>
+  </div>
+  <div class="mk-grid">
+    <form class="mk-form" id="mkForm" autocomplete="off">
+      <div class="fld"><label for="fName">Имя клиента</label><input id="fName" maxlength="32" placeholder="Мырзабек Болатоев"></div>
+      <div class="fld"><span class="l">Стоимость, ₸</span>
+        <div class="chips" id="amtChips"></div>
+        <input id="fAmount" inputmode="numeric" placeholder="Другая сумма" aria-label="Другая сумма">
+      </div>
+      <div class="two">
+        <div class="fld"><label for="fBuy">Дата покупки</label><input id="fBuy" type="date"></div>
+        <div class="fld"><label for="fNo">Номер</label><input id="fNo" maxlength="8"></div>
+      </div>
+      <div class="fld"><span class="l">Срок действия с даты покупки</span>
+        <div class="chips" id="termChips"></div>
+        <span class="hint">Действует до <b id="untilTxt">—</b></span>
+      </div>
+      <div id="onlineFields" class="fld" style="gap:18px">
+        <div class="fld"><label for="fMsg">Пожелание (необязательно)</label><textarea id="fMsg" maxlength="80" placeholder="С днём рождения, брат!"></textarea></div>
+        <div class="two">
+          <div class="fld"><label for="fFrom">От кого (необязательно)</label><input id="fFrom" maxlength="28" placeholder="От коллег"></div>
+          <div class="fld"><label for="fPhone">WhatsApp клиента</label><input id="fPhone" inputmode="tel" placeholder="7 7XX XXX XX XX"></div>
+        </div>
+      </div>
+      <div id="offlineFields" class="fld hidden"><span class="l">Бумага</span>
+        <div class="chips" id="paperChips"></div>
+      </div>
+
+      <div class="out" id="outOnline">
+        <code id="outLink">Впишите имя — ссылка появится здесь</code>
+        <div class="row2">
+          <button type="button" class="btn primary" id="copyBtn">Скопировать ссылку</button>
+          <a class="btn" id="sendBtn" href="#" target="_blank" rel="noopener">В WhatsApp</a>
+        </div>
+        <button type="button" class="btn" id="previewBtn">Открыть как клиент</button>
+      </div>
+      <div class="out hidden" id="outOffline">
+        <button type="button" class="btn primary" id="pdfBtn">Скачать PDF для печати</button>
+        <span class="hint">2 страницы: лицо и оборот. 210×99 мм, высокое разрешение — можно сразу отдавать в типографию.</span>
+      </div>
+    </form>
+    <div class="mk-prev" id="prev"></div>
+  </div>
+  </div>
+  <div id="histView" class="hidden">
+    <div class="kpis">
+      <div class="kpi"><span>Активные</span><b id="kA">0</b></div>
+      <div class="kpi"><span>На сумму</span><b id="kS">0 ₸</b></div>
+      <div class="kpi"><span>Использованы</span><b id="kU">0</b></div>
+      <div class="kpi"><span>Истекли</span><b id="kE">0</b></div>
+    </div>
+    <details class="add"><summary>+ Добавить существующий сертификат</summary>
+      <div class="addf">
+        <div class="fld"><label for="aLink">Ссылка на онлайн-сертификат (если есть)</label><input id="aLink" placeholder="Вставьте ссылку — поля заполнятся сами"></div>
+        <div class="two">
+          <div class="fld"><label for="aName">Имя клиента</label><input id="aName" maxlength="32"></div>
+          <div class="fld"><label for="aAmount">Сумма, ₸</label><input id="aAmount" inputmode="numeric"></div>
+        </div>
+        <div class="two">
+          <div class="fld"><label for="aNo">Номер</label><input id="aNo" maxlength="8"></div>
+          <div class="fld"><label for="aType">Вид</label><input id="aType" list="typeList" placeholder="онлайн / офлайн"><datalist id="typeList"><option value="онлайн"></option><option value="офлайн"></option></datalist></div>
+        </div>
+        <div class="two">
+          <div class="fld"><label for="aBuy">Дата покупки</label><input id="aBuy" type="date"></div>
+          <div class="fld"><label for="aUntil">Действует до</label><input id="aUntil" type="date"></div>
+        </div>
+        <button type="button" class="btn primary" id="aSave">Добавить в журнал</button>
+      </div>
+    </details>
+    <div class="htools">
+      <input id="hSearch" placeholder="Поиск по имени или номеру" aria-label="Поиск">
+      <div class="chips" id="hFilter"></div>
+    </div>
+    <div class="hlist" id="hList"><div class="empty">Загружаю журнал…</div></div>
+  </div>
+</section>
+
+<div id="render" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ====== НАСТРОЙКИ МАГАЗИНА ====== */
+const SHOP = {
+  phone: "77776111082",
+  baseUrl: "https://actual-almaty.github.io/gift/",
+  amounts: [20000, 30000, 50000, 100000],
+  terms: [3, 6, 12],
+  defaultTerm: 12
+};
+const QR_N = 29, QR_D = "M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM14 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM25 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM28 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM10 1h1v1h-1zM13 1h1v1h-1zM17 1h1v1h-1zM19 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM15 2h1v1h-1zM19 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM16 4h1v1h-1zM18 4h1v1h-1zM19 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM25 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM19 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM20 8h1v1h-1zM24 8h1v1h-1zM27 8h1v1h-1zM0 9h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h1v1h-1zM1 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM27 10h1v1h-1zM28 10h1v1h-1zM0 11h1v1h-1zM1 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM20 11h1v1h-1zM27 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM28 12h1v1h-1zM1 13h1v1h-1zM2 13h1v1h-1zM3 13h1v1h-1zM7 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM28 13h1v1h-1zM0 14h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM21 14h1v1h-1zM22 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM27 14h1v1h-1zM28 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM4 15h1v1h-1zM7 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM15 15h1v1h-1zM17 15h1v1h-1zM18 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM4 16h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM8 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM27 16h1v1h-1zM28 16h1v1h-1zM1 17h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM5 17h1v1h-1zM7 17h1v1h-1zM10 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM22 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM9 18h1v1h-1zM14 18h1v1h-1zM18 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM1 19h1v1h-1zM2 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM22 19h1v1h-1zM24 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM14 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM8 21h1v1h-1zM9 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM26 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM0 22h1v1h-1zM1 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM16 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM10 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM25 23h1v1h-1zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM15 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM9 25h1v1h-1zM10 25h1v1h-1zM12 25h1v1h-1zM16 25h1v1h-1zM23 25h1v1h-1zM24 25h1v1h-1zM26 25h1v1h-1zM27 25h1v1h-1zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h1v1h-1zM3 26h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM13 26h1v1h-1zM14 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h1v1h-1zM12 27h1v1h-1zM15 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM20 27h1v1h-1zM21 27h1v1h-1zM27 27h1v1h-1zM0 28h1v1h-1zM1 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM9 28h1v1h-1zM12 28h1v1h-1zM13 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM22 28h1v1h-1zM27 28h1v1h-1zM28 28h1v1h-1z";
+
+/* ====== helpers ====== */
+const $ = s => document.querySelector(s);
+const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const esc = s => String(s||"").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const store = { get(k){ try{return localStorage.getItem(k)}catch(e){return null} }, set(k,v){ try{localStorage.setItem(k,v)}catch(e){} } };
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove("on"),2600); }
+const ymd = d => d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+const ru = s => s && s.length===8 ? `${s.slice(6)}.${s.slice(4,6)}.${s.slice(0,4)}` : "—";
+function addMonths(s,m){ const d=new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6)); const day=d.getDate(); d.setMonth(d.getMonth()+m); if(d.getDate()!==day) d.setDate(0); return ymd(d); }
+const monthsTxt = m => m+" "+(m%10===1&&m%100!==11?"месяц":(m%10>=2&&m%10<=4&&(m%100<10||m%100>=20))?"месяца":"месяцев");
+
+const A32="0123456789abcdefghjkmnpqrstvwxyz", SEP="\u001f";
+function b32enc(str){ const by=new TextEncoder().encode(str); let bits=0,val=0,o=""; for(const b of by){ val=(val<<8)|b; bits+=8; while(bits>=5){ o+=A32[(val>>>(bits-5))&31]; bits-=5; } } if(bits>0) o+=A32[(val<<(5-bits))&31]; return o; }
+function b32dec(s){ let bits=0,val=0; const o=[]; for(const ch of s){ const i=A32.indexOf(ch); if(i<0) throw 0; val=(val<<5)|i; bits+=5; if(bits>=8){ o.push((val>>>(bits-8))&255); bits-=8; } } return new TextDecoder().decode(new Uint8Array(o)); }
+const encodeCert = c => "c" + b32enc(["2",c.name,c.amount,c.buy,c.term,c.no,c.from||"",c.msg||""].join(SEP));
+function decodeCert(h){
+  if(!h || h[0]!=="c") return null;
+  try{ const p=b32dec(h.slice(1)).split(SEP); if(p[0]!=="2") return null;
+    const c={name:p[1],amount:+p[2],buy:p[3],term:+p[4],no:p[5],from:p[6],msg:p[7]}; c.until=addMonths(c.buy,c.term); return c; }catch(e){ return null; }
+}
+const qrSvg = () => `<svg viewBox="0 0 ${QR_N} ${QR_N}" shape-rendering="crispEdges" role="img" aria-label="QR-код Instagram @actual.almaty"><path fill="#0B0B0C" d="${QR_D}"/></svg>`;
+
+/* ====== templates ====== */
+function lock(){ return `<div class="lock"><span class="big">Certificate</span><span class="scr">Gift</span></div>`; }
+function onlineCard(c){
+  const msg=(c.msg||c.from)?`<div class="msg">${c.msg?"«"+esc(c.msg)+"»":""}${c.from?`<em>${esc(c.from)}</em>`:""}</div>`:"";
+  return `<div class="ph"></div><div class="wm"><span>certificate</span></div><div class="shine"></div>
+  <div class="in">
+    <div class="brand">ACTUAL</div>
+    ${lock()}
+    <div class="sub">подарочный сертификат</div>
+    <div class="amt foil"><span data-amount>${fmt(c.amount||0)}</span><small>₸</small></div>
+    <div class="lbl for">для</div>
+    <div class="name">${esc(c.name)||"Имя клиента"}</div>
+    ${msg}
+    <div class="meta">
+      <div><span class="lbl">Куплен</span><b>${ru(c.buy)}</b></div>
+      <div><span class="lbl">Номер</span><b>№${esc(c.no)}</b></div>
+      <div><span class="lbl">До</span><b>${ru(c.until)}</b></div>
+    </div>
+  </div>`;
+}
+function printFront(c,paper){
+  return `<div class="pc ${paper}"><div class="f-ph"></div><div class="f-in">
+    <div class="brand">ACTUAL</div>
+    ${lock()}
+    <div class="cap mut">Подарочный сертификат · <b>${fmt(c.amount||0)} ₸</b></div>
+  </div>
+  <div class="f-corner mut" style="left:48px;bottom:36px">Men’s store</div>
+  <div class="f-corner mut" style="right:48px;bottom:36px">Almaty · Riviera Park</div></div>`;
+}
+function printBack(c,paper){
+  return `<div class="pc ${paper}"><div class="b-grid">
+    <div class="b-left">
+      ${lock()}
+      <div class="brand">ACTUAL</div>
+      <div style="margin-top:auto"><div class="b-lbl">Для</div><div class="b-name">${esc(c.name)||"&nbsp;"}</div></div>
+      <div class="b-amt"><span class="b-lbl">На сумму</span><strong>${fmt(c.amount||0)} ₸</strong></div>
+      <div class="b-meta">
+        <div><span class="b-lbl">Дата покупки</span><b>${ru(c.buy)}</b></div>
+        <div><span class="b-lbl">Действует до</span><b>${ru(c.until)}</b></div>
+        <div><span class="b-lbl">Номер</span><b>№ ${esc(c.no)}</b></div>
+      </div>
+    </div>
+    <div class="b-right">
+      <div class="b-wm"><span>certificate</span></div>
+      <div class="qr">${qrSvg()}</div>
+      <div class="b-contacts"><div class="ig">@actual.almaty</div><div>+7 777 611 1082</div><div class="mut">Алматы, ТРЦ Riviera Park</div></div>
+      <div class="b-terms">Сертификат действует ${monthsTxt(c.term)} с даты покупки. Предъявите его в бутике ACTUAL.</div>
+    </div>
+  </div></div>`;
+}
+
+/* ====== confetti ====== */
+const cv=$("#confetti"), cx=cv.getContext("2d"); let parts=[], raf=0;
+const COLORS=["#C9A45C","#EBD49C","#8E6B2E","#FFF4D6","#E2C27F","#2A2620"];
+function sizeCv(){ const d=Math.min(devicePixelRatio||1,2); cv.width=innerWidth*d; cv.height=innerHeight*d; cx.setTransform(d,0,0,d,0,0); }
+addEventListener("resize",sizeCv); sizeCv();
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function burst(x,y,n,ang,spread,power){
+  n=reduce?Math.round(n/4):n;
+  for(let i=0;i<n;i++){ const a=ang+(Math.random()-.5)*spread, v=power*(.45+Math.random()*.75);
+    parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:Math.random()*6.28,vr:(Math.random()-.5)*.35,w:5+Math.random()*7,h:3+Math.random()*5,
+      c:COLORS[(Math.random()*COLORS.length)|0],s:Math.random()<.25?1:(Math.random()<.15?2:0),t:Math.random()*6.28,life:0}); }
+  if(!raf) raf=requestAnimationFrame(tick);
+}
+function tick(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.y<innerHeight+40&&p.life<520);
+  for(const p of parts){ p.life++; p.vx*=.985; p.vy=p.vy*.985+.16; p.t+=.08; p.x+=p.vx+Math.sin(p.t)*.6; p.y+=p.vy; p.r+=p.vr;
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.fillStyle=p.c; cx.globalAlpha=Math.min(1,(520-p.life)/60);
+    if(p.s===1){ cx.beginPath(); cx.arc(0,0,p.h*.6,0,6.28); cx.fill(); }
+    else if(p.s===2){ const w=p.w*.6,k=p.w*.18; cx.beginPath(); cx.moveTo(0,-w); cx.lineTo(k,-k); cx.lineTo(w,0); cx.lineTo(k,k); cx.lineTo(0,w); cx.lineTo(-k,k); cx.lineTo(-w,0); cx.lineTo(-k,-k); cx.fill(); }
+    else { cx.scale(1,Math.cos(p.t*1.3)); cx.fillRect(-p.w/2,-p.h/2,p.w,p.h); }
+    cx.restore(); }
+  raf=parts.length?requestAnimationFrame(tick):0;
+}
+function celebrate(){ const W=innerWidth,H=innerHeight;
+  burst(W/2,H*.38,170,-Math.PI/2,Math.PI*1.9,13);
+  setTimeout(()=>{ burst(-10,H*.75,90,-Math.PI/3.2,.7,19); burst(W+10,H*.75,90,-Math.PI+Math.PI/3.2,.7,19); },280);
+  setTimeout(()=>burst(W/2,-20,80,Math.PI/2,1.6,5),900);
+}
+function countUp(el,to){ if(reduce){el.textContent=fmt(to);return;} const t0=performance.now();
+  (function f(t){ const k=Math.min(1,(t-t0)/1400), e=1-Math.pow(1-k,3); el.textContent=fmt(to*e); if(k<1) requestAnimationFrame(f); })(t0); }
+(function tilt(){ const card=$("#cert"), stage=card.parentElement;
+  stage.addEventListener("pointermove",e=>{ const r=card.getBoundingClientRect(); const dx=(e.clientX-r.left)/r.width-.5, dy=(e.clientY-r.top)/r.height-.5; card.style.transform=`rotateY(${dx*10}deg) rotateX(${-dy*10}deg)`; });
+  stage.addEventListener("pointerleave",()=>card.style.transform=""); })();
+
+/* ====== client view ====== */
+let current=null;
+function show(id){ for(const s of ["intro","view","maker"]) $("#"+s).classList.toggle("hidden",s!==id); scrollTo(0,0); }
+function openClient(c){ current=c; $("#introName").textContent=c.name||""; $("#intro").classList.remove("opening","leaving"); show("intro"); }
+function reveal(){
+  const c=current, intro=$("#intro"); if(intro.classList.contains("opening")) return;
+  intro.classList.add("opening"); setTimeout(()=>intro.classList.add("leaving"),1900);
+  setTimeout(()=>{
+    show("view");
+    const card=$("#cert"); card.innerHTML=onlineCard(c); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+    $("#panel").classList.remove("show"); requestAnimationFrame(()=>$("#panel").classList.add("show"));
+    $("#termLine").textContent=`Действует до ${ru(c.until)} (${monthsTxt(c.term)} с покупки)`;
+    $("#waBtn").href=`https://wa.me/${SHOP.phone}?text=${encodeURIComponent(`Здравствуйте! У меня подарочный сертификат ACTUAL № ${c.no} на ${fmt(c.amount)} ₸. Хочу подобрать образ.`)}`;
+    celebrate(); countUp(card.querySelector("[data-amount]"),c.amount);
+  },2350);
+}
+$("#openBtn").addEventListener("click",reveal);
+$("#againBtn").addEventListener("click",celebrate);
+
+/* ====== maker ====== */
+const st={ mode:"online", amount:30000, term:SHOP.defaultTerm, paper:"dark" };
+const nextNo = () => String((+store.get("actual_cert_no")||0)+1).padStart(4,"0");
+function chipSet(el,items,key,label){
+  el.innerHTML=items.map(v=>`<button type="button" class="chip" data-v="${v}">${label(v)}</button>`).join("");
+  el.addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; st[key]=isNaN(+b.dataset.v)?b.dataset.v:+b.dataset.v; if(key==="amount") $("#fAmount").value=""; sync(); });
+}
+function readForm(){
+  const buy=($("#fBuy").value||"").replace(/-/g,"")||ymd(new Date());
+  return { name:$("#fName").value.trim(), amount:st.amount, buy, term:st.term, until:addMonths(buy,st.term),
+    no:$("#fNo").value.trim()||nextNo(), from:$("#fFrom").value.trim(), msg:$("#fMsg").value.trim() };
+}
+const linkFor = c => SHOP.baseUrl + "?c=" + encodeCert(c);
+function sync(){
+  document.querySelectorAll("#amtChips .chip").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.v===st.amount&&!$("#fAmount").value)));
+  document.querySelectorAll("#termChips .chip").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.v===st.term)));
+  document.querySelectorAll("#paperChips .chip").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===st.paper)));
+  document.querySelectorAll(".mode button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===st.mode)));
+  const on=st.mode==="online";
+  $("#onlineFields").classList.toggle("hidden",!on); $("#outOnline").classList.toggle("hidden",!on);
+  $("#offlineFields").classList.toggle("hidden",on); $("#outOffline").classList.toggle("hidden",on);
+  const c=readForm(); $("#untilTxt").textContent=ru(c.until);
+  const prev=$("#prev");
+  if(on){
+    prev.innerHTML=`<div class="oc">${onlineCard(c)}</div><div class="cap2">Так клиент увидит после конверта</div>`;
+    const link=linkFor(c); $("#outLink").textContent=c.name?link:"Впишите имя — ссылка появится здесь";
+    const ph=$("#fPhone").value.replace(/\D/g,"").replace(/^8/,"7");
+    $("#sendBtn").href=`https://wa.me/${ph.length>=11?ph:""}?text=${encodeURIComponent(`Здравствуйте${c.name?", "+c.name:""}! Для вас подарочный сертификат ACTUAL на ${fmt(c.amount)} ₸ 🎁\nОткройте его здесь: ${link}`)}`;
+  } else {
+    prev.innerHTML=`<div class="pwrap">${printFront(c,st.paper)}</div><div class="cap2">Лицевая сторона</div><div class="pwrap">${printBack(c,st.paper)}</div><div class="cap2">Оборот</div>`;
+    fitPrint();
+  }
+}
+function fitPrint(){ document.querySelectorAll(".pwrap").forEach(w=>{ const k=w.clientWidth/1050; w.style.height=(495*k)+"px"; w.firstElementChild.style.transform=`scale(${k})`; }); }
+addEventListener("resize",()=>{ if(st.mode==="offline") fitPrint(); });
+function bumpNo(){ const n=parseInt($("#fNo").value,10); if(n) store.set("actual_cert_no",String(n)); setTimeout(()=>{ $("#fNo").value=nextNo(); sync(); },400); }
+async function copyLink(){
+  const c=readForm(); if(!c.name){ toast("Впишите имя клиента"); return; }
+  try{ await navigator.clipboard.writeText(linkFor(c)); toast("Ссылка скопирована"); saveCert(c,"онлайн"); bumpNo(); }
+  catch(e){ const r=document.createRange(); r.selectNodeContents($("#outLink")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Ссылка выделена — скопируйте её"); saveCert(c,"онлайн"); }
+}
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res(); const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+async function makePdf(){
+  const c=readForm(); if(!c.name){ toast("Впишите имя клиента"); return; }
+  const btn=$("#pdfBtn"), label=btn.textContent; btn.disabled=true; btn.textContent="Готовлю PDF…";
+  try{
+    await Promise.all([loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"),loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")]);
+    await document.fonts.ready;
+    const box=$("#render"); box.innerHTML=printFront(c,st.paper)+printBack(c,st.paper);
+    const pdf=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:[210,99],compress:true});
+    const nodes=[...box.children];
+    for(let i=0;i<nodes.length;i++){
+      const canvas=await html2canvas(nodes[i],{scale:3.5,backgroundColor:null,useCORS:true,logging:false});
+      if(i) pdf.addPage([210,99],"landscape");
+      pdf.addImage(canvas.toDataURL("image/jpeg",.95),"JPEG",0,0,210,99);
+    }
+    box.innerHTML="";
+    const blob=pdf.output("blob"), fname=`ACTUAL-сертификат-${c.no}-${c.name.replace(/\s+/g,"_")}.pdf`;
+    let dl=null; try{ dl=window.claude?await window.claude.use("downloads"):null; }catch(e){}
+    if(dl){ try{ await dl.save({filename:fname,data:blob}); toast("PDF сохранён"); saveCert(c,"офлайн"); bumpNo(); }catch(e){ if(e&&e.code!=="declined") toast("Не получилось сохранить файл"); } }
+    else { const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=fname; document.body.appendChild(a); a.click(); a.remove(); toast("PDF сохранён"); bumpNo(); }
+  }catch(e){ toast("Не получилось собрать PDF — проверьте интернет"); }
+  btn.disabled=false; btn.textContent=label;
+}
+function initMaker(){
+  chipSet($("#amtChips"),SHOP.amounts,"amount",v=>fmt(v));
+  chipSet($("#termChips"),SHOP.terms,"term",v=>v+" мес");
+  chipSet($("#paperChips"),["dark","light"],"paper",v=>v==="dark"?"Чёрная":"Светлая");
+  document.querySelectorAll(".mode button").forEach(b=>b.addEventListener("click",()=>{ st.mode=b.dataset.mode; sync(); }));
+  const t=new Date(); $("#fBuy").value=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
+  $("#fNo").value=nextNo();
+  $("#fAmount").addEventListener("input",e=>{ const v=+e.target.value.replace(/\D/g,""); e.target.value=v?fmt(v):""; if(v) st.amount=v; });
+  $("#mkForm").addEventListener("input",sync);
+  $("#mkForm").addEventListener("submit",e=>e.preventDefault());
+  $("#copyBtn").addEventListener("click",copyLink);
+  $("#sendBtn").addEventListener("click",()=>{ const c=readForm(); if(c.name) saveCert(c,"онлайн"); bumpNo(); });
+  $("#pdfBtn").addEventListener("click",makePdf);
+  $("#previewBtn").addEventListener("click",()=>{ const c=readForm(); if(!c.name){ toast("Впишите имя клиента"); return; } openClient(c); });
+  sync();
+  document.fonts && document.fonts.ready.then(()=>{ if(st.mode==="offline") fitPrint(); });
+}
+
+/* ====== журнал ====== */
+let DB=null, certs=[], hFilter="all", dbState="loading";
+const todayY = () => ymd(new Date());
+const statusOf = c => c.status==="used" ? "used" : (c.until && c.until < todayY() ? "expired" : "active");
+const ST = {active:["Активен","b-active"], used:["Использован","b-used"], expired:["Истёк","b-expired"]};
+async function initDb(){
+  const t=setTimeout(()=>{ if(dbState==="loading"){ dbState="slow"; renderHist(); } },10000);
+  try{ DB = window.claude ? await window.claude.use("db") : null; }catch(e){ DB=null; }
+  if(!DB){ clearTimeout(t); dbState="off"; renderHist(); return; }
+  DB.collection("certs").onSnapshot(snap=>{ clearTimeout(t); dbState="ok"; certs=snap.docs.map(d=>({id:d.id,...d.data()})); renderHist(); syncNo(); },
+    e=>{ clearTimeout(t); dbState="off"; renderHist(); });
+}
+function syncNo(){ const mx=certs.reduce((m,c)=>Math.max(m,parseInt(c.no,10)||0),0); const loc=+store.get("actual_cert_no")||0; if(mx>loc){ store.set("actual_cert_no",String(mx)); const cur=parseInt($("#fNo").value,10)||0; if(cur<=mx){ $("#fNo").value=nextNo(); sync(); } } }
+async function saveCert(c,type){
+  if(!DB) return;
+  const rec={no:c.no,name:c.name,amount:c.amount,buy:c.buy||"",term:c.term||null,until:c.until||"",type,status:"active",usedAt:"",
+    link: type==="онлайн" ? linkFor(c) : "", createdAt:new Date().toISOString()};
+  const old=certs.find(x=>x.id==="n"+c.no); if(old){ rec.status=old.status||"active"; rec.usedAt=old.usedAt||""; rec.createdAt=old.createdAt||rec.createdAt; }
+  try{ await DB.doc("certs/n"+String(c.no).replace(/[^0-9A-Za-z_-]/g,"")).set(rec); }catch(e){ toast("Не записалось в журнал"); }
+}
+function renderHist(){
+  const list=$("#hList"); if(!list) return;
+  const counts={active:0,used:0,expired:0}; let sum=0;
+  certs.forEach(c=>{ const st=statusOf(c); counts[st]++; if(st==="active") sum+=+c.amount||0; });
+  $("#kA").textContent=counts.active; $("#kS").textContent=fmt(sum)+" ₸"; $("#kU").textContent=counts.used; $("#kE").textContent=counts.expired;
+  if(dbState==="off"){ list.innerHTML=`<div class="empty">Журнал открывается только здесь, в Claude, под вашим аккаунтом.</div>`; return; }
+  if(dbState==="loading"){ list.innerHTML=`<div class="empty">Загружаю журнал…</div>`; return; }
+  const q=($("#hSearch").value||"").toLowerCase().trim();
+  const rows=certs.filter(c=>(hFilter==="all"||statusOf(c)===hFilter)&&(!q||(c.name||"").toLowerCase().includes(q)||String(c.no).includes(q)))
+    .sort((a,b)=>(parseInt(b.no,10)||0)-(parseInt(a.no,10)||0));
+  if(!rows.length){ list.innerHTML=`<div class="empty">${certs.length?"Ничего не найдено":"Пока пусто. Сертификаты появятся здесь, когда вы отправите ссылку или скачаете PDF."}</div>`+(dbState==="slow"?`<div class="empty">Журнал пока не отвечает — данные могут быть неполными.</div>`:""); return; }
+  list.innerHTML=rows.map(c=>{ const st=statusOf(c); return `<div class="hrow">
+    <div class="h-main"><div class="h-name">№ ${esc(c.no)} · ${esc(c.name)}</div>
+      <div class="h-sub">${esc(c.type||"")} · куплен ${ru(c.buy)} · до ${ru(c.until)}${c.usedAt?` · использован ${ru(c.usedAt)}`:""}</div></div>
+    <div class="h-amt">${fmt(+c.amount||0)} ₸</div>
+    <span class="badge ${ST[st][1]}">${ST[st][0]}</span>
+    <div class="h-act">
+      ${c.link?`<button type="button" class="sbtn" data-act="copy" data-id="${esc(c.id)}">Ссылка</button>`:""}
+      ${st==="used"?`<button type="button" class="sbtn" data-act="unuse" data-id="${esc(c.id)}">Вернуть</button>`:`<button type="button" class="sbtn" data-act="use" data-id="${esc(c.id)}">Использован</button>`}
+    </div></div>`; }).join("");
+}
+async function histAction(e){
+  const b=e.target.closest("[data-act]"); if(!b||!DB) return;
+  const c=certs.find(x=>x.id===b.dataset.id); if(!c) return;
+  const ref=DB.doc("certs/"+c.id);
+  try{
+    if(b.dataset.act==="copy"){ try{ await navigator.clipboard.writeText(c.link); toast("Ссылка скопирована"); }catch(_){ toast(c.link); } }
+    if(b.dataset.act==="use"){ await ref.update({status:"used",usedAt:todayY()}); toast("Отмечен как использованный"); }
+    if(b.dataset.act==="unuse"){ await ref.update({status:"active",usedAt:""}); }
+  }catch(err){ toast("Не получилось сохранить"); }
+}
+function fillFromLink(){
+  const v=$("#aLink").value.trim(); const m=v.match(/[?#&]c=?([0-9a-z]+)|#(c[0-9a-z]+)/);
+  let code=m?(m[1]?(m[1][0]==="c"?m[1]:"c"+m[1]):m[2]):null;
+  if(code && !code.startsWith("c")) code="c"+code;
+  const mm=v.match(/(c[0-9a-z]{10,})/); if(mm) code=mm[1];
+  const c=code?decodeCert(code):null; if(!c){ if(v) toast("Ссылку не удалось прочитать"); return; }
+  $("#aName").value=c.name; $("#aAmount").value=fmt(c.amount); $("#aNo").value=c.no; $("#aType").value="онлайн";
+  const d=x=>`${x.slice(0,4)}-${x.slice(4,6)}-${x.slice(6)}`; $("#aBuy").value=d(c.buy); $("#aUntil").value=d(c.until);
+  fillFromLink.c=c;
+}
+async function addExisting(){
+  if(!DB){ toast("Журнал доступен только в Claude"); return; }
+  const name=$("#aName").value.trim(), amount=+$("#aAmount").value.replace(/\D/g,""), no=$("#aNo").value.trim().replace(/[^0-9A-Za-z_-]/g,"");
+  if(!name||!amount||!no){ toast("Заполните имя, сумму и номер"); return; }
+  const buy=($("#aBuy").value||"").replace(/-/g,""), until=($("#aUntil").value||"").replace(/-/g,"");
+  const type=($("#aType").value||"офлайн").trim();
+  const lc=fillFromLink.c;
+  const link = lc && lc.no===no ? SHOP.baseUrl+"?c="+encodeCert(lc) : "";
+  try{ await DB.doc("certs/n"+no).set({no,name,amount,buy,term:null,until,type,status:"active",usedAt:"",link,createdAt:new Date().toISOString()});
+    toast("Добавлен в журнал"); ["aLink","aName","aAmount","aNo","aType","aBuy","aUntil"].forEach(id=>$("#"+id).value=""); fillFromLink.c=null; }
+  catch(e){ toast("Не получилось сохранить"); }
+}
+function initHist(){
+  document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{ const t=b.dataset.tab;
+    document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    $("#newView").classList.toggle("hidden",t!=="new"); $("#histView").classList.toggle("hidden",t!=="hist"); if(t==="hist") renderHist(); else if(st.mode==="offline") fitPrint(); }));
+  const f=$("#hFilter"); f.innerHTML=[["all","Все"],["active","Активные"],["used","Использованные"],["expired","Истёкшие"]].map(([v,l])=>`<button type="button" class="chip" data-v="${v}" aria-pressed="${v==="all"}">${l}</button>`).join("");
+  f.addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; hFilter=b.dataset.v; f.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); renderHist(); });
+  $("#hSearch").addEventListener("input",renderHist);
+  $("#hList").addEventListener("click",histAction);
+  $("#aLink").addEventListener("input",fillFromLink);
+  $("#aSave").addEventListener("click",addExisting);
+  initDb();
+}
+
+/* ====== router ====== */
+function route(){
+  const q=(new URLSearchParams(location.search).get("c")||"").replace(/[^0-9a-z]/g,"").slice(0,600);
+  const h=q||location.hash.slice(1), c=decodeCert(h);
+  if(c){ openClient(c); return; }
+  if(h==="demo"){ const b=ymd(new Date()); openClient({name:"Мырзабек Болатоев",amount:30000,buy:b,term:12,until:addMonths(b,12),no:"0001"}); return; }
+  location.replace("https://www.instagram.com/actual.almaty/");
+}
+addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>
