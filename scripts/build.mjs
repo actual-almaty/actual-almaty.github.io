@@ -58,22 +58,53 @@ async function loadStock() {
     last = r.status + ' ' + (await r.text()).slice(0, 150);
   }
   if (!MCP) throw new Error('Ни один ключ не подошёл для остатков: ' + last);
-  const rows = [];
-  for (let offset = 0; offset < 20000; offset += 500) {
-    const body = { jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'report_stock_remainder', arguments: { warehouse_id: 1, limit: 500, offset, only_nonzero: true } } };
-    const r = await fetch('https://mcp.paloma365.com/mcp', { method: 'POST', headers: { Authorization: 'Bearer ' + MCP, Accept: 'application/json, text/event-stream', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const call = async (name, args) => {
+    const r = await fetch('https://mcp.paloma365.com/mcp', { method: 'POST', headers: { Authorization: 'Bearer ' + MCP, Accept: 'application/json, text/event-stream', 'Content-Type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name, arguments: args } }) });
     const t = await r.text();
-    if (!r.ok) throw new Error('Paloma остатки: ' + r.status + ' ' + t.slice(0, 200));
+    if (!r.ok) throw new Error('Paloma ' + name + ': ' + r.status + ' ' + t.slice(0, 200));
     let j;
     try { j = JSON.parse(t); } catch (e) { const line = t.split('\n').find(l => l.startsWith('data:')); j = JSON.parse(line.slice(5)); }
     const sc = j?.result?.structuredContent;
-    if (!sc || !Array.isArray(sc.rows)) throw new Error('Paloma остатки: неожиданный ответ ' + t.slice(0, 200));
-    for (const x of sc.rows) rows.push({ json: { item_id: String(x.item_id), quantity: Number(x.quantity ?? 0) } });
-    if (sc.has_more === false) break;
-    await sleep(500);
+    if (!sc) throw new Error('Paloma ' + name + ': неожиданный ответ ' + t.slice(0, 200));
+    return sc;
+  };
+  const stockOn = async (date) => {
+    const q = {};
+    let n = 0;
+    for (let offset = 0; offset < 20000; offset += 500) {
+      const sc = await call('report_stock_remainder', { warehouse_id: 1, limit: 500, offset, only_nonzero: true, on_date: date });
+      if (!Array.isArray(sc.rows)) throw new Error('Paloma остатки: нет строк');
+      for (const x of sc.rows) { q[String(x.item_id)] = (q[String(x.item_id)] || 0) + Number(x.quantity ?? 0); n++; }
+      if (sc.has_more === false) break;
+      await sleep(500);
+    }
+    if (n < 20) throw new Error('Слишком мало остатков — похоже на ошибку');
+    return q;
+  };
+  // Палома списывает проданное со склада только при закрытии смены.
+  // Поэтому вычитаем сегодняшние закрытые чеки, которые ещё не списались со склада.
+  const ymd = d => new Date(d.getTime() + 5 * 3600e3).toISOString().slice(0, 10);
+  const today = ymd(new Date()), tomorrow = ymd(new Date(Date.now() + 864e5));
+  const cur = await stockOn(tomorrow);
+  let start = cur, sold = {};
+  try {
+    start = await stockOn(today);
+    const sc = await call('report_sales', { date_from: today, date_to: today, top: 200 });
+    if (sc.success === false) throw new Error(sc.message || 'нет продаж');
+    for (const x of (sc.rows || [])) sold[String(x.group_id)] = Number(x.quantity || 0);
+  } catch (e) { console.error('Сегодняшние продажи не учтены:', e.message); sold = {}; }
+  let adj = 0;
+  const ids = new Set([...Object.keys(cur), ...Object.keys(sold)]);
+  const rows = [];
+  for (const id of ids) {
+    const c = cur[id] || 0, s = sold[id] || 0;
+    const postedOut = Math.max(0, (start[id] || 0) - c);
+    const unposted = Math.max(0, s - postedOut);
+    const q = Math.max(0, c - unposted);
+    if (q !== c) adj++;
+    if (q > 0 || c > 0) rows.push({ json: { item_id: id, quantity: q } });
   }
-  console.log('Строк остатков:', rows.length);
-  if (rows.length < 20) throw new Error('Слишком мало остатков — похоже на ошибку');
+  console.log('Строк остатков:', rows.length, '| продано сегодня позиций:', Object.keys(sold).length, '| поправлено с учётом чеков:', adj);
   return rows;
 }
 
