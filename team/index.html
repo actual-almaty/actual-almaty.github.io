@@ -184,7 +184,7 @@ async function scryptKey(pass, salt, N, r, p, dkLen) {
 (function(){
 "use strict";
 var LS = { get:function(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}, set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}, del:function(k){try{localStorage.removeItem(k)}catch(e){}} };
-var S = { token: LS.get("at_tok"), boot: LS.get("at_boot"), stock: LS.get("at_stock"), qty: null, tab: "me", month: null, q: "", onlyStock: false, loading: false, err: "" };
+var S = { token: LS.get("at_tok"), boot: LS.get("at_boot"), stock: LS.get("at_stock"), qty: null, tab: (location.hash==="#tasks"?"tasks":"me"), month: null, q: "", onlyStock: false, loading: false, err: "" };
 var $ = function(s){return document.querySelector(s)};
 var app = $("#app");
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -299,7 +299,7 @@ function render(){
   if(b.me.role==="admin") { S.tab="admin"; return renderAdmin(); }
   return renderMe();
 }
-function renderHeader(){var w=$("#who");if(!w)return;var b=S.boot;w.innerHTML=(b?esc(b.me.name):"")+(S.loading?' <span class="spin" style="width:10px;height:10px;border-width:2px"></span>':"")+'<br><button id="out">Выйти</button>';$("#out").onclick=function(){if(confirmLogout()) logout(false)}}
+function renderHeader(){var w=$("#who");if(!w)return;var b=S.boot;w.innerHTML=(b?esc(b.me.name):"")+(S.loading?' <span class="spin" style="width:10px;height:10px;border-width:2px"></span>':"")+(b&&b.me.role==="admin"?'<br><a href="../boss/" style="color:var(--gold2);font-size:12px;text-decoration:none">← Руководитель</a>':'')+'<br><button id="out">Выйти</button>';$("#out").onclick=function(){if(confirmLogout()) logout(false)}}
 function confirmLogout(){return window.confirm?window.confirm("Выйти из кабинета?"):true}
 function tabsHtml(){
   var admin=S.boot&&S.boot.me.role==="admin";

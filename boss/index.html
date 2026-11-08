@@ -277,11 +277,13 @@ function loginUI(){
       var m; try{ m=await aesOpen(key,box) }catch(x){ throw new Error("wrong") }
       if(!m.body||!m.body.me||m.body.me.role!=="admin") throw new Error("role");
       tok=JSON.stringify({l:l,k:hex(key)}); try{localStorage.setItem(TK,tok)}catch(x){}
-      d.remove(); setReady();
+      d.remove(); syncTeam(); setReady();
     }catch(x){ e.textContent=x.message==="role"?"Этот вход только для руководителя":x.message==="wrong"?"Неверный логин или пароль":"Нет соединения, попробуйте ещё раз"; b.disabled=false; b.textContent="Войти"; }
   };
   document.getElementById("blB").onclick=go; document.getElementById("blP").onkeydown=function(ev){if(ev.key==="Enter")go()};
 }
+function syncTeam(){ try{ var cur=localStorage.getItem("at_tok"), want=JSON.stringify(tok); if(cur!==want){ localStorage.setItem("at_tok",want); localStorage.removeItem("at_boot"); } }catch(e){} }
+if(tok) syncTeam();
 if(tok) setReady(); else if(document.body) loginUI(); else document.addEventListener("DOMContentLoaded",loginUI);
 
 /* --- Paloma через Google --- */
@@ -346,8 +348,9 @@ const ICONS = {
 };
 const VIEWS = [
   ["home","Главная"],["plan","План"],["sales","Продажи"],["stock","Склад"],["team","Команда"],
-  ["money","Финансы"],["channels","Каналы"],["ai","Советник"]
+  ["money","Финансы"],["channels","Каналы"]
 ];
+const TASKS_LINK = `<a href="../team/#tasks"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg><span>Задачи</span></a>`;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const num = v => { const n = Number(String(v ?? "").replace(/\s/g,"").replace(",", ".")); return isFinite(n) ? n : 0; };
@@ -732,11 +735,11 @@ function expensesFor(k){ return S.data.expenses.filter(x => inMonth(x.date, k));
 let rq = 0;
 function scheduleRender(){ if (rq) return; rq = requestAnimationFrame(()=>{ rq = 0; render(); }); }
 function navHTML(){
-  return VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("");
+  return VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("") + TASKS_LINK;
 }
 function render(){
   $("#nav").innerHTML = navHTML();
-  $("#tabbar").innerHTML = VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("");
+  $("#tabbar").innerHTML = VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("") + TASKS_LINK;
   const fr = S.fresh ? "обновлено " + new Date(S.fresh).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}) : "";
   $("#mfresh").textContent = fr;
   const active = document.activeElement; const keepId = active && active.id; const sel = keepId && active.selectionStart;
