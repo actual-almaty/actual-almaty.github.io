@@ -946,7 +946,7 @@ function vTeam(){
   const hasRep = pr.some(x=>x.fromPaloma);
   const interim = iso(today()) < lastDay(to.slice(0,7)) && to.slice(0,7) >= monthKey(today());
   const totSales = pr.reduce((a,x)=>a+x.sales,0), totRet = pr.reduce((a,x)=>a+x.returns,0);
-  return header("Команда", `<button class="btn ghost" data-act="pickfile" ${S.uploading?"disabled":""}>${S.uploading?"Загружаю…":"Загрузить отчёт Paloma"}</button><button class="btn" data-act="form" data-col="employees">+ Сотрудник</button>`) + (S.uploadMsg ? `<div class="${S.uploadMsg.ok?"note":"err"}" style="margin:0 0 12px;${S.uploadMsg.ok?"color:var(--green);font-weight:600":""}">${esc(S.uploadMsg.text)}</div>` : "") + rangeBar + dbNote() + `
+  return header("Команда", `<button class="btn ghost" data-act="motiv">💬 Мотивация</button><button class="btn ghost" data-act="pickfile" ${S.uploading?"disabled":""}>${S.uploading?"Загружаю…":"Загрузить отчёт Paloma"}</button><button class="btn" data-act="form" data-col="employees">+ Сотрудник</button>`) + (S.uploadMsg ? `<div class="${S.uploadMsg.ok?"note":"err"}" style="margin:0 0 12px;${S.uploadMsg.ok?"color:var(--green);font-weight:600":""}">${esc(S.uploadMsg.text)}</div>` : "") + rangeBar + dbNote() + `
   <div class="grid k3">
     ${kpi("Продажи команды", totSales ? shortMoney(totSales) : "—", totSales ? `возвраты ${shortMoney(totRet)} · ${emps.filter(e=>e.active!=="Не работает").length} чел.` : "загрузите «Отчёт по сотрудникам» из Paloma")}
     ${kpi("Фонд оплаты", shortMoney(pr.reduce((a,x)=>a+x.pay,0)), "за " + per + (interim?" · прогноз, итог в конце месяца":"") + (pr.some(x=>x.retDeduct)?` · за возвраты −${money(pr.reduce((a,x)=>a+(x.retDeduct||0),0))}`:""))}
@@ -1494,6 +1494,55 @@ route();
   if (mcp){ setupWatches(); setTimeout(()=>{ setupFixedWatches(); setupFinanceWatches(); }, 3000); setTimeout(loadStock, 8000); }
   startDb();
   render();
+})();
+</script>
+<script>
+/* ===== Мотивация продавцам в WhatsApp (руководитель нажимает «Отправить») ===== */
+(function(){
+var API="https://script.google.com/macros/s/AKfycbyQyJ7kTF21MbcRgo2IaqUFneBRqY0Ahm85K0fr15mbWcWmE0iU91ZDpij6XCcR1WGfsA/exec";
+var LOGIN={p00000000:"nuraly",p00000008:"marat",p00000005:"alikhan",p00000004:"aruzhan"};
+var SIZ={p00000000:true};
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function m(n){n=Math.round(+n||0);return String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" ₸"}
+function mln(n){n=+n||0;return Math.abs(n)>=1e6?(n/1e6).toFixed(1).replace(".",",").replace(",0","")+" млн ₸":Math.round(n/1e3)+" мың ₸"}
+function almaty(){return new Date(Date.now()+5*3600e3).toISOString().slice(0,10)}
+function factOf(id,ym){var ds=S.data.empSales.filter(function(x){return x.employeeId===id&&String(x.id).indexOf("d_"+ym)===0});if(ds.length)return [ds.reduce(function(a,x){return a+(+x.sales||0)},0),ds.map(function(x){return x.day}).sort().pop()];var mo=S.data.empSales.filter(function(x){return x.employeeId===id&&x.id===ym+"_"+id})[0];return [mo?+mo.sales||0:0,mo?mo.to:""]}
+function textFor(e,tasks){
+  var td=almaty(), ym=td.slice(0,7), pl=(S.data.plans||[]).filter(function(x){return x.id===ym})[0]||{};
+  var plan=+(((pl.monthly||{})[e.id]||{}).total)||0, today=+((((pl.days||{})[td]||{}).emp||{})[e.id])||0;
+  var f=factOf(e.id,ym), fact=f[0], left=Math.max(0,plan-fact);
+  var y=+ym.slice(0,4),mo=+ym.slice(5,7),dim=new Date(Date.UTC(y,mo,0)).getUTCDate(),dl=dim-+td.slice(8,10)+1;
+  var pct=plan?Math.round(fact/plan*100):0, siz=!!SIZ[e.id], nm=e.name;
+  var L=[];
+  var hr=new Date(Date.now()+5*3600e3).getUTCHours(), g=hr<12?"Қайырлы таң":hr<18?"Қайырлы күн":"Қайырлы кеш", gi=hr<12?" ☀️":hr<18?" 🌿":" 🌙";
+  L.push(pick(siz?[g+", "+nm+" аға!"+gi,"Сәлеметсіз бе, "+nm+" аға! 🌿"]:[g+", "+nm+"!"+gi,"Сәлем, "+nm+"! 👋","Қалайсың, "+nm+"? ✨"]));
+  if(today) L.push((siz?"Бүгінгі жоспарыңыз: ":"Бүгінгі жоспарың: ")+m(today)+" 🎯");
+  if(plan){
+    L.push((siz?"Айлық жоспарыңыз ":"Айлық жоспарың ")+mln(plan)+", қазір "+pct+"% орындалды"+(f[1]?" ("+f[1].slice(8,10)+"."+f[1].slice(5,7)+" дейін)":"")+".");
+    if(left>0) L.push("Жоспарға "+mln(left)+" қалды, күніне шамамен "+mln(left/Math.max(1,dl))+" 💪");
+    else L.push(siz?"Айлық жоспар орындалды, керемет! 🏆":"Айлық жоспар орындалды, сен кереметсің! 🏆");
+  }
+  var open=tasks.filter(function(t){return t.status==="new"||t.status==="returned"});
+  if(open.length) L.push((siz?"Тапсырмаларыңыз:\n":"Тапсырмаларың:\n")+open.slice(0,5).map(function(t){return "• "+t.title.replace(/^🔴\s*/,"🔴 ")}).join("\n")+(siz?"\nОрындаған соң фото жүктеп, белгілеңізші 📸":"\nОрындаған соң фото жүктеп, белгіле 📸"));
+  var hot=pct>=100?(siz?["Сіз бәрімізге үлгісіз, рақмет! 🙏","Керемет нәтиже, осылай жалғастырайық! 🚀"]:["Сен бәрімізге үлгісің, рақмет! 🙏","Керемет нәтиже, осылай жалғастыр! 🚀"]):pct>=70?(siz?["Бонусқа жақынсыз, тағы аздап! 🔥","Жақсы қарқын, тоқтамайық! 🔥"]:["Бонусқа жақынсың, тағы аздап! 🔥","Жақсы қарқын, тоқтама! 🔥"]):(siz?["Сізге сенемін, бүгін керемет күн болады! 💫","Әр клиент маңызды, бәрі қолыңыздан келеді! 💫"]:["Саған сенемін, сен істей аласың! 💫","Бүгін рекорд күн болсын, алға! 💫","Әр клиент — мүмкіндік, сен мықтысың! 💫"]);
+  L.push(pick(hot));
+  L.push("Жанерке");
+  return L.join("\n");
+}
+function openMotiv(){
+  var tok=null; try{tok=localStorage.getItem("boss_tok")}catch(e){}
+  $("#modal").style.maxWidth="640px";
+  $("#modal").innerHTML='<h2>Мотивация в WhatsApp</h2><div class="muted small" style="margin:-8px 0 12px">Текст можно поправить. «Отправить» откроет WhatsApp, останется выбрать чат и нажать отправить.</div><div id="mvList"><div class="empty">Собираю цифры и задачи…</div></div><div class="acts"><button type="button" class="btn ghost" data-act="close">Закрыть</button></div>';
+  $("#modalBg").classList.add("on");
+  fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:"list",p:{}})}).then(function(r){return r.json()}).catch(function(){return {}}).then(function(j){
+    var tasks=(j&&j.tasks)||[];
+    var emps=S.data.employees.filter(function(e){return e.active!=="Не работает"&&LOGIN[e.id]});
+    $("#mvList").innerHTML=emps.map(function(e,i){var t=textFor(e,tasks.filter(function(x){return x.login===LOGIN[e.id]}));return '<div class="card" style="margin:0 0 12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>'+esc(e.name)+'</b><span class="muted small">'+(e.phone?esc(e.phone):"номер не указан — выберете чат")+'</span></div><textarea class="in" id="mv'+i+'" rows="8" style="width:100%;font-size:14px;line-height:1.45">'+esc(t)+'</textarea><div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn" data-mv="'+i+'" data-ph="'+esc(String(e.phone||"").replace(/\D/g,""))+'">Отправить в WhatsApp</button><button type="button" class="btn ghost" data-mvr="'+i+'" data-id="'+e.id+'">Другой текст</button></div></div>'}).join("")||'<div class="empty">Нет работающих продавцов</div>';
+    document.querySelectorAll("[data-mv]").forEach(function(b){b.onclick=function(){var ph=b.dataset.ph;if(ph&&ph.length===11&&ph[0]==="8")ph="7"+ph.slice(1);var txt=$("#mv"+b.dataset.mv).value;window.open("https://wa.me/"+(ph||"")+"?text="+encodeURIComponent(txt),"_blank");b.textContent="Открыто ✓"}});
+    document.querySelectorAll("[data-mvr]").forEach(function(b){b.onclick=function(){var e=S.data.employees.filter(function(x){return x.id===b.dataset.id})[0];$("#mv"+b.dataset.mvr).value=textFor(e,tasks.filter(function(x){return x.login===LOGIN[e.id]}))}});
+  });
+}
+document.addEventListener("click",function(ev){var el=ev.target.closest&&ev.target.closest('[data-act="motiv"]');if(el){ev.preventDefault();ev.stopPropagation();openMotiv()}},true);
 })();
 </script>
 </body>
