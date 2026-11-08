@@ -515,7 +515,18 @@ function taskList(ts,showDate){
 function bindTasks(){document.querySelectorAll("[data-tk]").forEach(function(r){r.onclick=function(){var t=S.tasks.filter(function(x){return x.id===r.dataset.tk})[0];if(t)openTask(t)}})}
 function sheetOpen(html){var v=document.createElement("div");v.className="veil";v.innerHTML='<div class="sheet"><button class="x" aria-label="Закрыть">×</button>'+html+'</div>';document.body.appendChild(v);var c=function(){v.remove()};v.querySelector(".x").onclick=c;v.onclick=function(e){if(e.target===v)c()};return {el:v,close:c}}
 function photoStrip(ids){return ids&&ids.length?'<div class="phs">'+ids.map(function(id){return '<div class="ph" data-ph="'+esc(id)+'">'+(PH[id]?'<img src="'+PH[id]+'">':'<span class="spin"></span>')+'</div>'}).join("")+'</div>':''}
-function loadPhotos(el){el.querySelectorAll("[data-ph]").forEach(function(d){var id=d.dataset.ph;var show=function(){d.innerHTML='<img src="'+PH[id]+'">';d.onclick=function(){var w=window.open();if(w)w.document.write('<img src="'+PH[id]+'" style="max-width:100%">')}};if(PH[id])return show();tasksApi("photo",{id:id}).then(function(j){if(j.ok){PH[id]="data:"+j.type+";base64,"+j.data;show()}else d.innerHTML='<span class="small muted">нет фото</span>'})})}
+function showPhoto(src){
+  var v=document.createElement("div");
+  v.style.cssText="position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);display:flex;flex-direction:column";
+  v.innerHTML='<div style="padding:calc(env(safe-area-inset-top) + 10px) 12px 10px;display:flex"><button style="border:0;border-radius:12px;padding:12px 18px;background:#fff;color:#141414;font-size:16px;font-weight:600">← Назад</button></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:8px;overflow:auto"><img src="'+src+'" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px"></div>';
+  var closed=false, close=function(){ if(closed) return; closed=true; v.remove(); window.removeEventListener("popstate",onPop); };
+  var onPop=function(){ close(); };
+  v.querySelector("button").onclick=function(){ if(history.state&&history.state.ph) history.back(); else close(); };
+  v.onclick=function(e){ if(e.target===v||e.target.tagName==="IMG"||e.target===v.lastChild){ if(history.state&&history.state.ph) history.back(); else close(); } };
+  document.body.appendChild(v);
+  try{ history.pushState({ph:1},""); window.addEventListener("popstate",onPop); }catch(e){}
+}
+function loadPhotos(el){el.querySelectorAll("[data-ph]").forEach(function(d){var id=d.dataset.ph;var show=function(){d.innerHTML='<img src="'+PH[id]+'">';d.onclick=function(){showPhoto(PH[id])}};if(PH[id])return show();tasksApi("photo",{id:id}).then(function(j){if(j.ok){PH[id]="data:"+j.type+";base64,"+j.data;show()}else d.innerHTML='<span class="small muted">нет фото</span>'})})}
 function shrink(file){return new Promise(function(res,rej){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){var m=1400,w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,m/Math.max(w,h));var c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.75))};im.onerror=function(){URL.revokeObjectURL(u);rej(new Error("img"))};im.src=u})}
 function taskHead(t){return '<h3>'+esc(t.title)+'</h3><div style="margin:6px 0 2px">'+badge(t.status)+(t.bonus?' <span class="small muted">бонус '+money(t.bonus)+'</span>':'')+'</div><div class="small muted">'+dayLabel(t.date)+(S.boot.me.role==="admin"?" · "+esc(nameOf(t.login)):"")+'</div>'+(t.note?'<div class="card" style="white-space:pre-wrap;font-size:14px;line-height:1.5">'+esc(t.note)+'</div>':'')+(t.review&&t.status!=="done"?'<div class="card" style="border-color:'+(t.status==="returned"?"#E8C2B2":"#BFDCCB")+'"><div class="kicker">Комментарий руководителя</div><div style="margin-top:6px;white-space:pre-wrap;font-size:14px">'+esc(t.review)+'</div></div>':'')}
 function reportBlock(t){return t.report||t.photos.length?'<div class="kicker" style="margin-top:14px">Отчёт'+(t.doneAt?' · '+timeLabel(t.doneAt):'')+'</div>'+photoStrip(t.photos)+(t.report?'<div style="white-space:pre-wrap;font-size:14px;line-height:1.5;margin-top:8px">'+esc(t.report)+'</div>':''):''}
@@ -557,7 +568,7 @@ function renderTasksAdmin(){
   var ym=ymNow(), all=S.tasks, rev=all.filter(function(t){return t.status==="done"});
   var day=all.filter(function(t){return t.date===S.tDate});
   var chips=[[td,"Сегодня"],[addDays(td,1),"Завтра"]];
-  var h='<h1>Задачи</h1><div class="chips">'+chips.map(function(c){return '<button class="chip '+(S.tDate===c[0]?"on":"")+'" data-d="'+c[0]+'">'+c[1]+'</button>'}).join("")+'<input type="date" id="tdp" class="chip" value="'+S.tDate+'"></div>';
+  var h='<a href="../boss/" style="display:inline-block;margin:2px 0 10px;padding:9px 14px;border-radius:12px;background:#141414;color:#fff;text-decoration:none;font-size:14px;font-weight:600">← Назад в кабинет</a><h1>Задачи</h1><div class="chips">'+chips.map(function(c){return '<button class="chip '+(S.tDate===c[0]?"on":"")+'" data-d="'+c[0]+'">'+c[1]+'</button>'}).join("")+'<input type="date" id="tdp" class="chip" value="'+S.tDate+'"></div>';
   if(rev.length) h+='<h2>На проверке · '+rev.length+'</h2>'+taskList(rev,true);
   h+='<h2>'+cap(dayLabel(S.tDate))+'</h2>';
   if(!day.length) h+='<div class="card muted">Задач на этот день нет</div>';
