@@ -223,7 +223,8 @@ function api(action, payload){
     window.open("https://wa.me/"+SHOP_WA+"?text="+encodeURIComponent(txt),"_blank");
     return Promise.resolve({ok:true});
   }
-  if(action==="setpass"||action==="setplan"||action==="upload") return Promise.resolve({ok:false,error:"пока меняется через Claude — отправьте ему"});
+  if(action==="upload") return tasksApi("uploadSales",payload).then(function(j){return j.ok?j:{ok:false,error:j.error==="net"?"net":(j.error||"")}});
+  if(action==="setpass"||action==="setplan") return Promise.resolve({ok:false,error:"пока меняется через Claude — отправьте ему"});
   return (async function(){
     try{
       if(action==="login"){
@@ -234,7 +235,7 @@ function api(action, payload){
         try{ m=await aesOpen(key,box); }catch(e){ return {ok:false,error:"wrong"}; }
         MINE=m; return {ok:true, token:JSON.stringify({l:login,k:hex(key)}), name:m.body.me.name, role:m.body.me.role};
       }
-      if(action==="boot"){ MINE=null; var m2=await openMine(); var meta={}; try{ meta=await getJSON("stock-meta.json"); }catch(e){} var body=JSON.parse(JSON.stringify(m2.body)); body.stockVersion=meta.version||""; body.qtyVersion=""; return body; }
+      if(action==="boot"){ MINE=null; var m2=await openMine(); var meta={}; try{ meta=await getJSON("stock-meta.json"); }catch(e){} var body=JSON.parse(JSON.stringify(m2.body)); body.stockVersion=meta.version||""; body.qtyVersion=""; try{ var sj=await tasksApi("sales"); if(sj.ok) mergeSales(body,sj.rows); }catch(e){} return body; }
       if(action==="stock") return await openStock();
       if(action==="qty"){ var mt=await getJSON("stock-meta.json"); if(S.stock && mt.version && mt.version!==S.stock.version) loadStock(); return {ok:false}; }
       if(action==="refresh"){ var st=await openStock(); S.stock={version:st.version,synced:st.synced,rows:st.rows}; LS.set("at_stock",S.stock); idx=null; return {ok:true,version:"",qty:{}}; }
@@ -465,6 +466,13 @@ function openCheck(it){
   };
 }
 
+/* ---------- sales from Google (uploaded reports) ---------- */
+function mergeSales(body,rows){
+  var by={}; (rows||[]).forEach(function(r){(by[r[0]]=by[r[0]]||{})[r[1]]=[r[1],+r[2]||0,+r[3]||0]});
+  var fix=function(e){ if(!e||!by[e.emp_id]) return; var m={}; (e.days||[]).forEach(function(d){m[d[0]]=d}); Object.keys(by[e.emp_id]).forEach(function(k){m[k]=by[e.emp_id][k]}); e.days=Object.keys(m).sort().map(function(k){return m[k]}); };
+  (body.team||[]).forEach(fix); fix(body.emp);
+  var last=(rows||[]).reduce(function(a,r){return r[1]>a?r[1]:a},""); if(last&&(!body.updated||last>body.updated.slice(0,10))) body.updated=last+"T23:59:00Z";
+}
 /* ---------- tasks ---------- */
 var TASKS_URL="https://script.google.com/macros/s/AKfycbyQyJ7kTF21MbcRgo2IaqUFneBRqY0Ahm85K0fr15mbWcWmE0iU91ZDpij6XCcR1WGfsA/exec";
 var TST={new:["Новая","#EFE7DA","#6D5A3A"],done:["На проверке","#E4ECF5","#2D5277"],returned:["На доработку","#F3E3DC","#B4532A"],approved:["Принято ✅","#DDEDE3","#2F6B4F"]};
