@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-title" content="ACTUAL">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#141414">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<title>ACTUAL · Руководитель</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EC; --surface:#FFFFFF; --ink:#141414; --ink2:#3A3733; --muted:#857E74;
+  --line:#E6E0D6; --sand:#B79A6B; --sand-soft:#EFE7DA; --green:#2F6B4F; --red:#A8432F;
+  --radius:14px; --serif:'Cormorant Garamond',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.app{display:flex;min-height:100vh}
+/* sidebar */
+.side{width:232px;background:var(--ink);color:#EDE8DF;padding:28px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.brand{font-family:var(--serif);font-size:30px;letter-spacing:.32em;font-weight:600;padding:0 10px}
+.brand-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9C958A;padding:2px 10px 26px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;text-decoration:none;color:#CFC8BC;font-weight:500;font-size:14px}
+.nav a svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6}
+.nav a.on{background:#25231F;color:#fff}
+.nav a.on svg{stroke:var(--sand)}
+.side-foot{margin-top:auto;font-size:12px;color:#8C857A;padding:0 10px;line-height:1.5}
+/* main */
+main{flex:1;min-width:0;padding:30px 36px 60px;max-width:1240px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-family:var(--serif);font-weight:600;font-size:38px;margin:0;line-height:1}
+.hello{color:var(--muted);font-size:13px;margin-bottom:6px;letter-spacing:.04em}
+.seg{display:inline-flex;max-width:100%;overflow-x:auto;scrollbar-width:none;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex-wrap:nowrap}
+.seg button{flex-shrink:0;white-space:nowrap;border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;color:var(--ink2);font-weight:500}
+.seg button.on{background:var(--ink);color:#fff}
+.grid{display:grid;gap:14px}
+.k4{grid-template-columns:repeat(4,1fr)}
+.k3{grid-template-columns:repeat(3,1fr)}
+.k2{grid-template-columns:1.4fr 1fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;min-width:0}
+.card h3{margin:0 0 14px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.kpi .lbl{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.kpi .val{font-family:var(--serif);font-size:34px;font-weight:600;margin:8px 0 4px;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .sub{font-size:12.5px;color:var(--muted)}
+.delta{font-weight:600;font-size:12.5px}
+.up{color:var(--green)} .down{color:var(--red)}
+.mt{margin-top:14px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.45}
+.dark{background:var(--ink);color:#F3EEE6;border-color:var(--ink)}
+.dark .lbl,.dark .sub{color:#A39C91}
+.bar{height:6px;background:var(--sand-soft);border-radius:999px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;background:var(--sand);border-radius:999px}
+.dark .bar{background:#2E2B27}
+.list{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .nm{flex:1;min-width:0;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .rt{text-align:right;font-size:13px;white-space:nowrap}
+.row .rank{width:22px;color:var(--muted);font-size:12px}
+.row .nm.wrap{white-space:normal}
+.mini{height:3px;background:var(--sand-soft);border-radius:2px;margin-top:5px}
+.mini i{display:block;height:100%;background:var(--sand);border-radius:2px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right;white-space:nowrap}
+.tbl{overflow-x:auto}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.sm{padding:6px 12px;font-size:12px}
+.btn.sand{background:var(--sand);border-color:var(--sand)}
+.icon-btn{border:0;background:none;cursor:pointer;color:var(--muted);padding:4px 6px;border-radius:6px;font-size:13px}
+.icon-btn:hover{background:var(--sand-soft);color:var(--ink)}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:600;background:var(--sand-soft);color:#6D5A3A}
+.pill.red{background:#F5E1DB;color:var(--red)}
+.pill.green{background:#DDEBE3;color:var(--green)}
+.empty{padding:22px 4px;color:var(--muted);font-size:13.5px;text-align:center;line-height:1.5}
+.err{background:#FBEFEA;border:1px solid #EDCFC4;color:#7D3423;border-radius:10px;padding:10px 12px;font-size:12.5px;margin-top:8px;line-height:1.45}
+.skel{background:linear-gradient(90deg,#EEE9E1,#F7F4EF,#EEE9E1);background-size:200% 100%;animation:sk 1.3s infinite;border-radius:6px;color:transparent!important}
+@keyframes sk{to{background-position:-200% 0}}
+.chart svg{width:100%;height:auto;display:block}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input.in,select.in,textarea.in{border:1px solid var(--line);background:#FBFAF7;border-radius:10px;padding:9px 12px;font-size:14px;outline:none;width:100%}
+input.in:focus,select.in:focus,textarea.in:focus{border-color:var(--sand)}
+.fresh{font-size:11.5px;color:var(--muted)}
+.sec-title{font-family:var(--serif);font-size:24px;font-weight:600;margin:28px 0 12px}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(20,20,20,.45);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.modal-bg.on{display:flex}
+.modal{background:var(--surface);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:22px;max-height:90vh;overflow:auto}
+@media(min-width:700px){.modal-bg{align-items:center}.modal{border-radius:18px}}
+.modal h2{font-family:var(--serif);font-size:26px;margin:0 0 16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:600;letter-spacing:.03em}
+.modal .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.ai-out{font-size:14.5px;line-height:1.65;color:var(--ink2)}
+.ai-out h4{font-family:var(--serif);font-size:20px;margin:16px 0 6px;color:var(--ink)}
+.ai-out ul{padding-left:18px;margin:6px 0}
+.ai-out li{margin:4px 0}
+.chk{width:18px;height:18px;accent-color:var(--ink);cursor:pointer}
+.done .nm{text-decoration:line-through;color:var(--muted)}
+.ts{border-collapse:separate;border-spacing:3px;width:auto}
+.ts td,.ts th{padding:0;border:0;text-align:center;font-size:11px}
+.ts th.dh{color:var(--muted);font-weight:600;padding-bottom:4px;min-width:44px;letter-spacing:0;text-transform:none}
+.ts th.dh.we{color:#8A6F45}
+.ts th.nmc{position:sticky;left:0;background:var(--surface);text-align:left;padding:0 10px 0 0;font-size:13px;z-index:1;text-transform:none;letter-spacing:0;color:var(--ink);white-space:nowrap}
+.c{min-width:44px;width:100%;height:38px;border-radius:7px;font-size:11px;border:0;cursor:pointer;background:var(--sand-soft);color:#6D5A3A;font-weight:600;padding:0 2px;line-height:1.15}
+.c.off{background:#FAF8F4;color:#CFC7BA;font-weight:400}
+.c.late,.c.early{background:#F6E3C3;color:#8A5A12}
+.c.absent{background:#F5E1DB;color:var(--red)}
+.c.sick{background:#E1E8F2;color:#3B5A85}
+.c.dayoff{background:#ECEAE6;color:#857E74}
+.c.extra{background:#DDEBE3;color:var(--green)}
+.c.fut{opacity:.55}
+.c.today{box-shadow:inset 0 0 0 2px var(--ink)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.sched-grid input{padding:7px 6px;font-size:12.5px;text-align:center}
+.sched-grid td{padding:3px}
+.tier{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+.t0{background:#F5E1DB;color:var(--red)}.t1{background:#F6E3C3;color:#8A5A12}.t2{background:#DDEBE3;color:var(--green)}.t3{background:#141414;color:#E9D9B8}
+.dayrow{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line);cursor:pointer}
+.dayrow:first-child{border-top:0}
+.dayrow.td{background:var(--sand-soft);margin:0 -12px;padding:11px 12px;border-radius:10px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11.5px;background:#F6F3EE;border-radius:999px;padding:3px 9px;color:var(--ink2)}
+.msg{white-space:pre-wrap;background:#FBFAF7;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;line-height:1.55}
+.dcard{border-top:1px solid var(--line);padding:14px 0}
+.dcard:first-of-type{border-top:0}
+.dhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.dtbl td,.dtbl th{padding:7px 6px;font-size:12.5px}
+.tabbar{display:none}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:60}
+.toast.on{opacity:1}
+@media(max-width:1020px){.k4{grid-template-columns:repeat(2,1fr)}.k2{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .side{display:none}
+  main{padding:18px 14px 100px}
+  .mhead{display:flex!important}
+  h1{font-size:30px}
+  .kpi .val{font-size:27px}
+  .k3{grid-template-columns:1fr}
+  .card h3 .fresh{display:none}
+  .top .toolbar{width:100%}
+  .tabbar{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--ink);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40;justify-content:space-around}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;min-width:0;color:#A39C91;text-decoration:none;padding:5px 2px;flex:1}
+  .tabbar a svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .tabbar a.on{color:#fff}.tabbar a.on svg{stroke:var(--sand)}
+  .card{padding:16px}
+}
+.mhead{display:none;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mhead .brand{font-size:22px;padding:0}
+.bdrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--line,#E6E0D6)}
+.bdrow:first-of-type{border-top:0}.bdrow small{display:block;font-size:12px;color:#8a8175;margin-top:2px}
+.bdrow.neg b{color:#B4532A}.bdrow.sub b{font-weight:600}.bdrow.total{border-top:2px solid #141414;margin-top:4px}.bdrow.total b{font-size:20px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">ACTUAL</div>
+    <div class="brand-sub">Кабинет руководителя</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">ТРЦ Riviera Park · 1 этаж<br>Данные продаж — Paloma365</div>
+  </aside>
+  <main>
+    <div class="mhead"><div class="brand">ACTUAL</div><span class="fresh" id="mfresh"></span></div>
+    <div id="view"></div>
+  </main>
+</div>
+<nav class="tabbar" id="tabbar"></nav>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="empFile" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" style="position:fixed;left:-9999px;width:1px;height:1px;opacity:0">
+
+<style>
+#bossLogin{position:fixed;inset:0;z-index:9999;background:#141414;display:flex;align-items:center;justify-content:center;padding:24px}
+#bossLogin .bl-box{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+#bossLogin .bl-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;letter-spacing:.32em;color:#EDE8DF;text-align:center;font-weight:600}
+#bossLogin .bl-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9C958A;text-align:center;margin-bottom:14px}
+#bossLogin input{border:1px solid #3a3733;background:#1f1d1b;color:#EDE8DF;border-radius:12px;padding:14px;font-size:16px;outline:none}
+#bossLogin input:focus{border-color:#B79A6B}
+#bossLogin button{border:0;border-radius:12px;padding:15px;background:#B79A6B;color:#141414;font-weight:700;font-size:15px;cursor:pointer}
+#bossLogin .bl-err{color:#E08B6A;font-size:13px;min-height:16px}
+#bossOut{position:fixed;right:10px;top:10px;z-index:50;border:1px solid #E6E0D6;background:rgba(255,255,255,.9);border-radius:10px;padding:6px 10px;font-size:12px;color:#857E74;cursor:pointer}
+</style>
+<script>
+async function scryptKey(pass, salt, N, r, p, dkLen) {
+  var enc = new TextEncoder();
+  var pw = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+  var blen = 128 * r * p;
+  var B = new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc.encode(salt), iterations: 1, hash: "SHA-256" }, pw, blen * 8));
+  var R32 = 32 * r;
+  var X = new Uint32Array(R32), V = new Uint32Array(R32 * N), Y = new Uint32Array(R32), T = new Uint32Array(16), x = new Uint32Array(16);
+  function salsa(B16) {
+    for (var i = 0; i < 16; i++) x[i] = B16[i];
+    for (i = 0; i < 8; i += 2) {
+      var u;
+      u = x[0] + x[12]; x[4] ^= (u << 7) | (u >>> 25); u = x[4] + x[0]; x[8] ^= (u << 9) | (u >>> 23);
+      u = x[8] + x[4]; x[12] ^= (u << 13) | (u >>> 19); u = x[12] + x[8]; x[0] ^= (u << 18) | (u >>> 14);
+      u = x[5] + x[1]; x[9] ^= (u << 7) | (u >>> 25); u = x[9] + x[5]; x[13] ^= (u << 9) | (u >>> 23);
+      u = x[13] + x[9]; x[1] ^= (u << 13) | (u >>> 19); u = x[1] + x[13]; x[5] ^= (u << 18) | (u >>> 14);
+      u = x[10] + x[6]; x[14] ^= (u << 7) | (u >>> 25); u = x[14] + x[10]; x[2] ^= (u << 9) | (u >>> 23);
+      u = x[2] + x[14]; x[6] ^= (u << 13) | (u >>> 19); u = x[6] + x[2]; x[10] ^= (u << 18) | (u >>> 14);
+      u = x[15] + x[11]; x[3] ^= (u << 7) | (u >>> 25); u = x[3] + x[15]; x[7] ^= (u << 9) | (u >>> 23);
+      u = x[7] + x[3]; x[11] ^= (u << 13) | (u >>> 19); u = x[11] + x[7]; x[15] ^= (u << 18) | (u >>> 14);
+      u = x[0] + x[3]; x[1] ^= (u << 7) | (u >>> 25); u = x[1] + x[0]; x[2] ^= (u << 9) | (u >>> 23);
+      u = x[2] + x[1]; x[3] ^= (u << 13) | (u >>> 19); u = x[3] + x[2]; x[0] ^= (u << 18) | (u >>> 14);
+      u = x[5] + x[4]; x[6] ^= (u << 7) | (u >>> 25); u = x[6] + x[5]; x[7] ^= (u << 9) | (u >>> 23);
+      u = x[7] + x[6]; x[4] ^= (u << 13) | (u >>> 19); u = x[4] + x[7]; x[5] ^= (u << 18) | (u >>> 14);
+      u = x[10] + x[9]; x[11] ^= (u << 7) | (u >>> 25); u = x[11] + x[10]; x[8] ^= (u << 9) | (u >>> 23);
+      u = x[8] + x[11]; x[9] ^= (u << 13) | (u >>> 19); u = x[9] + x[8]; x[10] ^= (u << 18) | (u >>> 14);
+      u = x[15] + x[14]; x[12] ^= (u << 7) | (u >>> 25); u = x[12] + x[15]; x[13] ^= (u << 9) | (u >>> 23);
+      u = x[13] + x[12]; x[14] ^= (u << 13) | (u >>> 19); u = x[14] + x[13]; x[15] ^= (u << 18) | (u >>> 14);
+    }
+    for (i = 0; i < 16; i++) B16[i] = (B16[i] + x[i]) >>> 0;
+  }
+  function blockMix() { // X -> X, через Y
+    for (var k = 0; k < 16; k++) T[k] = X[(2 * r - 1) * 16 + k];
+    for (var i = 0; i < 2 * r; i++) {
+      for (k = 0; k < 16; k++) T[k] ^= X[i * 16 + k];
+      salsa(T);
+      var off = (i & 1) ? (r + (i >> 1)) * 16 : (i >> 1) * 16;
+      for (k = 0; k < 16; k++) Y[off + k] = T[k];
+    }
+    X.set(Y);
+  }
+  var dv = new DataView(B.buffer);
+  for (var pi = 0; pi < p; pi++) {
+    var base = pi * 128 * r;
+    for (var i = 0; i < R32; i++) X[i] = dv.getUint32(base + i * 4, true);
+    for (i = 0; i < N; i++) { V.set(X, i * R32); blockMix(); }
+    for (i = 0; i < N; i++) {
+      var j = X[(2 * r - 1) * 16] & (N - 1);
+      for (var k = 0; k < R32; k++) X[k] ^= V[j * R32 + k];
+      blockMix();
+    }
+    for (i = 0; i < R32; i++) dv.setUint32(base + i * 4, X[i], true);
+  }
+  var bk = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: B, iterations: 1, hash: "SHA-256" }, bk, dkLen * 8));
+}
+function b64(s){ return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0)}); }
+function hex(u){ return Array.from(u,function(b){return b.toString(16).padStart(2,"0")}).join(""); }
+function unhex(h){ var u=new Uint8Array(h.length/2); for(var i=0;i<u.length;i++) u[i]=parseInt(h.substr(i*2,2),16); return u; }
+async function aesOpen(keyBytes, box){ var k=await crypto.subtle.importKey("raw",keyBytes,"AES-GCM",false,["decrypt"]); var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(box.iv)},k,b64(box.ct)); return JSON.parse(new TextDecoder().decode(pt)); }
+
+/* ===== ACTUAL · Руководитель на сайте: вход + Paloma и база через Google ===== */
+(function(){
+var API="https://script.google.com/macros/s/AKfycbyQyJ7kTF21MbcRgo2IaqUFneBRqY0Ahm85K0fr15mbWcWmE0iU91ZDpij6XCcR1WGfsA/exec";
+var TK="boss_tok", tok=null; try{tok=localStorage.getItem(TK)}catch(e){}
+function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(function(r){return r.json()}).then(function(j){if(j&&j.error==="auth"){try{localStorage.removeItem(TK)}catch(e){}location.reload()}return j})}
+var ready, setReady; ready=new Promise(function(r){setReady=r});
+window.bossLogout=function(){try{localStorage.removeItem(TK)}catch(e){}location.reload()};
+
+/* --- вход --- */
+function loginUI(){
+  var d=document.createElement("div"); d.id="bossLogin";
+  d.innerHTML='<div class="bl-box"><div class="bl-logo">ACTUAL</div><div class="bl-sub">Руководитель</div><input id="blL" placeholder="Логин" autocapitalize="none" autocomplete="username"><input id="blP" type="password" placeholder="Пароль" autocomplete="current-password"><div id="blE" class="bl-err"></div><button id="blB">Войти</button></div>';
+  document.body.appendChild(d);
+  var go=async function(){
+    var l=document.getElementById("blL").value.trim().toLowerCase(), p=document.getElementById("blP").value, e=document.getElementById("blE"), b=document.getElementById("blB");
+    e.textContent=""; b.disabled=true; b.textContent="Проверяю…";
+    try{
+      var users=await fetch("../team/d/users.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()});
+      var salt=users[l]; var key=await scryptKey(p, salt||"no-such-user", 16384, 8, 1, 32); if(!salt) throw new Error("wrong");
+      var box=await fetch("../team/d/"+l+".json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()});
+      var m; try{ m=await aesOpen(key,box) }catch(x){ throw new Error("wrong") }
+      if(!m.body||!m.body.me||m.body.me.role!=="admin") throw new Error("role");
+      tok=JSON.stringify({l:l,k:hex(key)}); try{localStorage.setItem(TK,tok)}catch(x){}
+      d.remove(); setReady();
+    }catch(x){ e.textContent=x.message==="role"?"Этот вход только для руководителя":x.message==="wrong"?"Неверный логин или пароль":"Нет соединения, попробуйте ещё раз"; b.disabled=false; b.textContent="Войти"; }
+  };
+  document.getElementById("blB").onclick=go; document.getElementById("blP").onkeydown=function(ev){if(ev.key==="Enter")go()};
+}
+if(tok) setReady(); else if(document.body) loginUI(); else document.addEventListener("DOMContentLoaded",loginUI);
+
+/* --- Paloma через Google --- */
+var q=[], qt=null, mem={};
+function flush(){ qt=null; var batch=q.splice(0,25); if(q.length) qt=setTimeout(flush,0);
+  post("paloma",{calls:batch.map(function(x){return {tool:x.tool,args:x.args,ttl:x.ttl}})}).then(function(j){
+    batch.forEach(function(x,i){ var r=j&&j.ok&&j.results?j.results[i]:null;
+      if(r&&r.ok){ mem[x.k]={t:Date.now(),payload:r.payload}; x.res({payload:r.payload}); }
+      else x.rej({code:(r&&r.error)||(j&&j.error)||"unavailable",message:(r&&r.detail)||(j&&j.error)||"Paloma недоступна"}); });
+  }).catch(function(){ batch.forEach(function(x){x.rej({code:"unavailable",message:"Нет соединения"})}) });
+}
+function callTool(srv,tool,args,opt){
+  var c=(opt&&opt.cache)||{}, k=tool+JSON.stringify(args||{}), st=c.staleTime||0, m=mem[k];
+  if(m&&!c.refresh&&Date.now()-m.t<st) return Promise.resolve({payload:m.payload});
+  var ttl=c.refresh?0:Math.min(21600,Math.round(st/1000));
+  return new Promise(function(res,rej){ q.push({tool:tool,args:args||{},ttl:ttl,k:k,res:res,rej:rej}); if(!qt) qt=setTimeout(flush,40); });
+}
+function watchTool(srv,tool,args,cb,opt){
+  var dead=false, run=function(force){ callTool(srv,tool,args,force?{cache:{refresh:true}}:opt).then(function(r){ if(!dead) cb({type:"data",result:{payload:r.payload,cache:{storedAt:Date.now()}}}) },function(e){ if(!dead) cb({type:"error",error:e}) }) };
+  run(false); var iv=opt&&opt.refetchInterval?setInterval(function(){run(true)},opt.refetchInterval):null;
+  return function(){dead=true; if(iv) clearInterval(iv)};
+}
+var MCP={callTool:callTool,watchTool:watchTool,__retry:true};
+
+/* --- база (сотрудники, планы, финансы…) в Google-таблице --- */
+var docs={}, loaded=false, colL={}, docL={}, wq=[], wt=null;
+function snapOf(c){ var pre=c+"/", out=[]; Object.keys(docs).forEach(function(k){ if(k.indexOf(pre)===0&&k.slice(pre.length).indexOf("/")<0){ var v=docs[k]; out.push({id:k.slice(pre.length),data:function(){return JSON.parse(JSON.stringify(v))}}) } }); return {docs:out,metadata:{fromCache:false},size:out.length,empty:!out.length}; }
+function docSnap(p){ var v=docs[p]; return {id:p.split("/").pop(),exists:v!==undefined,data:function(){return v===undefined?undefined:JSON.parse(JSON.stringify(v))}}; }
+function notify(path){ var c=path?path.split("/")[0]:null; Object.keys(colL).forEach(function(k){ if(!c||k===c) colL[k].forEach(function(f){f(snapOf(k))}) }); Object.keys(docL).forEach(function(k){ if(!path||k===path) docL[k].forEach(function(f){f(docSnap(k))}) }); }
+function loadAll(){ return post("kvGet",{prefix:""}).then(function(j){ if(!j.ok) throw j; var n={}; j.docs.forEach(function(d){ try{n[d[0]]=JSON.parse(d[1])}catch(e){} }); var ch=JSON.stringify(n)!==JSON.stringify(docs); docs=n; loaded=true; if(ch) notify(null); }); }
+function wflush(){ wt=null; var b=wq.splice(0); var set=[],del=[]; b.forEach(function(x){ if(x.del) del.push(x.p); else set.push([x.p,JSON.stringify(x.v)]) });
+  post("kvSet",{set:set,del:del}).then(function(j){ b.forEach(function(x){ j&&j.ok?x.res():x.rej({code:"unavailable"}) }) }).catch(function(){ b.forEach(function(x){x.rej({code:"unavailable"})}) }); }
+function write(p,v,del){ if(del) delete docs[p]; else docs[p]=JSON.parse(JSON.stringify(v)); notify(p); return new Promise(function(res,rej){ wq.push({p:p,v:v,del:del,res:res,rej:rej}); if(!wt) wt=setTimeout(wflush,60); }); }
+function docRef(p){ return {id:p.split("/").pop(),path:p,
+  set:function(v){return write(p,v,false)}, update:function(v){return write(p,Object.assign({},docs[p]||{},v),false)}, delete:function(){return write(p,null,true)},
+  get:function(){return (loaded?Promise.resolve():loadAll()).then(function(){return docSnap(p)})},
+  onSnapshot:function(cb,err){ (docL[p]=docL[p]||[]).push(cb); if(loaded) cb(docSnap(p)); return function(){docL[p]=docL[p].filter(function(f){return f!==cb})} } }; }
+function rid(){ var a="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",s=""; var r=crypto.getRandomValues(new Uint8Array(20)); for(var i=0;i<20;i++) s+=a[r[i]%62]; return s; }
+var DB={ collection:function(c){ return { doc:function(id){return docRef(c+"/"+id)}, add:function(v){ var id=rid(); return write(c+"/"+id,v,false).then(function(){return {id:id}}) },
+  onSnapshot:function(cb,err){ (colL[c]=colL[c]||[]).push(cb); if(loaded) cb(snapOf(c)); else loadAll().catch(function(e){ if(err) err({code:"unavailable"}) }); return function(){colL[c]=colL[c].filter(function(f){return f!==cb})} } } },
+  doc:function(p){ return docRef(p) } };
+setInterval(function(){ if(tok&&document.visibilityState==="visible"&&!wq.length) loadAll().catch(function(){}) }, 60000);
+
+window.claude={ use:function(n){ return ready.then(function(){ return n==="mcp"?MCP:n==="db"?DB:null }) } };
+})();
+
+</script>
+<button id="bossOut" onclick="if(confirm('Выйти?'))bossLogout()">Выйти</button>
+<script>
+/* ========== базовое ========== */
+const SRV = "Paloma";
+const ICONS = {
+  home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+  sales:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  stock:'<svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/></svg>',
+  team:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"/></svg>',
+  money:'<svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2"/><path d="M2.5 10h19M7 15h3"/></svg>',
+  channels:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2L4 4v5h5"/><path d="M12 8v4l3 2"/></svg>',
+  plan:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+  ai:'<svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>'
+};
+const VIEWS = [
+  ["home","Главная"],["plan","План"],["sales","Продажи"],["stock","Склад"],["team","Команда"],
+  ["money","Финансы"],["channels","Каналы"],["ai","Советник"]
+];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num = v => { const n = Number(String(v ?? "").replace(/\s/g,"").replace(",", ".")); return isFinite(n) ? n : 0; };
+const money = n => n == null || !isFinite(n) ? "—" : Math.round(n).toLocaleString("ru-RU") + " ₸";
+const shortMoney = n => {
+  if (n == null || !isFinite(n)) return "—";
+  const a = Math.abs(n);
+  if (a >= 1e6) return (n/1e6).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " млн ₸";
+  if (a >= 1e4) return Math.round(n/1e3).toLocaleString("ru-RU") + " тыс ₸";
+  return money(n);
+};
+const pct = (a,b) => (b ? (a/b*100) : null);
+const pad = n => String(n).padStart(2,"0");
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const today = () => { const t = new Date(); t.setHours(12,0,0,0); return t; };
+const MONTHS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const MONTHS_G = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+const fmtDate = s => { if(!s) return ""; const [y,m,d] = s.split("-").map(Number); return `${d} ${MONTHS_G[m-1]}`; };
+const monthKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+const monthLabel = k => { const [y,m] = k.split("-").map(Number); return MONTHS[m-1][0].toUpperCase()+MONTHS[m-1].slice(1)+" "+y; };
+function monthRange(k){
+  const [y,m] = k.split("-").map(Number);
+  const from = new Date(y,m-1,1,12); let to = new Date(y,m,0,12);
+  if (to > today()) to = today();
+  return {from: iso(from), to: iso(to)};
+}
+function deltaHTML(cur, prev, invert){
+  if (cur == null || prev == null || !prev) return '<span class="muted small">нет данных для сравнения</span>';
+  const d = (cur-prev)/Math.abs(prev)*100;
+  const good = invert ? d < 0 : d >= 0;
+  return `<span class="delta ${good?"up":"down"}">${d>=0?"▲":"▼"} ${Math.abs(d).toLocaleString("ru-RU",{maximumFractionDigits:1})}%</span>`;
+}
+function toast(t){ const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast._t); toast._t = setTimeout(()=>el.classList.remove("on"), 2200); }
+
+/* ========== состояние ========== */
+const S = {
+  view: "home", period: "month", mcp: null, db: null, sample: null,
+  paloma: {}, errs: {}, fresh: null,
+  stock: null, stockErr: null, stockLoading: false, catalog: null, catLoading: false, catDone: 0, catErr: null, stockQ: "", stockFilter: "all",
+  financeMonth: monthKey(today()), teamFrom: monthKey(today())+"-01", teamTo: iso(today()), planMonth: monthKey(today()), daily: {}, dailyLoading: false, channelMonth: monthKey(today()), teamMonth: monthKey(today()),
+  data: { employees: [], shifts: [], expenses: [], channels: [], tasks: [], empSales: [], attendance: [], schedule: [], plans: [], returnsLog: [], goals: {} },
+  dbState: "loading", ai: { text: "", busy: false, err: "" }
+};
+
+/* ========== периоды ========== */
+function periodRange(p){
+  const t = today();
+  if (p === "today") return {from: iso(t), to: iso(t), pf: iso(addDays(t,-7)), pt: iso(addDays(t,-7)), label: "сегодня", cmp: "к этому дню неделю назад"};
+  if (p === "yesterday"){ const y = addDays(t,-1); return {from: iso(y), to: iso(y), pf: iso(addDays(y,-7)), pt: iso(addDays(y,-7)), label: "вчера", cmp: "к этому дню неделю назад"}; }
+  if (p === "week") return {from: iso(addDays(t,-6)), to: iso(t), pf: iso(addDays(t,-13)), pt: iso(addDays(t,-7)), label: "за 7 дней", cmp: "к прошлым 7 дням"};
+  if (p === "30") return {from: iso(addDays(t,-29)), to: iso(t), pf: iso(addDays(t,-59)), pt: iso(addDays(t,-30)), label: "за 30 дней", cmp: "к прошлым 30 дням"};
+  // месяц с 1-го числа
+  const f = new Date(t.getFullYear(), t.getMonth(), 1, 12);
+  const pf = new Date(t.getFullYear(), t.getMonth()-1, 1, 12);
+  const lastPrev = new Date(t.getFullYear(), t.getMonth(), 0, 12);
+  const pt = new Date(pf.getFullYear(), pf.getMonth(), Math.min(t.getDate(), lastPrev.getDate()), 12);
+  return {from: iso(f), to: iso(t), pf: iso(pf), pt: iso(pt), label: "с начала месяца", cmp: "к тому же периоду прошлого месяца"};
+}
+const PERIODS = [["today","Сегодня"],["yesterday","Вчера"],["week","7 дней"],["month","Месяц"],["30","30 дней"]];
+
+/* ========== Paloma: живые запросы ========== */
+const watches = {};
+const ERR_TEXT = {
+  needs_reauth: "Paloma требует повторного входа: claude.ai → Настройки → Коннекторы → Paloma.",
+  server_not_connected: "Paloma не подключена для этого аккаунта: добавьте её в claude.ai → Настройки → Коннекторы.",
+  selection_required: "Подключено несколько Paloma — выберите нужную в окне claude.ai.",
+  not_in_manifest: "Доступ этой странице к Paloma выключен. Откройте приложение в claude.ai и разрешите доступ.",
+  blocked_by_policy: "Доступ к Paloma заблокирован настройками организации.",
+  server_unavailable: "Paloma временно не отвечает — показаны последние данные.",
+  not_granted: "Живые данные доступны, когда приложение открыто в claude.ai.",
+  capability_disabled: "Живые данные недоступны в этом окне. Откройте приложение в claude.ai."
+};
+const DENY = ["needs_reauth","server_not_connected","blocked_by_policy","approval_required","not_in_manifest","selection_required","not_granted"];
+function errText(e){
+  if (!e) return "";
+  if (e.code === "tool_error") return "Paloma: " + (e.message || "ошибка запроса");
+  return ERR_TEXT[e.code] || ("Не удалось получить данные Paloma (" + e.code + ").");
+}
+const PKEY = "actual_paloma_v2";
+let persistT = null;
+function persistPaloma(){
+  clearTimeout(persistT);
+  persistT = setTimeout(()=>{ try { const d = {}; for (const k in S.paloma) if (S.paloma[k]) d[k] = S.paloma[k]; localStorage.setItem(PKEY, JSON.stringify({t: Date.now(), d})); } catch(e){} }, 1500);
+}
+function restorePaloma(){
+  try { const j = JSON.parse(localStorage.getItem(PKEY) || "null"); if (j && j.d && Date.now() - j.t < 3*24*3600e3){ for (const k in j.d) if (S.paloma[k] === undefined || S.paloma[k] === null) S.paloma[k] = j.d[k]; S.restoredAt = j.t; } } catch(e){}
+}
+function watch(key, tool, input, opt){
+  if (watches[key]) { watches[key](); delete watches[key]; }
+  if (!S.mcp) return;
+  try {
+    watches[key] = S.mcp.watchTool(SRV, tool, input, ev => {
+      if (ev.type === "data") {
+        S.paloma[key] = ev.result.payload; S.errs[key] = null; persistPaloma();
+        const st = ev.result.cache?.storedAt || Date.now();
+        if (!S.fresh || st > S.fresh) S.fresh = st;
+      } else {
+        S.errs[key] = {err: ev.error, tool, input};
+        if (DENY.includes(ev.error.code)) S.paloma[key] = undefined;
+      }
+      scheduleRender();
+    }, opt && opt.past ? {cache: {staleTime: 12*3600e3, gcTime: 7*24*3600e3}} : {cache: {staleTime: 5*60e3, gcTime: 24*3600e3}, refetchInterval: 10*60e3});
+  } catch(e) { S.errs[key] = {err: {code:"bad_request", message: String(e)}}; }
+}
+async function retryApproval(key){
+  const e = S.errs[key]; if (!e) return;
+  try { const r = await S.mcp.callTool(SRV, e.tool, e.input); S.paloma[key] = r.payload; S.errs[key] = null; render(); }
+  catch(err){ S.errs[key] = {...e, err}; render(); }
+}
+function errBox(keys){
+  for (const k of keys){
+    const e = S.errs[k]; if (!e) continue;
+    if (e.err.code === "approval_required") return `<div class="err">Нужно разрешение на чтение Paloma. <button class="btn sm" data-act="approve" data-key="${k}">Разрешить</button></div>`;
+    return `<div class="err">${esc(errText(e.err))}</div>`;
+  }
+  return "";
+}
+const sumRows = p => p?.totals || null;
+/* Выручка = как в Paloma: по складу (продажи минус возвраты). Сегодняшний день попадает в склад только после закрытия смены,
+   поэтому до этого сегодня берётся по чекам (без возвратов) и помечается. */
+const isErr = k => !!S.errs[k];
+function wOrZero(k){ const w = sumRows(S.paloma[k]); if (w) return w; if (isErr(k)) return {salesum:0, quantity:0, profit:0, costsum:0, __err:true}; return null; }
+function todayGap(){ const w = sumRows(S.paloma.d0); if (w && num(w.salesum) > 0) return null; if (!w && !isErr("d0")) return undefined; const r = sumRows(S.paloma.tR); if (r) return r; return isErr("tR") ? null : undefined; }
+function netOf(k, inclToday){ const w = wOrZero(k); if (!w) return null; if (!inclToday) return w; const g = todayGap(); if (g === undefined) return null; if (!g) return w;
+  return {salesum: num(w.salesum)+num(g.salesum), quantity: num(w.quantity)+num(g.quantity), profit: w.__err ? null : w.profit, costsum: w.__err ? null : w.costsum, partial: true, todayGross: num(g.salesum)}; }
+function dayNet(i){ const w = sumRows(S.paloma["d"+i]); if (i === 0){ const g = todayGap(); if (g) return {salesum: num(g.salesum), quantity: num(g.quantity), partial: true}; } return w || (isErr("d"+i) ? {salesum:0, quantity:0} : null); }
+function setupWatches(){
+  const r = periodRange(S.period);
+  watch("rev", "report_sales", {date_from: r.from, date_to: r.to, group_by: "warehouse"});
+  watch("revPrev", "report_sales", {date_from: r.pf, date_to: r.pt, group_by: "warehouse"});
+  watch("gp", "report_sales", {date_from: r.from, date_to: r.to, group_by: "warehouse", source: "warehouse"});
+  watch("gpPrev", "report_sales", {date_from: r.pf, date_to: r.pt, group_by: "warehouse", source: "warehouse"});
+  watch("top", "report_sales", {date_from: r.from, date_to: r.to, top: 15});
+  watch("items", "report_sales", {date_from: r.from, date_to: r.to, top: 200, source: "warehouse"});
+}
+function setupFixedWatches(){
+  const t = today();
+  const m = monthRange(monthKey(t));
+  watch("mRev", "report_sales", {date_from: m.from, date_to: m.to, group_by: "warehouse"});
+  watch("mGp", "report_sales", {date_from: m.from, date_to: m.to, group_by: "warehouse", source: "warehouse"});
+  watch("cash", "report_cash_balance", {date_from: iso(addDays(t,-91)), date_to: iso(t)});
+  for (let i = 13; i >= 0; i--){
+    const d = iso(addDays(t,-i));
+    watch("d"+i, "report_sales", {date_from: d, date_to: d, group_by: "warehouse", source: "warehouse"}, i > 0 ? {past: true} : undefined);
+  }
+  watch("tR", "report_sales", {date_from: iso(t), date_to: iso(t), group_by: "warehouse"});
+  watch("sold30", "report_sales", {date_from: iso(addDays(t,-29)), date_to: iso(t), top: 200, source: "warehouse"});
+}
+function setupFinanceWatches(){
+  const m = monthRange(S.financeMonth);
+  watch("fRev", "report_sales", {date_from: m.from, date_to: m.to, group_by: "warehouse"});
+  watch("fGp", "report_sales", {date_from: m.from, date_to: m.to, group_by: "warehouse", source: "warehouse"});
+}
+async function loadStock(force){
+  if (!S.mcp || S.stockLoading) return;
+  S.stockLoading = true; S.stockErr = null; render();
+  try {
+    let rows = [], offset = 0;
+    for (let page = 0; page < 20; page++){
+      const res = await S.mcp.callTool(SRV, "report_stock_remainder", {warehouse_id: 1, limit: 500, offset},
+        {cache: force ? {staleTime: 30*60e3, gcTime: 24*3600e3, refresh: true} : {staleTime: 30*60e3, gcTime: 24*3600e3}});
+      const p = res.payload || {};
+      rows = rows.concat(p.rows || []);
+      if (!p.has_more) break;
+      offset += 500;
+    }
+    S.stock = rows;
+  } catch(e){ S.stockErr = e; }
+  S.stockLoading = false; render();
+}
+
+async function loadCatalog(force){
+  if (!S.mcp || S.catLoading) return;
+  S.catLoading = true; S.catErr = null; S.catDone = 0; render();
+  const map = new Map(); const LIM = 100;
+  const opt = {cache: force ? {staleTime: 12*3600e3, gcTime: 24*3600e3, refresh: true} : {staleTime: 12*3600e3, gcTime: 24*3600e3}};
+  const page = async off => { const r = await S.mcp.callTool(SRV, "list_items", {limit: LIM, offset: off, sort_by: "id", order: "asc"}, opt); return r.payload || {}; };
+  try {
+    let off = 0, more = true;
+    while (more && off < 30000){
+      const offs = [0,1,2,3].map(i => off + i*LIM);
+      const res = await Promise.all(offs.map(page));
+      for (const p of res){ (p.items || []).forEach(it => map.set(Number(it.id), {price: num(it.price), articul: it.articul || "", group: it.group || ""})); }
+      more = res.every(p => p.has_more) ; off += 4*LIM;
+      S.catDone = map.size; scheduleRender();
+    }
+    S.catalog = map;
+  } catch(e){ S.catErr = e; if (map.size) S.catalog = map; }
+  S.catLoading = false; render();
+}
+
+/* ========== разбор выручки: по прайсу → скидки → возвраты → итог ========== */
+S.bd = {}; S.bdLoading = false;
+function daysBetween(f, to){ const out = []; let d = new Date(f+"T12:00:00"); const e = new Date(to+"T12:00:00"); while (d <= e){ out.push(iso(d)); d = addDays(d,1); } return out; }
+async function loadBreakdown(){
+  if (!S.mcp || S.bdLoading) return;
+  const r = periodRange(S.period); const key = r.from+"_"+r.to;
+  if (S.bd[key] && S.bd[key].done && Date.now() - S.bd[key].at < 5*60e3) return;
+  if (!S.catalog && !S.catLoading) loadCatalog();
+  S.bdLoading = true; const td = iso(today());
+  const days = daysBetween(r.from, r.to); const res = {};
+  const one = async ds => {
+    const past = ds < td; const cache = {cache: past ? {staleTime: 24*3600e3, gcTime: 7*24*3600e3} : {staleTime: 3*60e3, gcTime: 24*3600e3}};
+    let items = null, w = null;
+    try { items = (await S.mcp.callTool(SRV, "report_sales", {date_from: ds, date_to: ds, top: 200}, cache)).payload; } catch(e){}
+    try { w = (await S.mcp.callTool(SRV, "report_sales", {date_from: ds, date_to: ds, group_by: "warehouse", source: "warehouse"}, cache)).payload?.totals; } catch(e){}
+    res[ds] = {items, w};
+  };
+  try { for (let i = 0; i < days.length; i += 4) await Promise.all(days.slice(i,i+4).map(one)); } catch(e){}
+  S.bd[key] = {days: res, done: true, at: Date.now()}; S.bdLoading = false; render();
+}
+function breakdown(){
+  const r = periodRange(S.period); const b = S.bd[r.from+"_"+r.to]; if (!b) return null;
+  let list = 0, sold = 0, net = 0, ret = 0, openToday = false, noPrice = 0;
+  for (const [ds, d] of Object.entries(b.days)){
+    const tot = num(d.items?.totals?.salesum); sold += tot;
+    for (const row of (d.items?.rows || [])){ const c = S.catalog?.get(Number(row.group_id)); const lp = c && c.price > 0 ? c.price * num(row.quantity) : num(row.salesum); if (!c) noPrice++; list += Math.max(lp, num(row.salesum)); }
+    const shown = (d.items?.rows || []).reduce((a,x)=>a+num(x.salesum),0); list += Math.max(0, tot - shown);
+    const wn = d.w && num(d.w.salesum) > 0 ? num(d.w.salesum) : null;
+    if (wn == null && tot > 0){ openToday = true; net += tot; } else { net += wn || 0; ret += Math.max(0, tot - (wn || 0)); }
+  }
+  return {list, disc: Math.max(0, list - sold), sold, ret, net, openToday, priced: !!S.catalog, noPrice};
+}
+function breakdownCard(){
+  const r = periodRange(S.period); const b = breakdown();
+  if (!b){ loadBreakdown(); return `<div class="card mt"><h3>Выручка по шагам · ${r.label}</h3><div class="note">Считаю…</div></div>`; }
+  const row = (l, v, cls, note) => `<div class="bdrow ${cls||""}"><span>${l}${note?`<small>${note}</small>`:""}</span><b>${v}</b></div>`;
+  return `<div class="card mt"><h3>Выручка по шагам · ${r.label}</h3>
+    ${row("Общая сумма по прайсу", b.priced ? money(b.list) : "…", "", b.priced ? "если бы продали без скидок" : "загружаю цены каталога")}
+    ${row("− Скидки клиентам", b.priced ? "−"+money(b.disc) : "…", "neg", b.priced && b.list ? Math.round(b.disc/b.list*100)+"% от прайса" : "")}
+    ${row("= Продано по чекам", money(b.sold), "sub")}
+    ${row("− Возвраты", b.openToday && !b.ret ? "после закрытия смены" : "−"+money(b.ret), "neg", b.openToday ? "сегодняшние возвраты видны после закрытия смены" : "")}
+    ${row("= Итог (как в Paloma)", money(b.net), "total")}
+    <div class="note">Скидка = цена в каталоге Paloma × количество минус сумма в чеке. Если цену товара меняли после продажи, скидка по нему может быть неточной.</div></div>`;
+}
+
+/* ========== база (сотрудники, расходы и т.д.) ========== */
+const COLS = ["employees","shifts","expenses","channels","tasks","empSales","attendance","schedule","plans","returnsLog"];
+function startDb(){
+  if (!S.db){ S.dbState = "off"; render(); return; }
+  let got = 0;
+  const timer = setTimeout(()=>{ if (S.dbState === "loading"){ S.dbState = "slow"; render(); } }, 10000);
+  COLS.forEach(c => {
+    S.db.collection(c).onSnapshot(snap => {
+      S.data[c] = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      if (!snap.metadata.fromCache){ got++; if (got >= COLS.length){ clearTimeout(timer); S.dbState = "ok"; } }
+      if (S.dbState === "loading" && got > 0) S.dbState = "ok";
+      scheduleRender();
+    }, e => { clearTimeout(timer); S.dbState = "err:" + e.code; render(); });
+  });
+  S.db.doc("settings/goals").onSnapshot(s => { S.data.goals = s.exists ? s.data() : {}; scheduleRender(); }, ()=>{});
+}
+async function dbSave(col, id, obj){
+  if (!S.db) { toast("Сохранение недоступно в этом окне"); return false; }
+  try {
+    if (id) await S.db.collection(col).doc(id).set(obj); else await S.db.collection(col).add(obj);
+    toast("Сохранено"); return true;
+  } catch(e){
+    toast(e.code === "quota_exceeded" ? "Хранилище заполнено — удалите старые записи" : e.code === "invalid_argument" ? "Нет прав на изменение" : "Не удалось сохранить");
+    return false;
+  }
+}
+async function dbDel(col, id){
+  if (!S.db) return;
+  try { await S.db.collection(col).doc(id).delete(); toast("Удалено"); } catch(e){ toast("Не удалось удалить"); }
+}
+function dbNote(){
+  if (S.dbState === "off") return '<div class="err">Записи (сотрудники, расходы, каналы) сохраняются, когда приложение открыто в claude.ai под вашим аккаунтом.</div>';
+  if (S.dbState === "slow") return '<div class="note">Не удаётся связаться с хранилищем — данные могут быть неполными.</div>';
+  if (S.dbState.startsWith("err:")) return '<div class="err">Хранилище недоступно, обновите страницу позже.</div>';
+  return "";
+}
+
+/* ========== формы ========== */
+const FORMS = {
+  employees: {title: "Сотрудник", fields: [
+    ["name","Имя","text",true],["role","Должность","select",false,["Стилист-Консультант","Старший","Продавец","Стажёр","Продавец-консультант","Старший продавец","Администратор","SMM / контент","Менеджер онлайн-продаж","Кладовщик","Другое"]],
+    ["phone","Телефон","tel"],["start","Дата начала работы","date"],
+    ["perHour","Оплата в час, ₸","number"],["salary","Оклад в месяц, ₸","number"],["perShift","Ставка за смену, ₸","number"],["percent","% с личных продаж","number"],
+    ["active","Статус","select",false,["Работает","Не работает"]]]},
+  shifts: {title: "Смена", fields: [
+    ["date","Дата","date",true],["employeeId","Сотрудник","emp",true],["sales","Личные продажи за смену, ₸","number"],["note","Комментарий","text"]]},
+  expenses: {title: "Расход", fields: [
+    ["date","Дата","date",true],["category","Статья","select",true,["Аренда","Зарплаты","Реклама","Налоги","Коммунальные и связь","Упаковка и доставка","Фото и контент","Банк и эквайринг","Прочее"]],
+    ["amount","Сумма, ₸","number",true],["note","Комментарий","text"]]},
+  channels: {title: "Данные канала", fields: [
+    ["date","Неделя (любая дата недели)","date",true],["channel","Канал","select",true,["Бутик","Instagram","WhatsApp","TikTok","Kaspi"]],
+    ["leads","Обращений / заявок","number"],["orders","Продаж (заказов)","number"],["revenue","Выручка, ₸","number"],["ads","Расход на рекламу, ₸","number"],["note","Комментарий","text"]]},
+  tasks: {title: "Задача", fields: [
+    ["title","Что сделать","text",true],["assignee","Ответственный","emp"],["due","Срок","date"],["done","Готово","select",false,["Нет","Да"]]]},
+  returnsLog: {title: "Возврат", fields: [
+    ["date","Дата","date",true],["type","Тип","select",true,["Возврат от клиента","Ошибка пробития","Обмен на другой товар"]],
+    ["amount","Сумма, ₸","number",true],["processedBy","Кто провёл возврат на кассе","emp",true],["soldBy","Кто продал вещь (для возврата клиента)","emp"],
+    ["item","Товар","text"],["note","Причина / комментарий","text"]]},
+  goals: {title: "Цели на месяц", fields: [["monthRevenue","План выручки в месяц, ₸","number"],["monthProfit","План валовой прибыли, ₸","number"]]}
+};
+const NUMF = ["perHour","salary","perShift","percent","sales","amount","leads","orders","revenue","ads","monthRevenue","monthProfit"];
+function openForm(col, id){
+  const f = col === "goals" ? {...FORMS.goals, title: "Цель на " + MONTHS[today().getMonth()]} : FORMS[col];
+  const cur = col === "goals" ? curGoals() : (id ? (S.data[col].find(x => x.id === id) || {}) : {});
+  const defaults = {date: iso(today()), active: "Работает", done: "Нет"};
+  const emps = S.data.employees.filter(e => e.active !== "Не работает" || e.id === cur.employeeId || e.id === cur.assignee);
+  const html = f.fields.map(([k,l,t,req,opts]) => {
+    const v = cur[k] ?? defaults[k] ?? "";
+    let inp;
+    if (t === "select") inp = `<select class="in" name="${k}">${opts.map(o=>`<option ${o==v?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+    else if (t === "emp") inp = `<select class="in" name="${k}" ${req?"required":""}><option value="">—</option>${emps.map(e=>`<option value="${e.id}" ${e.id==v?"selected":""}>${esc(e.name)}</option>`).join("")}</select>`;
+    else inp = `<input class="in" name="${k}" type="${t==="number"?"text":t}" ${t==="number"?'inputmode="decimal"':""} value="${esc(v)}" ${req?"required":""}>`;
+    return `<div class="field"><label>${esc(l)}${req?" *":""}</label>${inp}</div>`;
+  }).join("");
+  $("#modal").innerHTML = `<h2>${esc(f.title)}</h2><form id="frm">${html}
+    <div class="acts">${id?`<button type="button" class="btn ghost" data-act="del" data-col="${col}" data-id="${id}" style="margin-right:auto;border-color:var(--red);color:var(--red)">Удалить</button>`:""}
+    <button type="button" class="btn ghost" data-act="close">Отмена</button><button class="btn" type="submit">Сохранить</button></div></form>`;
+  $("#modalBg").classList.add("on");
+  if (col === "shifts" && !emps.length) $("#frm").insertAdjacentHTML("afterbegin", '<div class="err" style="margin:0 0 12px">Сначала добавьте сотрудников.</div>');
+  $("#frm").onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target); const obj = {};
+    for (const [k,v] of fd.entries()) obj[k] = NUMF.includes(k) ? num(v) : String(v).trim();
+    obj.updatedAt = Date.now();
+    let ok;
+    if (col === "goals") { try { const mk = monthKey(today()); const months = {...(S.data.goals?.months || {}), [mk]: obj}; await S.db.doc("settings/goals").set({months}); toast("Сохранено"); ok = true; } catch(e){ toast("Не удалось сохранить"); } }
+    else ok = await dbSave(col, id, obj);
+    if (ok) closeModal();
+  };
+}
+function closeModal(){ $("#modalBg").classList.remove("on"); $("#modal").style.maxWidth = ""; }
+let confirmDel = null;
+
+/* ========== расчёты ========== */
+function curGoals(k){ k = k || monthKey(today()); const g = S.data.goals || {}; return (g.months && g.months[k]) || {}; }
+const inMonth = (d, k) => (d || "").slice(0,7) === k;
+function empName(id){ return S.data.employees.find(e => e.id === id)?.name || "—"; }
+const lastDay = k => monthDays(k).slice(-1)[0];
+function empRange(empId, from, to){
+  const daily = S.data.empSales.filter(x => x.day && x.employeeId === empId && x.day >= from && x.day <= to);
+  const dSum = daily.length ? {sales: daily.reduce((a,x)=>a+num(x.sales),0), returns: daily.reduce((a,x)=>a+num(x.returns),0), shifts: daily.reduce((a,x)=>a+num(x.shifts),0), last: daily.map(x=>x.day).sort().pop(), src: "daily"} : null;
+  const k = from.slice(0,7);
+  const m = from === k + "-01" ? S.data.empSales.find(x => !x.day && x.employeeId === empId && x.month === k) : null;
+  const mTo = m ? (m.to || lastDay(k)) : null;
+  if (m && to >= mTo && (!dSum || mTo > dSum.last)) return {sales: num(m.sales), returns: num(m.returns), shifts: num(m.shifts), last: mTo, src: "month"};
+  return dSum;
+}
+function retAdj(empId, from, to){
+  let a = 0;
+  for (const x of S.data.returnsLog){
+    if (x.date < from || x.date > to || x.type !== "Возврат от клиента" || !x.soldBy || x.soldBy === x.processedBy) continue;
+    if (x.processedBy === empId) a += num(x.amount);
+    if (x.soldBy === empId) a -= num(x.amount);
+  }
+  return a;
+}
+function factHoursRange(empId, from, to){
+  const td = iso(today()); let h = 0;
+  for (let d = new Date(from+"T12:00:00"); iso(d) <= to && iso(d) <= td; d = addDays(d, 1)){
+    const ds = iso(d); if (!schedFor(ds.slice(0,7)) && !attOf(empId, ds)) continue;
+    const f = dayFact(empId, ds); if (f.worked) h += f.hours;
+  }
+  return h;
+}
+function payrollRange(from, to){
+  return S.data.employees.map(e => {
+    const r = empRange(e.id, from, to);
+    const hours = factHoursRange(e.id, from, to), hourPay = hours * num(e.perHour);
+    let salaryPart = 0;
+    const tdy = iso(today()); for (let d = new Date(from+"T12:00:00"); iso(d) <= to && iso(d) <= tdy; d = addDays(d, 1)){ const ds = iso(d); salaryPart += num(e.salary) / monthDays(ds.slice(0,7)).length; }
+    const adj = retAdj(e.id, from, to);
+    const sales = (r ? r.sales : 0) + adj, returns = (r ? r.returns : 0) - adj, shifts = r ? r.shifts : 0;
+    const pl = planOf(from.slice(0,7));
+    let ptd = 0; if (pl && (r || adj)) { const mp = num(pl.monthly?.[e.id]?.total); if (mp && from.slice(0,7) === to.slice(0,7) && from.endsWith("-01") && to === lastDay(from.slice(0,7))) ptd = mp; else for (const [ds, d] of Object.entries(pl.days||{})) if (ds >= from && ds <= to) ptd += num(d.emp?.[e.id]); }
+    let pct = num(e.percent), exec = null;
+    if (ptd){ exec = sales / ptd * 100; pct = tierRate(pl, exec); }
+    const pctPay = Math.max(0, sales) * pct / 100;
+    return {e, shifts, sales, returns, adj, pct, exec, planTo: ptd, repTo: r?.last, retDeduct: 0, pctPay, hours, hourPay, salaryPart, pay: salaryPart + num(e.perShift)*shifts + hourPay + pctPay, fromPaloma: !!r || !!adj};
+  }).filter(x => x.e.active !== "Не работает" || x.shifts || x.hours || x.sales || x.adj).sort((a,b)=>b.sales-a.sales);
+}
+function payroll(k){ return payrollRange(k + "-01", lastDay(k)); }
+function expensesFor(k){ return S.data.expenses.filter(x => inMonth(x.date, k)); }
+
+/* ========== отрисовка ========== */
+let rq = 0;
+function scheduleRender(){ if (rq) return; rq = requestAnimationFrame(()=>{ rq = 0; render(); }); }
+function navHTML(){
+  return VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("");
+}
+function render(){
+  $("#nav").innerHTML = navHTML();
+  $("#tabbar").innerHTML = VIEWS.map(([k,l]) => `<a href="#${k}" class="${S.view===k?"on":""}">${ICONS[k]}<span>${l}</span></a>`).join("");
+  const fr = S.fresh ? "обновлено " + new Date(S.fresh).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}) : "";
+  $("#mfresh").textContent = fr;
+  const active = document.activeElement; const keepId = active && active.id; const sel = keepId && active.selectionStart;
+  $("#view").innerHTML = ({plan: vPlan, home: vHome, sales: vSales, stock: vStock, team: vTeam, money: vMoney, channels: vChannels, ai: vAI}[S.view] || vHome)();
+  if (keepId && document.getElementById(keepId)){ const el = document.getElementById(keepId); el.focus(); try{ el.setSelectionRange(sel, sel); }catch(e){} }
+}
+function header(title, extra){
+  const hr = new Date().getHours();
+  const hi = hr < 12 ? "Доброе утро" : hr < 18 ? "Добрый день" : "Добрый вечер";
+  return `<div class="top"><div><div class="hello">${hi}, Жанерке</div><h1>${title}</h1></div><div class="toolbar">${extra||""}</div></div>`;
+}
+function periodSeg(){ return `<div class="seg">${PERIODS.map(([k,l])=>`<button data-act="period" data-p="${k}" class="${S.period===k?"on":""}">${l}</button>`).join("")}</div>`; }
+const sk = (w) => `<span class="skel">${"0".repeat(w||8)}</span>`;
+function noMcp(){ return S.mcp ? "" : `<div class="err">Живые данные Paloma появятся, когда приложение открыто в claude.ai под аккаунтом с подключённой Paloma.</div>`; }
+
+function kpi(label, val, sub, cls){ return `<div class="card kpi ${cls||""}"><div class="lbl">${label}</div><div class="val">${val}</div><div class="sub">${sub||""}</div></div>`; }
+
+function trendSVG(){
+  const pts = []; const t = today();
+  for (let i = 13; i >= 0; i--) pts.push({d: addDays(t,-i), v: dayNet(i)?.salesum});
+  const max = Math.max(1, ...pts.map(p=>p.v||0));
+  const W = 700, H = 210, bw = W/14;
+  const bars = pts.map((p,i) => {
+    const h = p.v == null ? 0 : Math.max(2, (p.v/max)*(H-50));
+    const x = i*bw + 6, y = H-28-h;
+    const wk = [0,6].includes(p.d.getDay());
+    const last = i === 13;
+    return `<g><title>${p.d.getDate()} ${MONTHS_G[p.d.getMonth()]}: ${p.v==null?"загрузка…":money(p.v)}</title>
+      <rect x="${x}" y="${p.v==null?H-30:y}" width="${bw-12}" height="${p.v==null?2:h}" rx="4" fill="${last?"#141414":wk?"#B79A6B":"#D9CBB2"}"/>
+      ${p.v!=null && (last || p.v===max)?`<text x="${x+(bw-12)/2}" y="${y-6}" text-anchor="middle" font-size="11" fill="#3A3733" font-family="Manrope">${Math.round(p.v/1000)}к</text>`:""}
+      <text x="${x+(bw-12)/2}" y="${H-10}" text-anchor="middle" font-size="11" fill="${wk?"#8A6F45":"#857E74"}" font-family="Manrope">${p.d.getDate()}</text></g>`;
+  }).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Выручка за 14 дней">${bars}</svg>`;
+}
+
+function vHome(){
+  const r = periodRange(S.period);
+  const inT = r.to === iso(today()); const rev = netOf("gp", inT), revP = wOrZero("gpPrev"), gp0 = wOrZero("gp"); const gp = rev && rev.partial ? (rev.profit != null && num(gp0?.salesum) > 0 ? gp0 : null) : gp0;
+  const margin = gp ? pct(gp.profit, gp.salesum) : null;
+  const marginP = sumRows(S.paloma.gpPrev) ? pct(sumRows(S.paloma.gpPrev).profit, sumRows(S.paloma.gpPrev).salesum) : null;
+  const mNet = netOf("mGp", true); const mRev = mNet?.salesum, mGp = sumRows(S.paloma.mGp)?.profit;
+  const pln = planOf(monthKey(today())); const goal = num(curGoals().monthRevenue) || num(pln?.total); const todayPlan = pln?.days?.[iso(today())]; const todayFact = dayNet(0)?.salesum;
+  const t = today(); const dim = new Date(t.getFullYear(), t.getMonth()+1, 0).getDate();
+  const forecast = mRev != null ? mRev / t.getDate() * dim : null;
+  const cash = S.paloma.cash?.rows || null;
+  const cashSum = cash ? cash.reduce((a,x)=>a+num(x.closing_balance),0) : null;
+  const top = (S.paloma.top?.rows || []).slice(0,5);
+  const topMax = Math.max(1,...top.map(x=>x.salesum));
+  const mk = monthKey(t);
+  const exp = expensesFor(mk).reduce((a,x)=>a+num(x.amount),0);
+  const pr = payroll(mk).reduce((a,x)=>a+x.pay,0);
+  const hasPayrollExp = expensesFor(mk).some(x=>x.category==="Зарплаты");
+  const net = mGp != null ? mGp - exp - (hasPayrollExp ? 0 : pr) : null;
+  const openTasks = S.data.tasks.filter(x => x.done !== "Да").sort((a,b)=>(a.due||"9").localeCompare(b.due||"9")).slice(0,5);
+  const lowCount = lowStock().length;
+  return header("Обзор", periodSeg()) + noMcp() + errBox(["rev","mRev","cash"]) + `
+  <div class="grid k4">
+    ${kpi("Выручка " + r.label, rev ? shortMoney(rev.salesum) : sk(), rev ? `${deltaHTML(rev.salesum, revP?.salesum)} <span class="muted">${r.cmp}</span>${rev.partial ? `<br><span class="muted">сегодня без учёта возвратов, точная сумма после закрытия смены</span>` : ""}` : "")}
+    ${kpi("Валовая прибыль", gp ? shortMoney(gp.profit) : (rev && rev.partial ? "—" : sk()), gp ? `${deltaHTML(gp.profit, sumRows(S.paloma.gpPrev)?.profit)} · маржа ${margin==null?"—":margin.toFixed(1)+"%"}${rev && rev.partial ? " · без сегодня" : ""}` : (rev && rev.partial ? "посчитается после закрытия смены" : ""))}
+    ${kpi("Продано вещей", rev ? rev.quantity.toLocaleString("ru-RU") + " шт" : sk(5), rev ? `${deltaHTML(rev.quantity, revP?.quantity)} · ср. цена ${shortMoney(rev.quantity ? rev.salesum/rev.quantity : null)}` : "")}
+    ${kpi("Деньги: касса + банк", cash ? shortMoney(cashSum) : sk(), cash ? cash.map(x=>`${esc(x.account)}: ${shortMoney(x.closing_balance)}`).join(" · ") : "")}
+  </div>
+  ${breakdownCard()}
+  <div class="grid k2 mt">
+    <div class="card chart"><h3>Выручка по дням · 14 дней <span class="fresh">${S.fresh?"обновлено "+new Date(S.fresh).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}):""}</span></h3>${trendSVG()}
+      <div class="note">Тёмный столбик — сегодня, золотые — выходные. Наведите или нажмите на столбик, чтобы увидеть сумму.</div></div>
+    <div class="card dark kpi"><div class="lbl">План на ${MONTHS[t.getMonth()]}</div>
+      <div class="val">${mRev!=null ? shortMoney(mRev) : sk()}</div>
+      <div class="sub">${goal ? `из ${shortMoney(goal)} · ${Math.round(pct(mRev||0, goal))}%` : `<button class="btn sand sm" data-act="form" data-col="goals">Поставить цель</button>`}</div>
+      ${goal ? `<div class="bar"><i style="width:${Math.min(100, pct(mRev||0,goal))}%"></i></div>` : ""}
+      ${todayPlan?`<div class="sub" style="margin-top:14px">Сегодня: <b style="color:#fff">${todayFact!=null?shortMoney(todayFact):"…"}</b> из ${shortMoney(todayPlan.total)} ${todayFact!=null?`<span class="tier ${tierCls(pln, todayFact/todayPlan.total*100)}">${Math.round(todayFact/todayPlan.total*100)}%</span>`:""} <a class="icon-btn" style="color:#A39C91" href="#plan">план →</a></div>`:""}
+      <div class="sub" style="margin-top:14px;line-height:1.7">
+        Прогноз к концу месяца: <b style="color:#fff">${forecast!=null?shortMoney(forecast):"—"}</b><br>
+        Валовая прибыль месяца: <b style="color:#fff">${mGp!=null?shortMoney(mGp):"—"}</b><br>
+        Чистая прибыль (после расходов): <b style="color:${net!=null&&net<0?"#E39B85":"#fff"}">${net!=null?shortMoney(net):"—"}</b>
+        ${goal?`<br><button class="icon-btn" style="color:#A39C91;padding-left:0" data-act="form" data-col="goals">Изменить цель</button>`:""}
+      </div></div>
+  </div>
+  <div class="grid k3 mt">
+    <div class="card"><h3>Хиты ${r.label} <a class="icon-btn" href="#sales">все →</a></h3><div class="list">
+      ${top.length ? top.map((x,i)=>`<div class="row"><span class="rank">${i+1}</span><div class="nm">${esc(x.group_name)}<div class="mini"><i style="width:${x.salesum/topMax*100}%"></i></div></div><div class="rt">${shortMoney(x.salesum)}<div class="muted small">${x.quantity} шт</div></div></div>`).join("") : (S.paloma.top ? '<div class="empty">Продаж за период нет</div>' : `<div class="empty">${S.mcp?"Загрузка…":"—"}</div>`)}
+    </div></div>
+    <div class="card"><h3>Задачи <button class="icon-btn" data-act="form" data-col="tasks">+ добавить</button></h3><div class="list">
+      ${openTasks.length ? openTasks.map(taskRow).join("") : '<div class="empty">Открытых задач нет</div>'}
+    </div></div>
+    <div class="card"><h3>Внимание</h3><div class="list">
+      ${attention(lowCount).join("") || '<div class="empty">Всё спокойно</div>'}
+    </div></div>
+  </div>`;
+}
+function attention(lowCount){
+  const out = [];
+  const crew = todayCrew();
+  if (crew.length) out.push(`<div class="row"><span class="pill green">${crew.length}</span><div class="nm wrap">сегодня в магазине: ${crew.map(x=>`${esc(x.e.name)} ${x.f.p?shortT(x.f.p.start)+"–"+shortT(x.f.p.end):""}${["absent","sick","dayoff"].includes(x.f.st)?" (нет)":""}`).join(", ")}</div><a class="icon-btn" href="#team">→</a></div>`);
+  const items = S.paloma.items?.rows || [];
+  const zeroCost = items.filter(x => !x.costsum || x.costsum <= 0).length;
+  const loss = items.filter(x => x.costsum > 0 && x.profit < 0).length;
+  if (loss) out.push(`<div class="row"><span class="pill red">${loss}</span><div class="nm wrap">проданы в минус (цена ниже себестоимости)</div><a class="icon-btn" href="#sales">→</a></div>`);
+  if (zeroCost) out.push(`<div class="row"><span class="pill">${zeroCost}</span><div class="nm wrap">продажи без себестоимости — проверьте приёмку</div><a class="icon-btn" href="#sales">→</a></div>`);
+  if (lowCount) out.push(`<div class="row"><span class="pill">${lowCount}</span><div class="nm wrap">ходовых позиций осталось по 1 шт</div><a class="icon-btn" href="#stock" data-act="lowfilter">→</a></div>`);
+  const overdue = S.data.tasks.filter(x => x.done !== "Да" && x.due && x.due < iso(today())).length;
+  if (overdue) out.push(`<div class="row"><span class="pill red">${overdue}</span><div class="nm wrap">просроченных задач</div></div>`);
+  const mk = monthKey(today());
+  if (!S.data.expenses.some(x => inMonth(x.date, mk)) && S.dbState === "ok") out.push(`<div class="row"><span class="pill">!</span><div class="nm wrap">расходы за месяц не внесены — чистая прибыль неточна</div><a class="icon-btn" href="#money">→</a></div>`);
+  return out;
+}
+function taskRow(x){
+  return `<div class="row ${x.done==="Да"?"done":""}"><input type="checkbox" class="chk" data-act="task" data-id="${x.id}" ${x.done==="Да"?"checked":""}>
+    <div class="nm" data-act="form" data-col="tasks" data-id="${x.id}" style="cursor:pointer">${esc(x.title)}<div class="muted small">${x.assignee?esc(empName(x.assignee)):""}${x.due?` · до ${fmtDate(x.due)}`:""}</div></div>
+    ${x.due && x.due < iso(today()) && x.done!=="Да" ? '<span class="pill red">просрочено</span>' : ""}</div>`;
+}
+
+function vSales(){
+  const r = periodRange(S.period);
+  const rows = S.paloma.items?.rows || [];
+  const sort = S.salesSort || "salesum";
+  const sorted = [...rows].sort((a,b)=> sort==="margin" ? (pct(b.profit,b.salesum)||0)-(pct(a.profit,a.salesum)||0) : (b[sort]||0)-(a[sort]||0));
+  const gp = sumRows(S.paloma.gp);
+  const cats = {};
+  rows.forEach(x => { const c = (x.group_name||"").trim().replace(/^[|\s]+/,"").split(/\s+/)[0].toLowerCase(); const k = c ? c[0].toUpperCase()+c.slice(1) : "Другое"; cats[k] = cats[k] || {s:0,q:0,p:0}; cats[k].s += x.salesum; cats[k].q += x.quantity; cats[k].p += x.profit; });
+  const catArr = Object.entries(cats).sort((a,b)=>b[1].s-a[1].s).slice(0,8);
+  const cMax = Math.max(1,...catArr.map(c=>c[1].s));
+  const issues = rows.filter(x => !x.costsum || x.costsum <= 0 || x.profit < 0);
+  return header("Продажи", periodSeg()) + noMcp() + errBox(["items","gp"]) + `
+  <div class="grid k3">
+    ${kpi("Выручка по складу", gp ? shortMoney(gp.salesum) : sk(), gp ? `${gp.quantity} шт ${r.label}` : "")}
+    ${kpi("Себестоимость", gp ? shortMoney(gp.costsum) : sk(), "по закупочным ценам")}
+    ${kpi("Валовая прибыль", gp ? shortMoney(gp.profit) : sk(), gp ? `маржа ${pct(gp.profit,gp.salesum).toFixed(1)}%` : "")}
+  </div>
+  <div class="grid k2 mt">
+    <div class="card"><h3>Товары ${r.label}
+      <span class="seg">${[["salesum","Выручка"],["profit","Прибыль"],["quantity","Штуки"],["margin","Маржа"]].map(([k,l])=>`<button data-act="ssort" data-s="${k}" class="${sort===k?"on":""}">${l}</button>`).join("")}</span></h3>
+      <div class="tbl"><table><thead><tr><th>Товар</th><th class="n">Шт</th><th class="n">Выручка</th><th class="n">Прибыль</th><th class="n">Маржа</th></tr></thead><tbody>
+      ${sorted.slice(0,40).map(x=>{ const m = pct(x.profit,x.salesum); return `<tr><td>${esc(x.group_name)}</td><td class="n">${x.quantity}</td><td class="n">${money(x.salesum)}</td><td class="n ${x.profit<0?"down":""}">${money(x.profit)}</td><td class="n">${!x.costsum||x.costsum<=0?'<span class="pill">нет с/с</span>':(m==null?"—":m.toFixed(0)+"%")}</td></tr>`; }).join("") || `<tr><td colspan="5" class="empty">${S.paloma.items?"Продаж нет":"Загрузка…"}</td></tr>`}
+      </tbody></table></div>
+      <div class="note">Показаны первые 40 из ${rows.length}${rows.length>=200?" (Paloma отдаёт до 200 товаров за запрос)":""}. Источник — складской учёт Paloma: выручка, себестоимость и прибыль по каждой позиции.</div>
+    </div>
+    <div>
+      <div class="card"><h3>По категориям</h3><div class="list">
+        ${catArr.map(([k,v])=>`<div class="row"><div class="nm">${esc(k)}<div class="mini"><i style="width:${v.s/cMax*100}%"></i></div></div><div class="rt">${shortMoney(v.s)}<div class="muted small">${v.q} шт · ${pct(v.p,v.s)?.toFixed(0)}%</div></div></div>`).join("") || '<div class="empty">—</div>'}
+      </div><div class="note">Категория определяется по первому слову названия товара.</div></div>
+      <div class="card mt"><h3>Проверить <span class="pill ${issues.length?"red":"green"}">${issues.length}</span></h3><div class="list">
+        ${issues.slice(0,12).map(x=>`<div class="row"><div class="nm">${esc(x.group_name)}<div class="muted small">${!x.costsum||x.costsum<=0?"нет себестоимости":"продано ниже себестоимости"}</div></div><div class="rt ${x.profit<0?"down":""}">${money(x.profit)}</div></div>`).join("") || '<div class="empty">Ошибок в ценах не найдено</div>'}
+      </div></div>
+    </div>
+  </div>`;
+}
+
+function soldMap(){ const m = new Map(); (S.paloma.sold30?.rows || []).forEach(x => m.set(Number(x.group_id), x)); return m; }
+function lowStock(){
+  if (!S.stock) return [];
+  const sm = soldMap();
+  return S.stock.filter(x => num(x.quantity) <= 1 && sm.has(Number(x.item_id)));
+}
+function vStock(){
+  if (S.mcp && !S.stock && !S.stockLoading && !S.stockErr) setTimeout(()=>loadStock(), 0);
+  if (S.mcp && !S.catalog && !S.catLoading && !S.catErr) setTimeout(()=>loadCatalog(), 0);
+  const cat = S.catalog || new Map(); const ci = x => cat.get(Number(x.item_id));
+  const rows = S.stock || [];
+  const sm = soldMap();
+  const truncated = (S.paloma.sold30?.rows || []).length >= 200;
+  const units = rows.reduce((a,x)=>a+num(x.quantity),0);
+  const value = rows.reduce((a,x)=>a+num(x.costsum),0);
+  const low = lowStock();
+  const stale = rows.filter(x => !sm.has(Number(x.item_id)));
+  const q = S.stockQ.toLowerCase();
+  let list = S.stockFilter === "low" ? low : S.stockFilter === "stale" ? stale : rows;
+  if (q) list = list.filter(x => (x.item||"").toLowerCase().includes(q) || (ci(x)?.articul||"").includes(q));
+  const retail = rows.reduce((a,x)=>a+num(x.quantity)*(ci(x)?.price||0),0);
+  list = [...list].sort((a,b)=> S.stockFilter==="stale" ? num(b.costsum)-num(a.costsum) : (a.item||"").localeCompare(b.item||"","ru"));
+  const err = S.stockErr ? `<div class="err">${esc(errText(S.stockErr))}</div>` : "";
+  return header("Склад", `<button class="btn ghost sm" data-act="stockreload">${S.stockLoading||S.catLoading?"Загрузка…":"Обновить"}</button>`) + noMcp() + err + `
+  <div class="grid k4">
+    ${kpi("Позиций в наличии", S.stock ? rows.length.toLocaleString("ru-RU") : sk(4), "склад «Основной»")}
+    ${kpi("В ценах продажи", S.stock && S.catalog ? shortMoney(retail) : sk(), S.stock ? units.toLocaleString("ru-RU") + " шт на складе" : "")}
+    ${kpi("Товар по себестоимости", S.stock ? shortMoney(value) : sk(), "деньги, вложенные в остатки")}
+    ${kpi("Последняя штука", S.stock ? low.length : sk(3), "ходовые позиции с остатком 1 шт")}
+  </div>
+  <div class="card mt">
+    <div class="toolbar" style="margin-bottom:12px">
+      <div class="seg">${[["all","Все"],["low","Заканчиваются"],["stale","Не продавались 30 дней"]].map(([k,l])=>`<button data-act="sfilter" data-f="${k}" class="${S.stockFilter===k?"on":""}">${l}</button>`).join("")}</div>
+      <input class="in" id="stockQ" placeholder="Поиск по названию или артикулу" value="${esc(S.stockQ)}" style="max-width:320px">
+    </div>
+    <div class="tbl"><table><thead><tr><th>Товар</th><th class="n">Остаток</th><th class="n">Цена продажи</th><th class="n">Закупочная</th><th class="n">Наценка</th><th class="n">Продано за 30 дн.</th></tr></thead><tbody>
+    ${list.slice(0,150).map(x=>{ const s = sm.get(Number(x.item_id)); const c = ci(x); const buy = num(x.last_income_price) || (num(x.quantity) ? num(x.costsum)/num(x.quantity) : 0); const mk = c && c.price && buy ? (c.price/buy-1)*100 : null; return `<tr><td>${esc(x.item)}${c?.articul?`<div class="muted small">арт. ${esc(c.articul)}</div>`:""}</td><td class="n">${num(x.quantity)} шт</td><td class="n"><b>${c ? (c.price ? money(c.price) : '<span class="pill">нет цены</span>') : (S.catLoading ? '<span class="muted">…</span>' : "—")}</b></td><td class="n">${money(buy)}</td><td class="n">${mk==null?"—":`<span class="${mk<50?"down":""}">${mk.toFixed(0)}%</span>`}</td><td class="n">${s?s.quantity+" шт":'<span class="muted">—</span>'}</td></tr>`; }).join("") || `<tr><td colspan="6" class="empty">${S.stockLoading||(!S.stock&&S.mcp)?"Загружаю остатки…":"Ничего не найдено"}</td></tr>`}
+    </tbody></table></div>
+    <div class="note">${S.catLoading?`Загружаю цены продажи… ${S.catDone} товаров. `:""}${S.catErr?"Цены продажи загрузились не полностью. ":""}Цена продажи — розничная цена из карточки товара в Paloma. Показано ${Math.min(150,list.length)} из ${list.length}. ${truncated?"«Не продавались» — товары вне топ-200 продаж за 30 дней (ограничение Paloma), поэтому список приблизительный.":""}</div>
+  </div>`;
+}
+
+function monthPicker(act, val){ return `<input class="in" type="month" data-act="${act}" value="${val}" style="width:auto">`; }
+function vTeam(){
+  const from = S.teamFrom, to = S.teamTo, k = from.slice(0,7); S.teamMonth = k;
+  const pr = payrollRange(from, to);
+  const per = from === to ? fmtDate(from) : `${fmtDate(from)} — ${fmtDate(to)}`;
+  const td = iso(today()), ms = monthKey(today())+"-01", pm = monthKey(new Date(today().getFullYear(), today().getMonth()-1, 15));
+  const quick = [["Сегодня",td,td],["Вчера",iso(addDays(today(),-1)),iso(addDays(today(),-1))],["7 дней",iso(addDays(today(),-6)),td],["Этот месяц",ms,td],["Прошлый месяц",pm+"-01",lastDay(pm)]];
+  const rangeBar = `<div class="card" style="margin-bottom:14px;padding:14px 16px"><div class="toolbar"><div class="seg">${quick.map(([l,f,t])=>`<button data-act="trange" data-f="${f}" data-t="${t}" class="${from===f&&to===t?"on":""}">${l}</button>`).join("")}</div>
+    <span class="toolbar" style="gap:6px"><input class="in" type="date" data-act="tfrom" value="${from}" style="width:auto"> <span class="muted">—</span> <input class="in" type="date" data-act="tto" value="${to}" style="width:auto"></span></div></div>`;
+  const emps = S.data.employees;
+  const shifts = S.data.shifts.filter(s => inMonth(s.date, k)).sort((a,b)=>b.date.localeCompare(a.date));
+  const tasks = [...S.data.tasks].sort((a,b)=> (a.done==="Да")-(b.done==="Да") || (a.due||"9").localeCompare(b.due||"9"));
+  const best = [...pr].sort((a,b)=>b.sales-a.sales)[0];
+  const hasRep = pr.some(x=>x.fromPaloma);
+  const interim = iso(today()) < lastDay(to.slice(0,7)) && to.slice(0,7) >= monthKey(today());
+  const totSales = pr.reduce((a,x)=>a+x.sales,0), totRet = pr.reduce((a,x)=>a+x.returns,0);
+  return header("Команда", `<button class="btn ghost" data-act="pickfile" ${S.uploading?"disabled":""}>${S.uploading?"Загружаю…":"Загрузить отчёт Paloma"}</button><button class="btn" data-act="form" data-col="employees">+ Сотрудник</button>`) + (S.uploadMsg ? `<div class="${S.uploadMsg.ok?"note":"err"}" style="margin:0 0 12px;${S.uploadMsg.ok?"color:var(--green);font-weight:600":""}">${esc(S.uploadMsg.text)}</div>` : "") + rangeBar + dbNote() + `
+  <div class="grid k3">
+    ${kpi("Продажи команды", totSales ? shortMoney(totSales) : "—", totSales ? `возвраты ${shortMoney(totRet)} · ${emps.filter(e=>e.active!=="Не работает").length} чел.` : "загрузите «Отчёт по сотрудникам» из Paloma")}
+    ${kpi("Фонд оплаты", shortMoney(pr.reduce((a,x)=>a+x.pay,0)), "за " + per + (interim?" · прогноз, итог в конце месяца":"") + (pr.some(x=>x.retDeduct)?` · за возвраты −${money(pr.reduce((a,x)=>a+(x.retDeduct||0),0))}`:""))}
+    ${kpi("Лучший продавец", best && best.sales ? esc(best.e.name) : "—", best && best.sales ? shortMoney(best.sales) + " личных продаж" : "внесите смены с продажами")}
+  </div>
+  <div class="card mt"><h3>Сотрудники · ${per}</h3>
+    <div class="tbl"><table><thead><tr><th>Имя</th><th>Должность</th><th class="n">Смен</th><th class="n">Продано</th><th class="n">Возвраты</th><th class="n">Итого продаж</th><th class="n">За смену</th><th class="n">${interim?"Начислено (прогноз)":"К выплате"}</th><th></th></tr></thead><tbody>
+    ${pr.map((x,i)=>`<tr><td><b>${esc(x.e.name)}</b>${i===0&&x.sales?' <span class="pill green">лидер</span>':""}<div class="mini" style="max-width:150px"><i style="width:${totSales?x.sales/Math.max(...pr.map(y=>y.sales))*100:0}%"></i></div></td><td>${esc(x.e.role||"")} ${x.e.active==="Не работает"?'<span class="pill">не работает</span>':""}</td><td class="n">${x.shifts}</td><td class="n">${money(x.sales + x.returns)}</td><td class="n ${x.returns?"down":""}">${x.returns?"−"+money(x.returns):"—"}${x.returns&&(x.sales+x.returns)>0?`<div class="muted small">${(x.returns/(x.sales+x.returns)*100).toFixed(1)}% от продаж</div>`:""}${x.adj?`<div class="small" style="color:var(--green)">${x.adj>0?"+":"−"}${money(Math.abs(x.adj))} перенос по журналу</div>`:""}</td><td class="n"><b>${money(x.sales)}</b></td><td class="n">${x.shifts?shortMoney(x.sales/x.shifts):"—"}</td><td class="n"><b>${money(x.pay)}</b><div class="muted small">${[x.hourPay?`${x.hours.toLocaleString("ru-RU",{maximumFractionDigits:1})} ч × ${num(x.e.perHour)} = ${shortMoney(x.hourPay)}`:"", x.salaryPart?"оклад "+shortMoney(x.salaryPart):"", num(x.e.perShift)?"смены "+shortMoney(num(x.e.perShift)*x.shifts):"", x.pct?`${x.pct}% × ${shortMoney(Math.max(0,x.sales))}${x.returns?" (после возвратов)":""}`:""].filter(Boolean).join(" + ")}</div>${x.retDeduct?`<div class="small down">вычтено за возвраты −${money(x.retDeduct)}</div>`:""}${x.exec!=null?`<div class="small">план на ${fmtDate(to)}: ${(Math.floor(x.exec*10)/10).toLocaleString("ru-RU")}% → <span class="tier ${tierCls(planOf(k), x.exec)}">${x.pct}%</span>${interim?" · прогноз":""}</div>`:""}</td><td class="n"><button class="icon-btn" data-act="form" data-col="employees" data-id="${x.e.id}">Изменить</button></td></tr>`).join("") || `<tr><td colspan="9" class="empty">Добавьте сотрудников: имя, должность и схему оплаты (оклад, ставка за смену, % с продаж). Зарплата посчитается автоматически.</td></tr>`}
+    </tbody></table></div>
+    <div class="note">${hasRep?"Продажи, возвраты и смены — из «Отчёта по сотрудникам» Paloma. Процент считает приложение по шкале выполнения личного плана (в Paloma процент с продаж отключён). ":""}К выплате = часы по табелю × оплата в час (или оклад) + процент от продаж.${interim?" Пока месяц не закончился, выполнение считается от плана на выбранную дату, поэтому процент и сумма — прогноз. Окончательно бонус считается по итогу месяца от личного плана месяца.":""} «Продано» — все продажи, «Возвраты» — оформленные этим сотрудником возвраты, «Итого продаж» = продано − возвраты; от него считаются план и процент. Paloma записывает возврат на того, кто его провёл. Часы считаются по табелю с учётом опозданий и ранних уходов. Каждый месяц: Paloma → Отчёты → «Отчёт по сотрудникам» → Excel → кнопка «Загрузить отчёт Paloma».</div>
+  </div>
+  ${vDaily(from, to)}
+  ${vReturns(from, to, pr)}
+  ${vTimesheet(k)}
+  <div class="mt">
+    <div class="card"><h3>Задачи команде <button class="btn sm" data-act="form" data-col="tasks">+ Задача</button></h3><div class="list">
+      ${tasks.slice(0,30).map(taskRow).join("") || '<div class="empty">Задач нет</div>'}
+    </div></div>
+  </div>`;
+}
+
+function vMoney(){
+  const k = S.financeMonth;
+  const rev = netOf("fGp", S.financeMonth === monthKey(today())), gp = sumRows(S.paloma.fGp);
+  const ex = expensesFor(k).sort((a,b)=>b.date.localeCompare(a.date));
+  const byCat = {}; ex.forEach(x => byCat[x.category] = (byCat[x.category]||0) + num(x.amount));
+  const exSum = ex.reduce((a,x)=>a+num(x.amount),0);
+  const pr = payroll(k).reduce((a,x)=>a+x.pay,0);
+  const hasPay = ex.some(x=>x.category==="Зарплаты");
+  const payAdd = hasPay ? 0 : pr;
+  const net = gp ? gp.profit - exSum - payAdd : null;
+  const cash = S.paloma.cash?.rows || [];
+  const catArr = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+  if (!hasPay && pr) catArr.push(["Зарплаты (расчёт из «Команды»)", pr]);
+  const cMax = Math.max(1,...catArr.map(c=>c[1]));
+  const line = (l, v, cls, b) => `<div class="row"><div class="nm" style="${b?"font-weight:700":""}">${l}</div><div class="rt ${cls||""}" style="${b?"font-weight:700;font-size:15px":""}">${v}</div></div>`;
+  return header("Финансы", monthPicker("finmonth", k) + `<button class="btn" data-act="form" data-col="expenses">+ Расход</button>`) + noMcp() + errBox(["fRev","fGp","cash"]) + dbNote() + `
+  <div class="grid k2">
+    <div class="card"><h3>Прибыль и убытки · ${monthLabel(k)}</h3><div class="list">
+      ${line("Выручка (по чекам)", rev?money(rev.salesum):"…")}
+      ${line("Выручка по складу", gp?money(gp.salesum):"…")}
+      ${line("− Себестоимость проданного", gp?money(-gp.costsum):"…")}
+      ${line("= Валовая прибыль", gp?money(gp.profit):"…", "", true)}
+      ${catArr.map(([c,v])=>line("− "+esc(c), money(-v))).join("")}
+      ${line("= Чистая прибыль", net!=null?money(net):"…", net<0?"down":"up", true)}
+      ${line("Рентабельность", net!=null&&gp?.salesum?(net/gp.salesum*100).toFixed(1)+"%":"—")}
+    </div><div class="note">Себестоимость и валовая прибыль — из складского учёта Paloma. Расходы вы вносите сами. Если статья «Зарплаты» не внесена, подставляется расчёт из «Команды» на сегодня: часы по табелю × ставка, оклад за прошедшие дни и бонус по текущему выполнению плана.</div></div>
+    <div>
+      <div class="card dark kpi"><div class="lbl">Деньги сейчас</div><div class="val">${cash.length?shortMoney(cash.reduce((a,x)=>a+num(x.closing_balance),0)):sk()}</div>
+        <div class="sub" style="line-height:1.8">${cash.map(x=>`${esc(x.account)}: <b style="color:#fff">${money(x.closing_balance)}</b>`).join("<br>")}</div>
+        <div class="note" style="color:#8C857A">Остатки по кассе и банку в Paloma — это не выручка.</div></div>
+      <div class="card mt"><h3>Расходы по статьям</h3><div class="list">
+        ${catArr.map(([c,v])=>`<div class="row"><div class="nm">${esc(c)}<div class="mini"><i style="width:${v/cMax*100}%"></i></div></div><div class="rt">${money(v)}</div></div>`).join("") || '<div class="empty">Расходов за месяц нет</div>'}
+      </div></div>
+    </div>
+  </div>
+  <div class="card mt"><h3>Журнал расходов</h3><div class="tbl"><table><thead><tr><th>Дата</th><th>Статья</th><th>Комментарий</th><th class="n">Сумма</th><th></th></tr></thead><tbody>
+    ${ex.map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.category)}</td><td class="muted">${esc(x.note||"")}</td><td class="n">${money(x.amount)}</td><td class="n"><button class="icon-btn" data-act="form" data-col="expenses" data-id="${x.id}">Изменить</button></td></tr>`).join("") || '<tr><td colspan="5" class="empty">Внесите аренду, рекламу, налоги и другие расходы — посчитаю чистую прибыль.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+
+function vChannels(){
+  const k = S.channelMonth;
+  const rows = S.data.channels.filter(x => inMonth(x.date, k));
+  const CH = ["Бутик","Instagram","WhatsApp","TikTok","Kaspi"];
+  const agg = CH.map(c => { const r = rows.filter(x=>x.channel===c); const o = {c, leads:0, orders:0, revenue:0, ads:0}; r.forEach(x=>{o.leads+=num(x.leads);o.orders+=num(x.orders);o.revenue+=num(x.revenue);o.ads+=num(x.ads);}); return o; });
+  const tot = agg.reduce((a,x)=>({leads:a.leads+x.leads,orders:a.orders+x.orders,revenue:a.revenue+x.revenue,ads:a.ads+x.ads}),{leads:0,orders:0,revenue:0,ads:0});
+  const rMax = Math.max(1,...agg.map(x=>x.revenue));
+  return header("Каналы продаж", monthPicker("chmonth", k) + `<button class="btn" data-act="form" data-col="channels">+ Данные</button>`) + dbNote() + `
+  <div class="grid k4">
+    ${kpi("Обращений", tot.leads.toLocaleString("ru-RU"), "все каналы за месяц")}
+    ${kpi("Продаж", tot.orders.toLocaleString("ru-RU"), tot.leads?`конверсия ${(tot.orders/tot.leads*100).toFixed(0)}%`:"")}
+    ${kpi("Реклама", shortMoney(tot.ads), tot.revenue?`ДРР ${(tot.ads/tot.revenue*100).toFixed(1)}%`:"доля рекламных расходов")}
+    ${kpi("Цена продажи", tot.orders&&tot.ads?shortMoney(tot.ads/tot.orders):"—", "реклама ÷ продажи")}
+  </div>
+  <div class="card mt"><h3>Сравнение каналов · ${monthLabel(k)}</h3><div class="tbl"><table><thead><tr><th>Канал</th><th class="n">Обращения</th><th class="n">Продажи</th><th class="n">Конверсия</th><th class="n">Выручка</th><th class="n">Реклама</th><th class="n">ДРР</th></tr></thead><tbody>
+    ${agg.map(x=>`<tr><td><b>${x.c}</b><div class="mini" style="max-width:140px"><i style="width:${x.revenue/rMax*100}%"></i></div></td><td class="n">${x.leads||"—"}</td><td class="n">${x.orders||"—"}</td><td class="n">${x.leads?(x.orders/x.leads*100).toFixed(0)+"%":"—"}</td><td class="n">${x.revenue?money(x.revenue):"—"}</td><td class="n">${x.ads?money(x.ads):"—"}</td><td class="n">${x.revenue&&x.ads?`<span class="pill ${x.ads/x.revenue>.2?"red":"green"}">${(x.ads/x.revenue*100).toFixed(1)}%</span>`:"—"}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="note">Раз в неделю вносите по каждому каналу: сколько написали, сколько купили, выручку и траты на рекламу. ДРР (доля рекламных расходов) выше 20% — повод пересмотреть рекламу.</div></div>
+  <div class="card mt"><h3>Записи</h3><div class="list">
+    ${rows.sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<div class="row" data-act="form" data-col="channels" data-id="${x.id}" style="cursor:pointer"><div class="nm"><b>${esc(x.channel)}</b> · неделя ${fmtDate(x.date)}${x.note?`<div class="muted small">${esc(x.note)}</div>`:""}</div><div class="rt">${num(x.orders)} из ${num(x.leads)}<div class="muted small">${x.revenue?shortMoney(x.revenue):""}</div></div></div>`).join("") || '<div class="empty">Пока пусто</div>'}
+  </div></div>`;
+}
+
+function snapshotForAI(){
+  const r = periodRange(S.period);
+  const mk = monthKey(today());
+  const items = (S.paloma.items?.rows || []).slice(0,25).map(x=>({товар:x.group_name, шт:x.quantity, выручка:Math.round(x.salesum), прибыль:Math.round(x.profit)}));
+  return {
+    период: r.label + ` (${r.from} — ${r.to})`,
+    выручка: netOf("gp", periodRange(S.period).to === iso(today())), выручка_прошлый_период: sumRows(S.paloma.revPrev),
+    валовая_прибыль: sumRows(S.paloma.gp), валовая_прибыль_прошлый: sumRows(S.paloma.gpPrev),
+    выручка_по_дням_14: Array.from({length:14},(_,i)=>({дата: iso(addDays(today(),-(13-i))), выручка: dayNet(13-i)?.salesum ?? null})),
+    топ_товаров: items,
+    месяц: {выручка: netOf("mGp", true)?.salesum, валовая: sumRows(S.paloma.mGp)?.profit, цель: curGoals().monthRevenue || null},
+    расходы_месяца: expensesFor(mk).map(x=>({статья:x.category, сумма:x.amount})),
+    команда: payroll(mk).map(x=>({имя:x.e.name, должность:x.e.role, смен:x.shifts, продажи:Math.round(x.sales), возвраты:Math.round(x.returns), выплата:Math.round(x.pay)})),
+    каналы_месяца: S.data.channels.filter(x=>inMonth(x.date,mk)).map(x=>({канал:x.channel, обращений:x.leads, продаж:x.orders, выручка:x.revenue, реклама:x.ads})),
+    склад: S.stock ? {позиций: S.stock.length, единиц: S.stock.reduce((a,x)=>a+num(x.quantity),0), себестоимость_остатков: Math.round(S.stock.reduce((a,x)=>a+num(x.costsum),0)), последняя_штука_ходовых: lowStock().length} : "не загружен",
+    открытые_задачи: S.data.tasks.filter(x=>x.done!=="Да").map(x=>({задача:x.title, срок:x.due}))
+  };
+}
+function mdLite(t){
+  const lines = esc(t).split("\n"); let out = "", inList = false;
+  for (let l of lines){
+    l = l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
+    if (/^#{1,4}\s/.test(l)){ if(inList){out+="</ul>";inList=false;} out += `<h4>${l.replace(/^#+\s/,"")}</h4>`; }
+    else if (/^\s*([-•*]|\d+\.)\s/.test(l)){ if(!inList){out+="<ul>";inList=true;} out += `<li>${l.replace(/^\s*([-•*]|\d+\.)\s/,"")}</li>`; }
+    else if (l.trim()===""){ if(inList){out+="</ul>";inList=false;} }
+    else { if(inList){out+="</ul>";inList=false;} out += `<p>${l}</p>`; }
+  }
+  return out + (inList?"</ul>":"");
+}
+async function askAI(question){
+  if (!S.sample || S.ai.busy) return;
+  S.ai = {text: "", busy: true, err: "", q: question}; render();
+  const prompt = `Ты — опытный бизнес-аналитик и советник владелицы магазина мужской одежды ACTUAL (Алматы, бутик в ТРЦ Riviera Park; продажи также через Instagram, WhatsApp, TikTok, Kaspi). Средний и средний плюс ценовой сегмент, стиль smart casual / old money. Отвечай по-русски, обращайся на «вы», коротко и по делу, с конкретными цифрами из данных. Не выдумывай данных, которых нет; если чего-то не хватает — скажи, что внести. Суммы в тенге (₸).
+
+Данные магазина (JSON):
+${JSON.stringify(snapshotForAI())}
+
+${question ? "Вопрос владелицы: " + question : "Сделай разбор: 1) главное за период в 2–3 предложениях; 2) что идёт хорошо; 3) риски и проблемы; 4) пять конкретных действий на эту неделю (товар, команда, маркетинг, деньги). Используй заголовки ## и списки."}`;
+  try {
+    await S.sample(prompt, {modelTier: "default", cache: false, onText: ({text}) => { S.ai.text = text; scheduleRender(); }});
+  } catch(e){
+    S.ai.err = e.code === "not_granted" ? "Советник недоступен в этом окне." : e.code === "rate_limited" ? "Слишком много запросов — попробуйте через минуту." : "Не получилось получить ответ.";
+  }
+  S.ai.busy = false; render();
+}
+function vAI(){
+  const quick = ["Почему выручка изменилась?","Что дозаказать в первую очередь?","Как поднять средний чек?","Какие товары убрать в распродажу?","Идеи акций на выходные"];
+  if (!S.sample) return header("Советник") + `<div class="card"><div class="empty">Советник на базе Claude работает, когда приложение открыто в claude.ai.</div></div>`;
+  return header("Советник") + `
+  <div class="card dark" style="padding:24px">
+    <div class="kpi"><div class="lbl">Claude смотрит на ваши цифры</div></div>
+    <p style="font-family:var(--serif);font-size:24px;margin:10px 0 16px;line-height:1.25">Разбор продаж, склада, команды и рекламы — и что делать на этой неделе.</p>
+    <button class="btn sand" data-act="ai" ${S.ai.busy?"disabled":""}>${S.ai.busy?"Анализирую…":"Сделать разбор"}</button>
+  </div>
+  <div class="card mt">
+    <form id="aiForm" class="toolbar"><input class="in" id="aiQ" value="${esc(S.aiDraft||"")}" placeholder="Задайте вопрос о бизнесе…" style="flex:1;min-width:200px"><button class="btn" ${S.ai.busy?"disabled":""}>Спросить</button></form>
+    <div class="toolbar" style="margin-top:10px">${quick.map(q=>`<button class="btn ghost sm" data-act="aiq" data-q="${esc(q)}" ${S.ai.busy?"disabled":""}>${esc(q)}</button>`).join("")}</div>
+  </div>
+  ${S.ai.text || S.ai.busy || S.ai.err ? `<div class="card mt">${S.ai.q?`<h3>${esc(S.ai.q)}</h3>`:"<h3>Разбор</h3>"}${S.ai.err?`<div class="err">${esc(S.ai.err)}</div>`:""}<div class="ai-out">${S.ai.text?mdLite(S.ai.text):'<span class="muted">Думаю…</span>'}</div></div>` : ""}
+  <div class="note">В анализ уходят цифры из приложения за выбранный на «Главной» период: ${esc(periodRange(S.period).label)}.</div>`;
+}
+
+/* ========== ежедневный отчёт ========== */
+function dayEmpSales(empId, ds){ const x = S.data.empSales.find(y => y.day === ds && y.employeeId === empId); return x ? {sales: num(x.sales), returns: num(x.returns)} : null; }
+function vDaily(from, to){
+  const td = iso(today());
+  const k = from.slice(0,7), pl = planOf(k);
+  const rateOf = {}; payrollRange(k + "-01", td < lastDay(k) ? td : lastDay(k)).forEach(x => rateOf[x.e.id] = {pct: x.pct, exec: x.exec});
+  const emps = S.data.employees.filter(e => e.active !== "Не работает");
+  const days = []; for (let d = new Date(to+"T12:00:00"); iso(d) >= from; d = addDays(d, -1)){ if (iso(d) <= td) days.push(iso(d)); if (days.length > 62) break; }
+  const tot = {plan:0, fact:0, pay:0};
+  const html = days.map(ds => {
+    const dp = pl?.days?.[ds];
+    const rows = emps.map(e => {
+      const sl = dayEmpSales(e.id, ds), f = dayFact(e.id, ds), ep = num(dp?.emp?.[e.id]);
+      if (!sl && !f.worked && !ep && f.st === "off") return "";
+      const hours = f.worked ? f.hours : 0, hourPay = hours * num(e.perHour), sal = num(e.salary) / monthDays(ds.slice(0,7)).length;
+      const rate = rateOf[e.id]?.pct ?? num(e.percent), bonus = sl ? Math.max(0, sl.sales) * rate / 100 : 0, pay = hourPay + sal + bonus;
+      const pc = sl && ep ? sl.sales / ep * 100 : null;
+      tot.pay += pay;
+      const stl = {late:"опоздал", early:"ушёл раньше", absent:"не вышел", sick:"больничный", dayoff:"отгул", extra:"доп. смена"}[f.st] || "";
+      return `<tr><td><b>${esc(e.name)}</b>${stl?`<div class="small muted">${stl}</div>`:""}</td><td class="n">${ep?shortMoney(ep):"—"}</td><td class="n">${sl?money(sl.sales):'<span class="muted">нет отчёта</span>'}${sl&&sl.returns?`<div class="small down">возвр. −${shortMoney(sl.returns)}</div>`:""}</td><td class="n">${pc!=null?`<span class="tier ${tierCls(pl,pc)}">${Math.round(pc)}%</span>`:"—"}</td><td class="n">${hours?hours.toLocaleString("ru-RU",{maximumFractionDigits:1})+" ч":"—"}</td><td class="n">${money(hourPay+sal)}</td><td class="n">${bonus?money(bonus):"—"}</td><td class="n"><b>${money(pay)}</b></td></tr>`;
+    }).join("");
+    const factDay = emps.reduce((a,e)=>a+(dayEmpSales(e.id, ds)?.sales||0),0), planDay = num(dp?.total);
+    const hasRep = emps.some(e => dayEmpSales(e.id, ds));
+    tot.plan += planDay; tot.fact += factDay;
+    const dt = new Date(ds+"T12:00:00");
+    return `<div class="dcard"><div class="dhead"><b>${dt.getDate()} ${MONTHS_G[dt.getMonth()]}, ${DOW[(dt.getDay()+6)%7]}</b><span class="small">${hasRep?`${shortMoney(factDay)} из ${shortMoney(planDay)} <span class="tier ${tierCls(pl, planDay?factDay/planDay*100:0)}">${planDay?Math.round(factDay/planDay*100):0}%</span>`:'<span class="muted">отчёт за день не загружен</span>'}</span></div>
+      <div class="tbl"><table class="dtbl"><thead><tr><th>Сотрудник</th><th class="n">План</th><th class="n">Факт</th><th class="n">%</th><th class="n">Часы</th><th class="n">За часы / оклад</th><th class="n">Бонус*</th><th class="n">За день</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }).join("");
+  return `<div class="card mt"><h3>Отчёт по дням <span class="fresh">${days.length} дн.</span></h3>
+    <div class="list" style="margin-bottom:6px"><div class="row"><div class="nm">Итого за период: факт ${shortMoney(tot.fact)} из плана ${shortMoney(tot.plan)}</div><div class="rt"><b>${money(tot.pay)}</b><div class="small muted">начислено</div></div></div></div>
+    ${html || '<div class="empty">Нет дней в выбранном периоде.</div>'}
+    <div class="note">* Бонус за день посчитан по ставке, которую сотрудник получает сейчас по выполнению плана месяца (${emps.map(e=>`${esc(e.name)} ${rateOf[e.id]?.pct ?? "—"}%`).join(", ")}). Окончательная ставка определяется в конце месяца, поэтому бонусы прошлых дней могут пересчитаться. «За часы / оклад» — часы по табелю × ставка или дневная доля оклада.</div></div>`;
+}
+
+/* ========== журнал возвратов ========== */
+function vReturns(from, to, pr){
+  const list = S.data.returnsLog.filter(x => x.date >= from && x.date <= to).sort((a,b)=>b.date.localeCompare(a.date));
+  const palomaRet = pr.reduce((a,x)=>a + (x.returns + (x.adj||0)), 0);
+  const by = t => list.filter(x=>x.type===t).reduce((a,x)=>a+num(x.amount),0);
+  const client = by("Возврат от клиента"), err = by("Ошибка пробития"), exch = by("Обмен на другой товар");
+  const logged = client + err + exch, left = Math.max(0, palomaRet - logged);
+  const gross = pr.reduce((a,x)=>a + x.sales + x.returns, 0);
+  return `<div class="card mt"><h3>Возвраты <button class="btn sm" data-act="form" data-col="returnsLog">+ Возврат</button></h3>
+    <div class="grid k4" style="gap:10px">
+      <div class="kpi"><div class="lbl">Всего по Paloma</div><div class="val" style="font-size:26px">${shortMoney(palomaRet)}</div><div class="sub">${gross>0?(palomaRet/gross*100).toFixed(1)+"% от продаж":""}</div></div>
+      <div class="kpi"><div class="lbl">От клиентов</div><div class="val" style="font-size:26px">${shortMoney(client)}</div><div class="sub">${gross>0&&client?(client/gross*100).toFixed(1)+"% от продаж":"настоящие возвраты"}</div></div>
+      <div class="kpi"><div class="lbl">Ошибки и обмены</div><div class="val" style="font-size:26px">${shortMoney(err+exch)}</div><div class="sub">ошибки ${shortMoney(err)} · обмены ${shortMoney(exch)}</div></div>
+      <div class="kpi"><div class="lbl">Не разобрано</div><div class="val ${left?"down":""}" style="font-size:26px">${shortMoney(left)}</div><div class="sub">${left?"отметьте причину":"всё разобрано ✓"}</div></div>
+    </div>
+    <div class="list mt">${list.map(x=>`<div class="row" data-act="form" data-col="returnsLog" data-id="${x.id}" style="cursor:pointer"><div class="nm wrap"><span class="pill ${x.type==="Возврат от клиента"?"red":x.type==="Ошибка пробития"?"":"green"}">${esc(x.type)}</span> ${esc(x.item||"")}<div class="muted small">${fmtDate(x.date)} · провёл(а) ${esc(empName(x.processedBy))}${x.soldBy&&x.soldBy!==x.processedBy?` · продал(а) ${esc(empName(x.soldBy))}`:""}${x.note?" · "+esc(x.note):""}</div></div><div class="rt">${money(x.amount)}</div></div>`).join("") || '<div class="empty">За период возвраты не отмечены.</div>'}</div>
+    <div class="note">Paloma записывает возврат на того, кто провёл его на кассе. Если вещь продавал другой человек, укажите «Кто продал»: сумма перейдёт с провёдшего на продавца, и план с процентами посчитаются честно. Ошибки пробития и обмены не влияют на зарплату: продажа и возврат в них взаимно гасятся. Здесь они нужны, чтобы видеть реальный процент возвратов от клиентов.</div></div>`;
+}
+
+/* ========== план продаж ========== */
+const DOW_FULL = ["понедельник","вторник","среда","четверг","пятница","суббота","воскресенье"];
+const planOf = k => S.data.plans.find(x => x.id === k) || null;
+function tierRate(pl, pct){ const t = pl?.tiers || [[0,1.5],[80,2],[100,3],[120,4.5]]; let r = t[0][1]; for (const [th, rt] of t) if (pct >= th) r = rt; return r; }
+function tierCls(pl, pct){ const t = pl?.tiers || [[0,1.5],[80,2],[100,3],[120,4.5]]; const top = t[t.length-1][0]; return pct >= top ? "t3" : pct >= 100 ? "t2" : pct >= 80 ? "t1" : "t0"; }
+function empPlanTo(pl, empId, toDs){ let s = 0; for (const [ds, d] of Object.entries(pl.days || {})) if (ds <= toDs) s += num(d.emp?.[empId]); return s; }
+function planTo(pl, toDs){ let s = 0; for (const [ds, d] of Object.entries(pl.days || {})) if (ds <= toDs) s += num(d.total); return s; }
+async function loadDaily(k){
+  if (!S.mcp || S.dailyLoading) return;
+  const td = iso(today()); const days = monthDays(k).filter(ds => ds <= td);
+  S.dailyLoading = true;
+  const one = async ds => {
+    try {
+      const r = await S.mcp.callTool(SRV, "report_sales", ds < td ? {date_from: ds, date_to: ds, group_by: "warehouse", source: "warehouse"} : {date_from: ds, date_to: ds, group_by: "warehouse"}, {cache: ds < td ? {staleTime: 24*3600e3, gcTime: 7*24*3600e3} : {staleTime: 5*60e3, gcTime: 24*3600e3}});
+      S.daily[ds] = num(r.payload?.totals?.salesum);
+    } catch(e){ S.daily[ds] = S.daily[ds] ?? null; }
+    scheduleRender();
+  };
+  for (let i = 0; i < days.length; i += 5) await Promise.all(days.slice(i, i+5).map(one));
+  S.dailyLoading = false; S.dailyFor = k; render();
+}
+function dayMessage(ds, d){
+  const dt = new Date(ds+"T12:00:00"), wd = (dt.getDay()+6)%7;
+  const emps = Object.entries(d.emp || {}).sort((a,b)=>b[1]-a[1]).map(([id,a]) => `• ${empName(id)} — ${money(a)}`).join("\n");
+  const pl = planOf(ds.slice(0,7));
+  const t = (pl?.tiers || [[0,1.5],[80,2],[100,3],[120,4.5]]);
+  const tiers = t.map(([th,r],i) => i===0 ? `до ${t[1][0]}% — ${String(r).replace(".",",")}%` : i===t.length-1 ? `от ${th}% — ${String(r).replace(".",",")}%` : `${th}–${t[i+1][0]-1}% — ${String(r).replace(".",",")}%`).join(" · ");
+  return `📅 ${dt.getDate()} ${MONTHS_G[dt.getMonth()]}, ${DOW_FULL[wd]}${d.note?` — ${d.note}`:""}\nПлан дня: ${money(d.total)}\nБутик ${money(d.total - num(d.online))} · онлайн ${money(d.online)}\n\nЛичные планы на сегодня:\n${emps}\n\nПроцент от выполнения личного плана: ${tiers}\nВперёд, команда ACTUAL! 💪`;
+}
+function openDay(ds){
+  const pl = planOf(ds.slice(0,7)); const d = pl?.days?.[ds]; if (!d) return;
+  const msg = dayMessage(ds, d); const f = S.daily[ds];
+  $("#modal").innerHTML = `<h2>${fmtDate(ds)}</h2>
+    <div class="list" style="margin-bottom:14px">${Object.entries(d.emp||{}).sort((a,b)=>b[1]-a[1]).map(([id,a])=>`<div class="row"><div class="nm">${esc(empName(id))}</div><div class="rt">${money(a)}</div></div>`).join("")}
+    <div class="row"><div class="nm"><b>Всего</b>${f!=null?`<div class="muted small">факт ${money(f)} · ${Math.round(f/d.total*100)}%</div>`:""}</div><div class="rt"><b>${money(d.total)}</b></div></div></div>
+    <div class="field"><label>Сообщение для чата сотрудников</label><div class="msg" id="dayMsg">${esc(msg)}</div></div>
+    <div class="acts"><button type="button" class="btn ghost" data-act="close">Закрыть</button><button type="button" class="btn" data-act="copymsg">Скопировать</button></div>`;
+  $("#modalBg").classList.add("on");
+}
+function vPlan(){
+  const k = S.planMonth, pl = planOf(k), td = iso(today());
+  const top = header("План продаж", monthPicker("planmonth", k));
+  if (!pl) return top + dbNote() + `<div class="card"><div class="empty">План на ${monthLabel(k).toLowerCase()} не задан. Попросите Claude составить план на месяц — он появится здесь с разбивкой по дням и продавцам.</div></div>`;
+  if (S.mcp && S.dailyFor !== k && !S.dailyLoading) setTimeout(()=>loadDaily(k), 0);
+  const days = Object.keys(pl.days).sort();
+  const last = days[days.length-1];
+  const isCur = k === monthKey(today()), isPast = k < monthKey(today());
+  const toDs = isPast ? last : td;
+  const factMonth = days.filter(ds => ds <= toDs).reduce((a,ds)=>a+(num(S.daily[ds])||0),0);
+  const planToDate = planTo(pl, toDs);
+  const exec = planToDate ? factMonth/planToDate*100 : null;
+  const left = days.filter(ds => ds > td);
+  const need = left.length ? Math.max(0, pl.total - factMonth) / left.length : 0;
+  const online = Object.values(pl.days).reduce((a,d)=>a+num(d.online),0);
+  const pr = payroll(k).filter(x => pl.monthly?.[x.e.id]);
+  const repTo = pr.find(x=>x.repTo)?.repTo;
+  const kpis = `<div class="grid k4">
+    ${kpi("План месяца", shortMoney(pl.total), `бутик ${shortMoney(pl.total-online)} · онлайн ${shortMoney(online)}`)}
+    ${kpi("Факт " + (isPast?"за месяц":"с 1-го"), S.dailyLoading && !factMonth ? sk() : shortMoney(factMonth), `план на эту дату ${shortMoney(planToDate)}`)}
+    ${kpi("Выполнение", exec==null?"—":Math.round(exec)+"%", exec==null?"":`<span class="tier ${tierCls(pl,exec)}">${exec>=100?"идём по плану":"отстаём на "+shortMoney(planToDate-factMonth)}</span>`)}
+    ${kpi("Нужно в день", left.length?shortMoney(need):"—", left.length?`осталось ${left.length} дн. до конца месяца`:"месяц завершён")}
+  </div>`;
+  const people = `<div class="card mt"><h3>Личные планы продавцов</h3><div class="tbl"><table><thead><tr><th>Продавец</th><th class="n">План месяца</th><th class="n">План на ${repTo?fmtDate(repTo):"дату отчёта"}</th><th class="n">Факт (без возвратов)</th><th class="n">Выполнение</th><th class="n">Ставка</th><th class="n">Процент к выплате</th></tr></thead><tbody>
+    ${Object.entries(pl.monthly).map(([id,m]) => { const x = pr.find(y=>y.e.id===id); const net = x ? x.sales : null;
+      return `<tr><td><b>${esc(empName(id))}</b>${num(m.online)?`<div class="muted small">в т.ч. онлайн ${shortMoney(m.online)}</div>`:""}</td><td class="n">${money(m.total)}</td><td class="n">${x?.planTo?money(x.planTo):"—"}</td><td class="n">${net!=null&&x.sales?money(net):"—"}</td><td class="n">${x?.exec!=null?`<span class="tier ${tierCls(pl,x.exec)}">${Math.round(x.exec)}%</span>`:"—"}</td><td class="n">${x?.exec!=null?x.pct+"%":"—"}</td><td class="n">${x?.exec!=null?money(x.pctPay):"—"}</td></tr>`; }).join("")}
+  </tbody></table></div>
+  <div class="note">${repTo?`Факт по продавцам — из «Отчёта по сотрудникам» Paloma по ${fmtDate(repTo)}. `:"Факт по продавцам появится после загрузки «Отчёта по сотрудникам» в разделе «Команда». "}Ставка: ${(pl.tiers||[]).map(([th,r])=>`от ${th}% — ${r}%`).join(" · ")}. Считается от выполнения личного плана месяца, продажи за вычетом возвратов.</div></div>`;
+  const list = days.map(ds => { const d = pl.days[ds], dt = new Date(ds+"T12:00:00"), wd = (dt.getDay()+6)%7; const f = S.daily[ds]; const pc = f!=null && ds<=td ? f/d.total*100 : null;
+    return `<div class="dayrow ${ds===td?"td":""}" data-act="day" data-d="${ds}"><div><b>${dt.getDate()} ${MONTHS_G[dt.getMonth()].slice(0,3)}</b><div class="muted small">${DOW[wd]}${d.note?" · "+esc(d.note):""}</div></div>
+      <div><div class="chips">${Object.entries(d.emp||{}).sort((a,b)=>b[1]-a[1]).map(([id,a])=>`<span class="chip">${esc(empName(id))} ${Math.round(a/1000)}к</span>`).join("")}</div></div>
+      <div class="rt" style="text-align:right"><b>${shortMoney(d.total)}</b><div class="small">${pc!=null?`<span class="tier ${tierCls(pl,pc)}">${shortMoney(f)} · ${Math.round(pc)}%</span>`:(ds<=td&&S.dailyLoading?'<span class="muted">…</span>':"")}</div></div></div>`; }).join("");
+  return top + noMcp() + dbNote() + kpis + people + `<div class="card mt"><h3>План по дням <span class="fresh">нажмите на день — сообщение для чата</span></h3><div class="list">${list}</div></div>`;
+}
+
+function factHours(empId, k){
+  if (!schedFor(k) && !S.data.attendance.some(a => a.employeeId === empId && inMonth(a.date, k))) return 0;
+  const td = iso(today()); let h = 0;
+  for (const ds of monthDays(k)){ if (ds > td) break; const f = dayFact(empId, ds); if (f.worked) h += f.hours; }
+  return h;
+}
+/* ========== табель ========== */
+const DOW = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+const ATT = {ok:"По графику", late:"Опоздал(а)", early:"Ушёл(ла) раньше / отпросился", absent:"Не вышел(ла)", sick:"Больничный", dayoff:"Отгул по согласованию", extra:"Доп. смена / замена"};
+const parseHM = t => { const m = String(t||"").match(/(\d{1,2})[:.](\d{2})/); return m ? +m[1]*60 + +m[2] : null; };
+function parseShift(t){ const m = String(t||"").match(/(\d{1,2})[:.](\d{2})\s*[–—-]\s*(\d{1,2})[:.](\d{2})/); if (!m) return null; const a = +m[1]*60 + +m[2], b = +m[3]*60 + +m[4]; return b > a ? {start:a, end:b, hours:(b-a)/60} : null; }
+const hm = m => `${Math.floor(m/60)}:${pad(m%60)}`;
+const shortT = m => m%60 ? hm(m) : String(m/60);
+function schedFor(k){ const d = S.data.schedule; return d.find(x => x.id === k) || [...d].filter(x => x.id < k).sort((a,b)=>b.id.localeCompare(a.id))[0] || null; }
+function planned(empId, ds){ const w = schedFor(ds.slice(0,7))?.week?.[empId]; if (!w) return ""; const i = (new Date(ds+"T12:00:00").getDay()+6)%7; return w[i] || ""; }
+const attOf = (empId, ds) => S.data.attendance.find(a => a.employeeId === empId && a.date === ds);
+function dayFact(empId, ds){
+  const p = parseShift(planned(empId, ds)), a = attOf(empId, ds);
+  if (!a) return {p, st: p ? "ok" : "off", hours: p ? p.hours : 0, worked: !!p, late: 0, early: 0};
+  const st = a.status;
+  if (["absent","sick","dayoff"].includes(st)) return {p, st, hours: 0, worked: false, late: 0, early: 0, a};
+  let b = p?.start, e = p?.end;
+  if (a.start && parseHM(a.start) != null) b = parseHM(a.start);
+  if (a.end && parseHM(a.end) != null) e = parseHM(a.end);
+  if (b == null || e == null || e <= b) return {p, st, hours: 0, worked: st === "extra", late: 0, early: 0, a};
+  return {p, st, hours: (e-b)/60, worked: true, late: st==="late" && p ? Math.max(0, b-p.start) : 0, early: st==="early" && p ? Math.max(0, p.end-e) : 0, a, b, e};
+}
+function monthDays(k){ const [y,m] = k.split("-").map(Number); const n = new Date(y, m, 0).getDate(); return Array.from({length:n}, (_,i) => `${k}-${pad(i+1)}`); }
+const tsEmps = () => S.data.employees.filter(e => e.active !== "Не работает").sort((a,b)=>(a.name||"").localeCompare(b.name||"","ru"));
+function tsSummary(k){
+  const days = monthDays(k), td = iso(today());
+  return tsEmps().map(e => {
+    const r = {e, planShifts:0, planHours:0, toDatePlan:0, shifts:0, hours:0, lates:0, lateMin:0, early:0, absent:0, sick:0, dayoff:0, extra:0};
+    days.forEach(ds => {
+      const f = dayFact(e.id, ds);
+      if (f.p){ r.planShifts++; r.planHours += f.p.hours; }
+      if (ds > td) return;
+      if (f.p) r.toDatePlan++;
+      if (f.worked){ r.shifts++; r.hours += f.hours; }
+      if (f.st === "late"){ r.lates++; r.lateMin += f.late; }
+      if (f.st === "early") r.early++;
+      if (f.st === "absent") r.absent++;
+      if (f.st === "sick") r.sick++;
+      if (f.st === "dayoff") r.dayoff++;
+      if (f.st === "extra") r.extra++;
+    });
+    return r;
+  });
+}
+function vTimesheet(k){
+  const emps = tsEmps(), days = monthDays(k), td = iso(today());
+  const sc = schedFor(k);
+  if (!emps.length) return "";
+  const sum = tsSummary(k);
+  const head = days.map(ds => { const d = new Date(ds+"T12:00:00"), wd = (d.getDay()+6)%7; return `<th class="dh ${wd>4?"we":""}">${d.getDate()}<br>${DOW[wd]}</th>`; }).join("");
+  const body = emps.map(e => `<tr><th class="nmc">${esc(e.name)}</th>${days.map(ds => {
+    const f = dayFact(e.id, ds);
+    let txt = f.p ? `${shortT(f.p.start)}–${shortT(f.p.end)}` : "·";
+    if (f.st === "late") txt = `+${f.late}м`;
+    if (f.st === "early") txt = `до ${f.e!=null?shortT(f.e):"?"}`;
+    if (f.st === "absent") txt = "нет";
+    if (f.st === "sick") txt = "б/л";
+    if (f.st === "dayoff") txt = "отгул";
+    if (f.st === "extra") txt = f.b!=null ? `${shortT(f.b)}–${shortT(f.e)}` : "доп";
+    return `<td><button class="c ${f.st} ${ds>td?"fut":""} ${ds===td?"today":""}" data-act="att" data-e="${e.id}" data-d="${ds}" title="${esc(e.name)}, ${fmtDate(ds)}">${txt}</button></td>`;
+  }).join("")}</tr>`).join("");
+  const L = [["ok","#EFE7DA","по графику"],["late","#F6E3C3","опоздание / ушёл раньше"],["absent","#F5E1DB","не вышел"],["sick","#E1E8F2","больничный"],["dayoff","#ECEAE6","отгул"],["extra","#DDEBE3","доп. смена"]];
+  return `<div class="card mt"><h3>Табель · ${monthLabel(k)} <span class="toolbar"><button class="btn ghost sm" data-act="sched">График смен</button></span></h3>
+    ${sc ? "" : '<div class="err" style="margin-bottom:10px">График на этот месяц не задан. Нажмите «График смен».</div>'}
+    <div class="tbl"><table class="ts"><thead><tr><th class="nmc"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+    <div class="legend">${L.map(([k,c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join("")}</div>
+    <div class="note">Нажмите на клетку, чтобы отметить опоздание, пропуск, больничный или замену. Если ничего не отмечено, день считается отработанным по графику.</div>
+  </div>
+  <div class="card mt"><h3>Итоги рабочего времени · ${monthLabel(k)}</h3><div class="tbl"><table><thead><tr><th>Сотрудник</th><th class="n">Смен по плану</th><th class="n">Отработано смен</th><th class="n">Часов</th><th class="n">Опоздания</th><th class="n">Не вышел</th><th class="n">Б/л · отгул</th><th class="n">Доп. смены</th></tr></thead><tbody>
+    ${sum.map(r=>`<tr><td><b>${esc(r.e.name)}</b></td><td class="n">${r.planShifts}<div class="muted small">${Math.round(r.planHours)} ч</div></td><td class="n">${r.shifts}<div class="muted small">из ${r.toDatePlan} на сегодня</div></td><td class="n">${r.hours.toLocaleString("ru-RU",{maximumFractionDigits:1})} ч</td><td class="n ${r.lates?"down":""}">${r.lates?`${r.lates} · ${r.lateMin} мин`:"—"}</td><td class="n ${r.absent?"down":""}">${r.absent||"—"}</td><td class="n">${r.sick||r.dayoff?`${r.sick} · ${r.dayoff}`:"—"}</td><td class="n">${r.extra||"—"}</td></tr>`).join("")}
+  </tbody></table></div></div>`;
+}
+function openAtt(empId, ds){
+  const e = S.data.employees.find(x => x.id === empId); const a = attOf(empId, ds) || {}; const pl = planned(empId, ds);
+  $("#modal").innerHTML = `<h2>${esc(e?.name||"")}</h2><div class="muted" style="margin:-8px 0 14px">${fmtDate(ds)}, ${DOW[(new Date(ds+"T12:00:00").getDay()+6)%7]} · по графику: <b>${pl ? esc(pl) : "выходной"}</b></div>
+  <form id="attFrm"><div class="field"><label>Что было</label><select class="in" name="status">${Object.entries(ATT).map(([k,l])=>`<option value="${k}" ${(a.status||"ok")===k?"selected":""}>${l}</option>`).join("")}</select></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px"><div class="field"><label>Пришёл(ла)</label><input class="in" type="time" name="start" value="${esc(a.start||"")}"></div><div class="field"><label>Ушёл(ла)</label><input class="in" type="time" name="end" value="${esc(a.end||"")}"></div></div>
+  <div class="field"><label>Комментарий</label><input class="in" name="note" value="${esc(a.note||"")}" placeholder="например, замена за Марата"></div>
+  <div class="note" style="margin-top:0">Время нужно для опоздания, раннего ухода и доп. смены. Для «по графику» оставьте пустым.</div>
+  <div class="acts"><button type="button" class="btn ghost" data-act="close">Отмена</button><button class="btn">Сохранить</button></div></form>`;
+  $("#modalBg").classList.add("on");
+  $("#attFrm").onsubmit = async ev => {
+    ev.preventDefault(); const fd = Object.fromEntries(new FormData(ev.target).entries());
+    const ref = S.db && S.db.collection("attendance").doc(`${ds}_${empId}`);
+    if (!ref){ toast("Сохранение недоступно в этом окне"); return; }
+    try {
+      if (fd.status === "ok" && !fd.note.trim() && !fd.start && !fd.end) await ref.delete();
+      else await ref.set({date: ds, employeeId: empId, status: fd.status, start: fd.start, end: fd.end, note: fd.note.trim(), updatedAt: Date.now()});
+      toast("Сохранено"); closeModal();
+    } catch(e){ toast("Не удалось сохранить"); }
+  };
+}
+function openSched(){
+  const k = S.teamMonth, sc = schedFor(k), emps = tsEmps();
+  $("#modal").style.maxWidth = "760px";
+  $("#modal").innerHTML = `<h2>График смен · ${monthLabel(k)}</h2><div class="muted small" style="margin:-8px 0 12px">Формат: 10:00–20:00. Пустая клетка — выходной. ${sc && sc.id !== k ? "Взят график за "+monthLabel(sc.id).toLowerCase()+"." : ""}</div>
+  <form id="schFrm"><div class="tbl"><table class="sched-grid"><thead><tr><th></th>${DOW.map(d=>`<th class="n" style="text-align:center">${d}</th>`).join("")}</tr></thead><tbody>
+  ${emps.map(e=>`<tr><td style="white-space:nowrap;font-weight:600;font-size:13px">${esc(e.name)}</td>${DOW.map((_,i)=>`<td><input class="in" name="${e.id}_${i}" value="${esc(sc?.week?.[e.id]?.[i]||"")}" placeholder="вых" style="min-width:92px"></td>`).join("")}</tr>`).join("")}
+  </tbody></table></div><div class="acts"><button type="button" class="btn ghost" data-act="close">Отмена</button><button class="btn">Сохранить на ${MONTHS[+k.slice(5)-1]}</button></div></form>`;
+  $("#modalBg").classList.add("on");
+  $("#schFrm").onsubmit = async ev => {
+    ev.preventDefault(); const fd = new FormData(ev.target); const week = {};
+    for (const e of emps){ week[e.id] = DOW.map((_,i) => String(fd.get(`${e.id}_${i}`)||"").trim().replace(/\s*[-—]\s*/,"–")); }
+    const bad = Object.values(week).flat().filter(v => v && !parseShift(v));
+    if (bad.length){ toast("Проверьте формат: " + bad[0]); return; }
+    try { await S.db.doc("schedule/" + k).set({week, updatedAt: Date.now()}); toast("График сохранён"); closeModal(); } catch(e){ toast("Не удалось сохранить"); }
+  };
+}
+function todayCrew(){
+  const td = iso(today());
+  return tsEmps().map(e => ({e, f: dayFact(e.id, td)})).filter(x => x.f.p || x.f.st === "extra");
+}
+
+/* ========== импорт отчёта по сотрудникам ========== */
+function loadXLSX(){
+  if (window.XLSX) return Promise.resolve();
+  const load = src => new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = src; sc.onload = () => window.XLSX ? res() : rej(new Error("no XLSX")); sc.onerror = rej; document.head.appendChild(sc); });
+  return load("xlsx.mini.min.js").catch(() => load("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"));
+}
+async function importEmpReport(file){
+  if (!S.db){ toast("Загрузка работает, когда приложение открыто в claude.ai"); return; }
+  S.uploading = true; S.uploadMsg = null; render();
+  try {
+    try { await loadXLSX(); } catch(e){ throw new Error("Не загрузился модуль чтения Excel — проверьте интернет и попробуйте ещё раз"); }
+    if (!window.XLSX) throw new Error("Не загрузился модуль чтения Excel");
+    const wb = XLSX.read(await file.arrayBuffer(), {type: "array"});
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1, raw: false, defval: ""});
+    // период: ищем «дд.мм.гггг» в первых строках, в любой колонке
+    let perTxt = "";
+    for (const r of rows.slice(0, 15)){ const t = r.map(c => String(c)).join(" "); if (/\d{2}\.\d{2}\.\d{4}/.test(t) && /(период|с\s+\d{2}\.|по\s+\d{2}\.|отч[её]т)/i.test(t)){ perTxt = t; break; } }
+    const all = [...perTxt.matchAll(/(\d{2})\.(\d{2})\.(\d{4})/g)];
+    if (!all.length) throw new Error("В файле не найден период отчёта");
+    const m = all[0];
+    const month = `${m[3]}-${m[2]}`; const fromD = `${m[3]}-${m[2]}-${m[1]}`;
+    const to = all.length > 1 ? `${all[all.length-1][3]}-${all[all.length-1][2]}-${all[all.length-1][1]}` : fromD;
+    // вид «по дням»: строка «Сотрудник: Имя», под ней даты
+    const cellOf = (r, re) => { for (const c of r){ const t = String(c||"").trim(); if (re.test(t)) return t; } return ""; };
+    if (rows.some(r => cellOf(r, /^Сотрудник:/i))){
+      const H2 = (rows.find(r => r.some(c => String(c).trim() === "Дата")) || []).map(c => String(c).trim().toLowerCase());
+      const ci = n => H2.findIndex(h => h.includes(n));
+      const cS = ci("общая сумма"), cP = ci("процент"), cR = ci("возврат");
+      let cur = null, count = 0, added = 0; const names = new Set();
+      for (const r of rows){
+        const b = cellOf(r, /^Сотрудник:/i) || cellOf(r, /^\d{1,2}\s+[а-яё]+\s+\d{4}/i);
+        const mm = b.match(/^Сотрудник:\s*(.+)$/i);
+        if (mm){
+          const name = mm[1].trim();
+          const nk = x => String(x||"").toLowerCase().replace(/ұ|ү/g,"у").replace(/қ/g,"к").replace(/ә/g,"а").replace(/і/g,"и").replace(/ң/g,"н").replace(/ғ/g,"г").replace(/ө/g,"о").replace(/ё/g,"е").replace(/\s+/g," ").trim();
+          let emp = S.data.employees.find(e => nk(e.name) === nk(name));
+          if (!emp){ const ref = await S.db.collection("employees").add({name, role: "Стилист-Консультант", phone: "", start: "", salary: 0, perShift: 0, perHour: 390, percent: 3, active: "Работает", updatedAt: Date.now()}); emp = {id: ref.id, name}; added++; }
+          cur = emp; continue;
+        }
+        const dm = b.match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})/i);
+        if (!cur || !dm) continue;
+        const mi = MONTHS_G.indexOf(dm[2].toLowerCase()); if (mi < 0) continue;
+        const ds = `${dm[3]}-${pad(mi+1)}-${pad(+dm[1])}`;
+        await S.db.collection("empSales").doc(`d_${ds}_${cur.id}`).set({day: ds, month: ds.slice(0,7), employeeId: cur.id, name: cur.name, sales: num(r[cS]), percentPay: cP>=0 ? num(r[cP]) : null, returns: cR>=0 ? num(r[cR]) : 0, shifts: 1, to: ds, source: "Paloma: " + file.name, updatedAt: Date.now()});
+        count++; names.add(cur.name);
+      }
+      if (!count) throw new Error("В файле не найдено ни одной строки с датой");
+      if (to){ S.teamFrom = fromD; S.teamTo = to; }
+      S.uploadMsg = {ok: true, text: `Загружено по дням: ${names.size} сотрудников, ${count} записей (${fmtDate(fromD)} — ${fmtDate(to||fromD)})${added?`, новых: ${added}`:""}`};
+      toast("Отчёт загружен");
+      S.uploading = false; render(); return;
+    }
+    const hi = rows.findIndex(r => r.some(c => String(c).trim() === "Сотрудник"));
+    if (hi < 0) throw new Error("Это не «Отчёт по сотрудникам»");
+    const H = rows[hi].map(c => String(c).trim().toLowerCase());
+    const col = name => H.findIndex(h => h.includes(name));
+    const cN = col("сотрудник"), cS = col("общая сумма"), cP = col("процент"), cR = col("возврат"), cSh = col("смен");
+    let count = 0, added = 0;
+    for (const r of rows.slice(hi+1)){
+      const name = String(r[cN] || "").trim();
+      if (!name || /^итого/i.test(String(r[0])) || /^итого/i.test(name)) continue;
+      let emp = S.data.employees.find(e => (e.name||"").trim().toLowerCase() === name.toLowerCase());
+      let empId = emp?.id;
+      if (!emp){
+        const ref = await S.db.collection("employees").add({name, role: "Продавец-консультант", phone: "", start: "", salary: 0, perShift: 0, percent: 3, active: "Работает", updatedAt: Date.now()});
+        empId = ref.id; added++;
+      }
+      const isDay = to && to === fromD;
+      await S.db.collection("empSales").doc(isDay ? `d_${fromD}_${empId}` : month + "_" + empId).set({day: isDay ? fromD : null, month, employeeId: empId, name, sales: num(r[cS]), percentPay: cP>=0 ? num(r[cP]) : null, returns: cR>=0 ? num(r[cR]) : 0, shifts: cSh>=0 ? num(r[cSh]) : 0, to, source: "Paloma: " + file.name, updatedAt: Date.now()});
+      count++;
+    }
+    if (to){ S.teamFrom = fromD; S.teamTo = to; }
+    if (!count) throw new Error("В файле не найдено ни одного сотрудника");
+    S.uploadMsg = {ok: true, text: `Загружено: ${count} сотрудников за ${to && to!==fromD ? fmtDate(fromD)+" — "+fmtDate(to) : fmtDate(fromD)}${added?`, новых: ${added}`:""}`};
+    toast(`Загружено: ${count} сотрудников за ${to && to!==fromD ? fmtDate(fromD)+" — "+fmtDate(to) : fmtDate(fromD)}${added?`, новых: ${added}`:""}`);
+  } catch(e){ const t = e && e.message && e.message.length < 120 ? e.message : "Не удалось прочитать файл (" + (e?.code || "ошибка") + ")"; S.uploadMsg = {ok: false, text: t}; toast(t); }
+  S.uploading = false; render();
+}
+
+/* ========== события ========== */
+document.addEventListener("click", async ev => {
+  const el = ev.target.closest("[data-act]"); if (!el) return;
+  const a = el.dataset.act;
+  if (a === "period"){ S.period = el.dataset.p; setupWatches(); render(); }
+  else if (a === "form"){ ev.preventDefault(); openForm(el.dataset.col, el.dataset.id); }
+  else if (a === "close") closeModal();
+  else if (a === "del"){
+    if (confirmDel !== el.dataset.id){ confirmDel = el.dataset.id; el.textContent = "Точно удалить?"; return; }
+    confirmDel = null; await dbDel(el.dataset.col, el.dataset.id); closeModal();
+  }
+  else if (a === "task"){
+    const t = S.data.tasks.find(x=>x.id===el.dataset.id); if (!t) return;
+    const {id, ...rest} = t; await dbSave("tasks", id, {...rest, done: el.checked ? "Да" : "Нет", updatedAt: Date.now()});
+  }
+  else if (a === "approve") retryApproval(el.dataset.key);
+  else if (a === "att") openAtt(el.dataset.e, el.dataset.d);
+  else if (a === "day") openDay(el.dataset.d);
+  else if (a === "pickfile"){ const fi = $("#empFile"); fi.value = ""; fi.click(); }
+  else if (a === "trange"){ S.teamFrom = el.dataset.f; S.teamTo = el.dataset.t; render(); }
+  else if (a === "copymsg"){ try { await navigator.clipboard.writeText($("#dayMsg").textContent); toast("Скопировано — вставьте в чат"); } catch(e){ const r = document.createRange(); r.selectNodeContents($("#dayMsg")); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); toast("Выделено — нажмите «Копировать»"); } }
+  else if (a === "sched") openSched();
+  else if (a === "ssort"){ S.salesSort = el.dataset.s; render(); }
+  else if (a === "sfilter"){ S.stockFilter = el.dataset.f; render(); }
+  else if (a === "lowfilter"){ S.stockFilter = "low"; }
+  else if (a === "stockreload"){ loadStock(true); loadCatalog(true); }
+  else if (a === "ai") askAI("");
+  else if (a === "aiq") askAI(el.dataset.q);
+});
+document.addEventListener("input", ev => {
+  if (ev.target.id === "aiQ") S.aiDraft = ev.target.value;
+  if (ev.target.id === "stockQ"){ S.stockQ = ev.target.value; clearTimeout(S._sq); S._sq = setTimeout(render, 200); }
+});
+document.addEventListener("change", ev => {
+  const a = ev.target.dataset.act; if (!a || !ev.target.value) return;
+  if (a === "finmonth"){ S.financeMonth = ev.target.value; setupFinanceWatches(); render(); }
+  if (a === "chmonth"){ S.channelMonth = ev.target.value; render(); }
+  if (a === "planmonth"){ S.planMonth = ev.target.value; render(); }
+  if (a === "tfrom"){ S.teamFrom = ev.target.value; if (S.teamTo < S.teamFrom) S.teamTo = S.teamFrom; render(); }
+  if (a === "tto"){ S.teamTo = ev.target.value; if (S.teamTo < S.teamFrom) S.teamFrom = S.teamTo; render(); }
+  if (a === "teammonth"){ S.teamMonth = ev.target.value; render(); }
+});
+document.addEventListener("submit", ev => {
+  if (ev.target.id === "aiForm"){ ev.preventDefault(); const q = $("#aiQ").value.trim(); if (q) askAI(q); }
+});
+$("#empFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) importEmpReport(f); });
+$("#modalBg").addEventListener("click", ev => { if (ev.target.id === "modalBg") closeModal(); });
+function route(){ const h = location.hash.replace("#",""); S.view = VIEWS.some(v=>v[0]===h) ? h : "home"; render(); window.scrollTo(0,0); }
+window.addEventListener("hashchange", route);
+
+/* ========== запуск ========== */
+route();
+(async () => {
+  const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(()=>null) : Promise.resolve(null);
+  const [mcp, db, sample] = await Promise.all([use("mcp"), use("db"), use("sample")]);
+  if (mcp && mcp.callTool && !mcp.__retry) {
+    const orig = mcp.callTool.bind(mcp);
+    mcp.callTool = async (...a) => {
+      let last;
+      for (let i = 0; i < 6; i++) {
+        try { return await orig(...a); }
+        catch (e) {
+          last = e;
+          const m = String((e && (e.message || e.code)) || '');
+          if (!/busy|rate|timeout|unavailable/i.test(m)) throw e;
+          await new Promise(r => setTimeout(r, 2500 * (i + 1)));
+        }
+      }
+      throw last;
+    };
+    mcp.__retry = true;
+  }
+  S.mcp = mcp; S.db = db; S.sample = sample;
+  restorePaloma();
+  if (mcp){ setupWatches(); setTimeout(()=>{ setupFixedWatches(); setupFinanceWatches(); }, 3000); setTimeout(loadStock, 8000); }
+  startDb();
+  render();
+})();
+</script>
+</body>
+</html>
