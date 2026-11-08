@@ -289,7 +289,8 @@ var q=[], qt=null, mem={};
 function flush(){ qt=null; var batch=q.splice(0,25); if(q.length) qt=setTimeout(flush,0);
   post("paloma",{calls:batch.map(function(x){return {tool:x.tool,args:x.args,ttl:x.ttl}})}).then(function(j){
     batch.forEach(function(x,i){ var r=j&&j.ok&&j.results?j.results[i]:null;
-      if(r&&r.ok){ mem[x.k]={t:Date.now(),payload:r.payload}; x.res({payload:r.payload}); }
+      if(r&&r.ok&&r.payload&&r.payload.success===false) x.rej({code:r.payload.reason||"tool_error",message:r.payload.message||"Paloma не вернула данные"});
+      else if(r&&r.ok){ mem[x.k]={t:Date.now(),payload:r.payload}; x.res({payload:r.payload}); }
       else x.rej({code:(r&&r.error)||(j&&j.error)||"unavailable",message:(r&&r.detail)||(j&&j.error)||"Paloma недоступна"}); });
   }).catch(function(){ batch.forEach(function(x){x.rej({code:"unavailable",message:"Нет соединения"})}) });
 }
