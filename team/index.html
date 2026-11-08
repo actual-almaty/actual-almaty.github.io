@@ -114,6 +114,9 @@ nav.tabs svg{width:22px;height:22px}
 .r3{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:right;gap:6px;font-size:14.5px;font-variant-numeric:tabular-nums}
 .dr.hd{background:#FBF9F5;padding:9px 14px}.dr.hd .r3{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
 .dr.tot{background:#FBF9F5}.dr.tot .dl{color:var(--ink)}
+.phs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.ph{position:relative;width:84px;height:84px;border-radius:12px;overflow:hidden;background:#EEE8DF;display:flex;align-items:center;justify-content:center;cursor:pointer}.ph img{width:100%;height:100%;object-fit:cover}.ph button{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:12px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:1}
+.fld textarea,.cr input,.cr textarea,.cr select{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;font-size:16px;outline:none;font-family:inherit;margin-top:8px}.cr select{margin-top:0;-webkit-appearance:none;appearance:none}.cr .row{gap:8px}
+input.chip{font-family:inherit;color:var(--ink)}
 @keyframes s{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -289,6 +292,7 @@ function render(){
   document.querySelectorAll("nav.tabs button").forEach(function(x){x.onclick=function(){S.tab=x.dataset.t;render();scrollTo(0,0)}});
   if(!b){ $("#view").innerHTML='<div class="empty"><span class="spin"></span><br>Загружаю…</div>'; return; }
   if(S.tab==="stock") return renderStock();
+  if(S.tab==="tasks") return renderTasks();
   if(S.tab==="admin" && b.me.role==="admin") return renderAdmin();
   if(b.me.role==="admin") { S.tab="admin"; return renderAdmin(); }
   return renderMe();
@@ -300,7 +304,8 @@ function tabsHtml(){
   var i1='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>';
   var i2='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>';
   var i3='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/></svg>';
-  var t=admin?[["admin","Команда",i3],["stock","Остатки",i2]]:[["me","Мои продажи",i1],["stock","Остатки",i2]];
+  var i4='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg>';
+  var t=admin?[["admin","Команда",i3],["tasks","Задачи",i4],["stock","Остатки",i2]]:[["me","Мои продажи",i1],["tasks","Задачи",i4],["stock","Остатки",i2]];
   return '<nav class="tabs">'+t.map(function(x){return '<button data-t="'+x[0]+'" class="'+(S.tab===x[0]||(x[0]==="admin"&&S.tab==="me"&&admin)?"on":"")+'">'+x[2]+x[1]+'</button>'}).join("")+'</nav>';
 }
 
@@ -456,6 +461,120 @@ function openCheck(it){
       if(j.ok){ close(); toast(n===it.qty?"Сверено, всё сходится ✅":"Отправьте сообщение в WhatsApp — руководитель увидит расхождение"); if(S.boot&&S.boot.checks){S.boot.checks.unshift({at:new Date().toISOString(),item:it.name,system:it.qty,fact:n});} }
       else { btn.disabled=false; btn.textContent="Сохранить сверку"; v.querySelector("#fe").textContent=j.error==="net"?"Нет соединения, попробуйте ещё раз":"Не удалось сохранить"; }
     });
+  };
+}
+
+/* ---------- tasks ---------- */
+var TASKS_URL="";
+var TST={new:["Новая","#EFE7DA","#6D5A3A"],done:["На проверке","#E4ECF5","#2D5277"],returned:["На доработку","#F3E3DC","#B4532A"],approved:["Принято ✅","#DDEDE3","#2F6B4F"]};
+var PH={};
+function tasksApi(a,p){
+  if(!TASKS_URL) return Promise.resolve({ok:false,error:"setup"});
+  return fetch(TASKS_URL,{method:"POST",body:JSON.stringify({t:S.token,a:a,p:p||{}})}).then(function(r){return r.json()}).catch(function(){return {ok:false,error:"net"}});
+}
+function tErr(e){return {net:"Нет соединения, попробуйте ещё раз",need_photo:"Добавьте хотя бы одно фото",need_comment:"Напишите комментарий",already_approved:"Задача уже принята",forbidden:"Нет доступа",auth:"Войдите заново",photo_too_big:"Фото слишком большое"}[e]||"Не получилось, попробуйте ещё раз"}
+function today5(){return new Date(Date.now()+5*3600e3).toISOString().slice(0,10)}
+function addDays(ds,n){var d=new Date(ds+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function team(){return ((S.boot&&S.boot.team)||[]).map(function(e){return {login:e.login,name:e.name}})}
+function nameOf(l){var t=team().filter(function(e){return e.login===l})[0];return t?t.name:l}
+function badge(st){var x=TST[st]||TST.new;return '<span class="tier" style="background:'+x[1]+';color:'+x[2]+'">'+x[0]+'</span>'}
+function loadTasks(){
+  S.tLoading=true;
+  return tasksApi("list",{ym:ymNow()}).then(function(j){S.tLoading=false;if(j.ok){S.tasks=j.tasks;S.tToday=j.today;S.tErr=""}else{S.tErr=j.error}if(S.tab==="tasks")renderTasks()});
+}
+function renderTasks(){
+  var v=$("#view"); if(!v) return;
+  if(!TASKS_URL){v.innerHTML='<h1>Задачи</h1><div class="empty">Раздел скоро заработает 🙌</div>';return}
+  if(!S.tasks){v.innerHTML='<h1>Задачи</h1><div class="empty">'+(S.tErr?esc(tErr(S.tErr))+'<br><button class="btn ghost" id="tr" style="max-width:200px;margin:14px auto 0">Повторить</button>':'<span class="spin"></span><br>Загружаю задачи…')+'</div>';var b=$("#tr");if(b)b.onclick=function(){S.tErr="";renderTasks();loadTasks()};if(!S.tErr&&!S.tLoading)loadTasks();return}
+  if(S.boot.me.role==="admin") return renderTasksAdmin();
+  var td=S.tToday||today5(), ym=ymNow(), all=S.tasks;
+  var mine=all.filter(function(t){return t.date.slice(0,7)===ym});
+  var ok=mine.filter(function(t){return t.status==="approved"});
+  var bonus=ok.reduce(function(s,t){return s+(+t.bonus||0)},0);
+  var tod=all.filter(function(t){return t.date===td}), old=all.filter(function(t){return t.date<td&&t.status!=="approved"}), next=all.filter(function(t){return t.date>td});
+  var h='<h1>Мои задачи</h1><div class="card dark"><div class="kicker">'+cap(monthName(ym))+'</div><div class="row" style="margin-top:8px"><span>Принято</span><b style="font-size:20px">'+ok.length+' из '+mine.length+'</b></div>'+(bonus?'<div class="row" style="margin-top:6px"><span>Бонус за задачи</span><b>'+money(bonus)+'</b></div>':'')+'</div>';
+  h+='<h2>Сегодня</h2>'+(tod.length?taskList(tod,false):'<div class="card muted">На сегодня задач нет 👌</div>');
+  if(old.length) h+='<h2>Не закрыто раньше</h2>'+taskList(old,true);
+  if(next.length) h+='<h2>Дальше</h2>'+taskList(next,true);
+  h+='<button class="btn ghost" id="trf">Обновить</button>';
+  v.innerHTML=h; bindTasks(); $("#trf").onclick=function(){S.tasks=null;renderTasks()};
+}
+function taskList(ts,showDate){
+  return '<div class="list">'+ts.map(function(t){return '<div class="li" data-tk="'+esc(t.id)+'" style="cursor:pointer"><div style="min-width:0"><div style="font-size:14.5px;font-weight:500">'+esc(t.title)+'</div><div class="small muted">'+(showDate?dayLabel(t.date)+" · ":"")+(S.boot.me.role==="admin"&&showDate?esc(nameOf(t.login)):"")+(t.bonus?(S.boot.me.role==="admin"&&showDate?" · ":"")+"бонус "+money(t.bonus):"")+'</div></div><div class="r">'+badge(t.status)+'</div></div>'}).join("")+'</div>';
+}
+function bindTasks(){document.querySelectorAll("[data-tk]").forEach(function(r){r.onclick=function(){var t=S.tasks.filter(function(x){return x.id===r.dataset.tk})[0];if(t)openTask(t)}})}
+function sheetOpen(html){var v=document.createElement("div");v.className="veil";v.innerHTML='<div class="sheet"><button class="x" aria-label="Закрыть">×</button>'+html+'</div>';document.body.appendChild(v);var c=function(){v.remove()};v.querySelector(".x").onclick=c;v.onclick=function(e){if(e.target===v)c()};return {el:v,close:c}}
+function photoStrip(ids){return ids&&ids.length?'<div class="phs">'+ids.map(function(id){return '<div class="ph" data-ph="'+esc(id)+'">'+(PH[id]?'<img src="'+PH[id]+'">':'<span class="spin"></span>')+'</div>'}).join("")+'</div>':''}
+function loadPhotos(el){el.querySelectorAll("[data-ph]").forEach(function(d){var id=d.dataset.ph;var show=function(){d.innerHTML='<img src="'+PH[id]+'">';d.onclick=function(){var w=window.open();if(w)w.document.write('<img src="'+PH[id]+'" style="max-width:100%">')}};if(PH[id])return show();tasksApi("photo",{id:id}).then(function(j){if(j.ok){PH[id]="data:"+j.type+";base64,"+j.data;show()}else d.innerHTML='<span class="small muted">нет фото</span>'})})}
+function shrink(file){return new Promise(function(res,rej){var u=URL.createObjectURL(file),im=new Image();im.onload=function(){var m=1400,w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,m/Math.max(w,h));var c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.75))};im.onerror=function(){URL.revokeObjectURL(u);rej(new Error("img"))};im.src=u})}
+function taskHead(t){return '<h3>'+esc(t.title)+'</h3><div style="margin:6px 0 2px">'+badge(t.status)+(t.bonus?' <span class="small muted">бонус '+money(t.bonus)+'</span>':'')+'</div><div class="small muted">'+dayLabel(t.date)+(S.boot.me.role==="admin"?" · "+esc(nameOf(t.login)):"")+'</div>'+(t.note?'<div class="card" style="white-space:pre-wrap;font-size:14px;line-height:1.5">'+esc(t.note)+'</div>':'')+(t.review&&t.status!=="done"?'<div class="card" style="border-color:'+(t.status==="returned"?"#E8C2B2":"#BFDCCB")+'"><div class="kicker">Комментарий руководителя</div><div style="margin-top:6px;white-space:pre-wrap;font-size:14px">'+esc(t.review)+'</div></div>':'')}
+function reportBlock(t){return t.report||t.photos.length?'<div class="kicker" style="margin-top:14px">Отчёт'+(t.doneAt?' · '+timeLabel(t.doneAt):'')+'</div>'+photoStrip(t.photos)+(t.report?'<div style="white-space:pre-wrap;font-size:14px;line-height:1.5;margin-top:8px">'+esc(t.report)+'</div>':''):''}
+function upd(t){S.tasks=S.tasks.map(function(x){return x.id===t.id?t:x})}
+function openTask(t){
+  if(S.boot.me.role==="admin") return openReview(t);
+  var canDo=t.status==="new"||t.status==="returned";
+  var s=sheetOpen(taskHead(t)+(canDo?'':reportBlock(t))+(canDo?
+    '<div class="fld"><span>Фото отчёт (до 4 фото)</span><label class="btn ghost" style="margin-top:0">📷 Добавить фото<input type="file" id="tf" accept="image/*" multiple hidden></label><div class="phs" id="tp"></div></div>'+
+    '<label class="fld"><span>Комментарий</span><textarea id="tc" rows="3" maxlength="1000" placeholder="Что сделано">'+esc(t.status==="returned"?t.report:"")+'</textarea></label>'+
+    '<label class="toggle" style="margin-top:14px"><input type="checkbox" id="tk"> Задача выполнена полностью</label><div class="err" id="te"></div><button class="btn" id="ts">Отправить на проверку</button>'
+    :(t.status==="done"?'<div class="card muted" style="margin-top:14px">Отправлено, ждём проверки руководителя ⏳</div>':'')));
+  loadPhotos(s.el); if(!canDo) return;
+  var pics=[], tp=s.el.querySelector("#tp"), te=s.el.querySelector("#te");
+  var draw=function(){tp.innerHTML=pics.map(function(p,i){return '<div class="ph"><img src="'+p+'"><button data-rm="'+i+'">×</button></div>'}).join("");tp.querySelectorAll("[data-rm]").forEach(function(b){b.onclick=function(){pics.splice(+b.dataset.rm,1);draw()}})};
+  s.el.querySelector("#tf").onchange=function(e){var fs=[].slice.call(e.target.files).slice(0,4-pics.length);e.target.value="";te.textContent="";Promise.all(fs.map(shrink)).then(function(a){pics=pics.concat(a);draw()}).catch(function(){te.textContent="Не удалось открыть фото"})};
+  s.el.querySelector("#ts").onclick=function(){
+    var c=s.el.querySelector("#tc").value.trim();
+    if(!pics.length){te.textContent="Добавьте хотя бы одно фото";return} if(!c){te.textContent="Напишите комментарий";return}
+    if(!s.el.querySelector("#tk").checked){te.textContent="Отметьте галочку, что задача выполнена";return}
+    var b=this;b.disabled=true;b.innerHTML='<span class="spin"></span> Отправляю…';
+    tasksApi("submit",{id:t.id,report:c,photos:pics}).then(function(j){if(j.ok){upd(j.task);pics.forEach(function(p,i){if(j.task.photos[i])PH[j.task.photos[i]]=p});s.close();toast("Отправлено на проверку ✅");renderTasks()}else{b.disabled=false;b.textContent="Отправить на проверку";te.textContent=tErr(j.error)}});
+  };
+}
+function openReview(t){
+  var s=sheetOpen(taskHead(t)+reportBlock(t)+
+    (t.status==="done"?'<label class="fld"><span>Комментарий (необязательно)</span><textarea id="rc" rows="2" maxlength="1000"></textarea></label><div class="err" id="re"></div><div class="grid2" style="margin-top:4px"><button class="btn" id="ra" style="background:var(--ok)">Принять ✅</button><button class="btn ghost" id="rr">Вернуть</button></div>':'')+
+    (t.status==="approved"?'<button class="btn ghost" id="rr">Вернуть на доработку</button>':'')+
+    '<button class="btn ghost" id="rd" style="color:var(--bad)">Удалить задачу</button>');
+  loadPhotos(s.el);
+  var go=function(ok,btn){var c=s.el.querySelector("#rc");var cm=c?c.value.trim():"";if(!ok&&!cm){cm=window.prompt?(window.prompt("Что исправить?")||""):"";if(!cm)return}btn.disabled=true;tasksApi("review",{id:t.id,ok:ok,comment:cm}).then(function(j){if(j.ok){upd(j.task);s.close();toast(ok?"Принято ✅":"Вернула на доработку");renderTasks()}else{btn.disabled=false;toast(tErr(j.error))}})};
+  var a=s.el.querySelector("#ra"),r=s.el.querySelector("#rr");
+  if(a)a.onclick=function(){go(true,a)}; if(r)r.onclick=function(){go(false,r)};
+  s.el.querySelector("#rd").onclick=function(){if(window.confirm&&!window.confirm("Удалить задачу «"+t.title+"»?"))return;var b=this;b.disabled=true;tasksApi("remove",{id:t.id}).then(function(j){if(j.ok){S.tasks=S.tasks.filter(function(x){return x.id!==t.id});s.close();renderTasks()}else{b.disabled=false;toast(tErr(j.error))}})};
+}
+var CLEAN=[["nuraly","Касса и склад","Протереть кассовую зону и стойку, порядок на складе, проверить ценники"],["marat","Мерчендайзинг зала","Развесить и сложить товар по размерам, протереть пыль на стеллажах. Фото до и после"],["alikhan","Витрины, стёкла и зеркала","Подготовить витрины, протереть стёкла и все зеркала"],["aruzhan","Примерочные и вход","Порядок в примерочных, пыль у входа, аксессуары у кассы"]];
+function renderTasksAdmin(){
+  var td=S.tToday||today5(); if(!S.tDate) S.tDate=td;
+  var ym=ymNow(), all=S.tasks, rev=all.filter(function(t){return t.status==="done"});
+  var day=all.filter(function(t){return t.date===S.tDate});
+  var chips=[[td,"Сегодня"],[addDays(td,1),"Завтра"]];
+  var h='<h1>Задачи</h1><div class="chips">'+chips.map(function(c){return '<button class="chip '+(S.tDate===c[0]?"on":"")+'" data-d="'+c[0]+'">'+c[1]+'</button>'}).join("")+'<input type="date" id="tdp" class="chip" value="'+S.tDate+'"></div>';
+  if(rev.length) h+='<h2>На проверке · '+rev.length+'</h2>'+taskList(rev,true);
+  h+='<h2>'+cap(dayLabel(S.tDate))+'</h2>';
+  if(!day.length) h+='<div class="card muted">Задач на этот день нет</div>';
+  else team().forEach(function(e){var ts=day.filter(function(t){return t.login===e.login});if(ts.length)h+='<div class="kicker" style="margin:14px 2px 0">'+esc(e.name)+' · '+ts.filter(function(t){return t.status==="approved"}).length+'/'+ts.length+'</div>'+taskList(ts,false)});
+  h+='<div class="grid2" style="margin-top:6px"><button class="btn" id="tn">+ Задача</button><button class="btn gold" id="tcl">🧹 Общая уборка</button></div>';
+  var mt=all.filter(function(t){return t.date.slice(0,7)===ym});
+  h+='<h2>Итог за '+monthName(ym)+'</h2><div class="card" style="padding:6px 10px"><table class="tbl"><tr><th>Сотрудник</th><th class="n">Принято</th><th class="n">Бонус</th></tr>'+team().map(function(e){var ts=mt.filter(function(t){return t.login===e.login}),ok=ts.filter(function(t){return t.status==="approved"});return '<tr><td>'+esc(e.name)+'</td><td class="n">'+ok.length+' / '+ts.length+(ts.length&&ok.length===ts.length?' ✅':'')+'</td><td class="n">'+money(ok.reduce(function(s,t){return s+(+t.bonus||0)},0))+'</td></tr>'}).join("")+'</table></div><button class="btn ghost" id="trf">Обновить</button>';
+  $("#view").innerHTML=h; bindTasks();
+  document.querySelectorAll(".chip[data-d]").forEach(function(c){c.onclick=function(){S.tDate=c.dataset.d;renderTasksAdmin()}});
+  $("#tdp").onchange=function(e){if(e.target.value){S.tDate=e.target.value;renderTasksAdmin()}};
+  $("#tn").onclick=function(){openCreate([[team()[0]?team()[0].login:"","",""]])};
+  $("#tcl").onclick=function(){openCreate(CLEAN.map(function(c){return c.slice()}))};
+  $("#trf").onclick=function(){S.tasks=null;renderTasks()};
+}
+function openCreate(rows){
+  var opts=function(sel){return team().map(function(e){return '<option value="'+e.login+'"'+(e.login===sel?" selected":"")+'>'+esc(e.name)+'</option>'}).join("")};
+  var row=function(r,i){return '<div class="card cr" style="padding:12px"><div class="row"><select class="cs">'+opts(r[0])+'<option value="">— не ставить —</option></select><button class="x" data-del="'+i+'" style="margin:0">×</button></div><input class="ct" placeholder="Задача" value="'+esc(r[1])+'"><textarea class="cn" rows="2" placeholder="Подробно (необязательно)">'+esc(r[2])+'</textarea><input class="cb" inputmode="numeric" placeholder="Бонус, ₸ (необязательно)" value="'+(r[3]||"")+'"></div>'};
+  var s=sheetOpen('<h3>Новые задачи</h3><div class="small muted">на '+dayLabel(S.tDate)+'</div><div id="crs"></div><button class="btn ghost" id="cadd">+ Ещё строка</button><div class="err" id="ce"></div><button class="btn" id="csv">Поставить задачи</button>');
+  var read=function(){return [].map.call(s.el.querySelectorAll(".cr"),function(c){return [c.querySelector(".cs").value,c.querySelector(".ct").value,c.querySelector(".cn").value,c.querySelector(".cb").value.replace(/\D/g,"")]})};
+  var draw=function(){var b=s.el.querySelector("#crs");b.innerHTML=rows.map(row).join("");b.querySelectorAll("[data-del]").forEach(function(x){x.onclick=function(){rows=read();rows.splice(+x.dataset.del,1);draw()}})};
+  draw();
+  s.el.querySelector("#cadd").onclick=function(){rows=read();rows.push(["","","",""]);draw()};
+  s.el.querySelector("#csv").onclick=function(){
+    var items=read().filter(function(r){return r[0]&&r[1].trim()}).map(function(r){return {login:r[0],title:r[1].trim(),note:r[2].trim(),bonus:+r[3]||0}});
+    if(!items.length){s.el.querySelector("#ce").textContent="Выберите сотрудника и напишите задачу";return}
+    var b=this;b.disabled=true;b.innerHTML='<span class="spin"></span>';
+    tasksApi("create",{date:S.tDate,items:items}).then(function(j){if(j.ok){S.tasks=S.tasks.concat(j.tasks);s.close();toast("Поставлено задач: "+j.tasks.length+" ✅");renderTasks()}else{b.disabled=false;b.textContent="Поставить задачи";s.el.querySelector("#ce").textContent=tErr(j.error)}});
   };
 }
 
