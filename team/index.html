@@ -117,6 +117,7 @@ nav.tabs svg{width:22px;height:22px}
 .phs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.ph{position:relative;width:84px;height:84px;border-radius:12px;overflow:hidden;background:#EEE8DF;display:flex;align-items:center;justify-content:center;cursor:pointer}.ph img{width:100%;height:100%;object-fit:cover}.ph button{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:12px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:1}
 .fld textarea,.cr input,.cr textarea,.cr select{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;font-size:16px;outline:none;font-family:inherit;margin-top:8px}.cr select{margin-top:0;-webkit-appearance:none;appearance:none}.cr .row{gap:8px}
 input.chip{font-family:inherit;color:var(--ink)}
+.li.hot{background:#FBE9E3;border-left:4px solid #C0392B}.li.hot div{color:#9E2A1E}
 @keyframes s{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -500,7 +501,7 @@ function renderTasks(){
   v.innerHTML=h; bindTasks(); $("#trf").onclick=function(){S.tasks=null;renderTasks()};
 }
 function taskList(ts,showDate){
-  return '<div class="list">'+ts.map(function(t){return '<div class="li" data-tk="'+esc(t.id)+'" style="cursor:pointer"><div style="min-width:0"><div style="font-size:14.5px;font-weight:500">'+esc(t.title)+'</div><div class="small muted">'+(showDate?dayLabel(t.date)+" · ":"")+(S.boot.me.role==="admin"&&showDate?esc(nameOf(t.login)):"")+(t.bonus?(S.boot.me.role==="admin"&&showDate?" · ":"")+"бонус "+money(t.bonus):"")+'</div></div><div class="r">'+badge(t.status)+'</div></div>'}).join("")+'</div>';
+  return '<div class="list">'+ts.map(function(t){var hot=/^🔴/.test(t.title)&&t.status!=="approved";return '<div class="li'+(hot?' hot':'')+'" data-tk="'+esc(t.id)+'" style="cursor:pointer"><div style="min-width:0"><div style="font-size:14.5px;font-weight:'+(hot?700:500)+'">'+esc(t.title)+'</div><div class="small muted">'+(showDate?dayLabel(t.date)+" · ":"")+(S.boot.me.role==="admin"&&showDate?esc(nameOf(t.login)):"")+(t.bonus?(S.boot.me.role==="admin"&&showDate?" · ":"")+"бонус "+money(t.bonus):"")+'</div></div><div class="r">'+badge(t.status)+'</div></div>'}).join("")+'</div>';
 }
 function bindTasks(){document.querySelectorAll("[data-tk]").forEach(function(r){r.onclick=function(){var t=S.tasks.filter(function(x){return x.id===r.dataset.tk})[0];if(t)openTask(t)}})}
 function sheetOpen(html){var v=document.createElement("div");v.className="veil";v.innerHTML='<div class="sheet"><button class="x" aria-label="Закрыть">×</button>'+html+'</div>';document.body.appendChild(v);var c=function(){v.remove()};v.querySelector(".x").onclick=c;v.onclick=function(e){if(e.target===v)c()};return {el:v,close:c}}
