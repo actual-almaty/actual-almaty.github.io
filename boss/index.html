@@ -722,6 +722,7 @@ function payrollRange(from, to){
     const sales = (r ? r.sales : 0) + adj, returns = (r ? r.returns : 0) - adj, shifts = r ? r.shifts : 0;
     const pl = planOf(from.slice(0,7));
     let ptd = 0; if (pl && (r || adj)) { const mp = num(pl.monthly?.[e.id]?.total); if (mp && from.slice(0,7) === to.slice(0,7) && from.endsWith("-01") && to === lastDay(from.slice(0,7))) ptd = mp; else for (const [ds, d] of Object.entries(pl.days||{})) if (ds >= from && ds <= to) ptd += num(d.emp?.[e.id]); }
+    if (e.active === "Не работает" && num(e.monthPlan) && e.end && from.slice(0,7) === String(e.end).slice(0,7) && (r || adj)) ptd = num(e.monthPlan); // уволенный: бонус только от плана на весь месяц
     let pct = num(e.percent), exec = null;
     if (ptd){ exec = sales / ptd * 100; pct = tierRate(pl, exec); }
     const pctPay = Math.max(0, sales) * pct / 100;
