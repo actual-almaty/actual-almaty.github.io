@@ -43,7 +43,7 @@ for (const page of $('Загрузить товары Paloma365').all()) {
     const c = m.colors[color] || (m.colors[color] = { name: color, images: [], sizes: [], alias: [] });
     if (rawColor && !c.alias.includes(rawColor.toLowerCase())) c.alias.push(rawColor.toLowerCase());
     const pics = (Array.isArray(r.image_urls) && r.image_urls.length ? r.image_urls : [r.image_url]).filter(Boolean);
-    if (pics.length) { m.hasImg = true; for (const u of pics) if (!c.images.includes(u)) c.images.push(u); }
+    if (pics.length) { m.hasImg = true; const uniq = [...new Set(pics)]; if (uniq.length > c.images.length) c.images = uniq; } // фото одного размера, без дублей с других размеров
     const price = Number(r.price || 0);
     if (price > 0) m.prices.push(price);
     c.sizes.push({ s: size || 'ONE', id: String(r.id), qty: stock[String(r.id)] || 0, price });
@@ -65,11 +65,10 @@ for (const m of Object.values(models)) {
   if (colors.length > 1) colors = colors.filter(c => c.name) .length ? colors.filter(c => c.name) : colors;
   if (ex.length) for (const c of colors) { const names = [c.name.toLowerCase(), ...(c.alias || [])].filter(Boolean); const mine = ex.filter(e => !e.color || names.some(n => n.includes(e.color) || e.color.includes(n)) || (COLOR_RU[e.color] && COLOR_RU[e.color] === c.name)).map(e => e.url); if (mine.length) c.images = [...new Set([...mine, ...c.images])]; }
   for (const c of colors) {
-    if (!c.images.length) c.images = fallback.slice(0, 1);
     const seen = new Set();
     c.sizes = c.sizes.slice().sort((a, b) => b.qty - a.qty).filter(s => !seen.has(s.s) && seen.add(s.s)).sort((a, b) => rank(a.s) - rank(b.s));
   }
-  colors.sort((a, b) => b.sizes.reduce((n, s) => n + s.qty, 0) - a.sizes.reduce((n, s) => n + s.qty, 0));
+  colors.sort((a, b) => (b.images.length ? 1 : 0) - (a.images.length ? 1 : 0) || b.sizes.reduce((n, s) => n + s.qty, 0) - a.sizes.reduce((n, s) => n + s.qty, 0)); // цвета с фото первыми; чужое фото другому цвету не ставим
   const wl = ORDER.filter(z => m.waist[z]).map(z => `${z} — ${m.waist[z]}`);
   if (PANTS.has(m.type) && wl.length > 1 && new Set(Object.values(m.waist)).size > 1 && !m.desc) m.desc = 'Размеры по талии: ' + wl.join(', ');
   out.push({ json: {

@@ -91,6 +91,7 @@ main{max-width:1200px;margin:0 auto;padding:18px 14px 80px}
 .ok .num{font-family:var(--serif);font-size:34px;margin:6px 0}
 footer{border-top:1px solid var(--line);padding:28px 18px 40px;text-align:center;font-size:12px;line-height:1.9;color:var(--ink2)}
 footer a{text-decoration:none}
+.nophoto{display:flex;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;width:100%;background:#f2f2f2;color:#777;font-size:14px;line-height:1.5;padding:20px;box-sizing:border-box}
 </style>
 </head>
 <body>
@@ -179,12 +180,12 @@ function product(p){
   const c = p.colors[state.color] || p.colors[0];
   const one = c.sizes.every(s => s.s === "ONE"), shoes = SHOES.has(p.type);
   if (one) state.size = "ONE";
-  const imgs = (c.images && c.images.length) ? c.images : [p.img];
+  const imgs = (c.images && c.images.length) ? c.images : [];
   const price = (c.sizes.find(s => s.s === state.size) || c.sizes[0] || {}).price || p.price;
   $("#main").innerHTML = `
   <button class="back" id="back">← Каталог</button>
   <div class="pd">
-    <div class="gal"><div class="slides" id="slides">${imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.title)}">`).join("")}</div>
+    <div class="gal"><div class="slides" id="slides">${imgs.length?imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div>
       ${imgs.length>1?`<div class="pager" id="pager">${imgs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}</div>
     <div class="info">
