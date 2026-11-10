@@ -296,11 +296,12 @@ function storiesHTML(){
 }
 function list(){
   document.body.classList.remove("pdp");
-  const heroes = PRODUCTS.filter(p => p.pics.length >= 4 && p.stock > 0).sort((a,b)=>b.pics.length-a.pics.length).slice(0, 5);
+  const HERO = [["p/mt-40626/4.jpg","mt-40626"],["p/ms-161-1/1.jpg","m-161-1"],["p/mt-40626/5.jpg","mt-40626"],["p/mt-40626/7.jpg","mt-40626"]];
+  const heroes = HERO.map(([src,k]) => ({ src: "/" + src, p: PRODUCTS.find(x => x.key === k) })).filter(h => h.p);
   const picks = PRODUCTS.filter(p => p.pics.length >= 2 && p.stock > 0).sort((a,b) => b.price - a.price).slice(0, 8);
-  const shopImg = (heroes[1] || heroes[0] || {}).pics?.[3] || "";
+  const shopImg = "/p/brand/store-entrance.jpg";
   $("#main").innerHTML = `
-  <div class="hero" id="hero">${heroes.map((p,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(p.key)}"><img src="${esc(p.pics[p.pics.length>3?3:0])}" alt="${esc(p.title)}"></a>`).join("")}
+  <div class="hero" id="hero">${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}"><img src="${esc(h.src)}" alt="${esc(h.p.title)}"></a>`).join("")}
     <div class="cap"><div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br><em>style.</em></h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
     <div class="hdots">${heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция <b>✦</b></span><span>Доставка по Алматы в день заказа <b>✦</b></span><span>Примерка в Riviera Park <b>✦</b></span><span>Казпочта и СДЭК по Казахстану <b>✦</b></span>`).join("")}</div></div>
