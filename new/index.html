@@ -195,6 +195,46 @@ footer a{color:var(--gold2)}
 .close{float:right;border:0;background:var(--card);width:36px;height:36px;border-radius:50%;margin:-8px -6px 0 0;cursor:pointer;font-size:18px}
 .res{margin-top:16px;padding:16px;border-radius:16px;border:1px solid var(--gold);font-size:15px;line-height:1.55}
 .nophoto{display:flex;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;width:100%;background:var(--card);color:var(--ink2);font-size:14px;line-height:1.6;padding:24px}
+/* favorites */
+.fav{position:absolute;right:10px;top:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:0;background:rgba(11,11,11,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:transform .3s var(--ease)}
+.fav svg{width:17px;height:17px}
+.fav.on{color:#E8556B}.fav.on svg{fill:currentColor}
+.fav.pop{animation:pop .45s var(--ease)}
+@keyframes pop{40%{transform:scale(1.35)}}
+.info .fav{position:static;width:44px;height:44px;background:var(--bg2);border:1px solid var(--line);flex:none}
+.ttl{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+/* reels */
+.reelbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--gold);background:none;color:var(--gold2);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.reelbtn svg{width:12px;height:12px}
+.reels{position:fixed;inset:0;z-index:70;background:#000;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.reels::-webkit-scrollbar{display:none}
+.reel{position:relative;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s}
+.reel.on img.cur{animation:kb 7s linear forwards}
+.reel:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,0) 25%,rgba(0,0,0,0) 55%,rgba(0,0,0,.85));pointer-events:none}
+.reel .pb{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;z-index:3;display:flex;gap:4px}
+.reel .pb i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}
+.reel .pb i.done{background:#fff}
+.reel .pb i.cur:after{content:"";display:block;height:100%;background:#fff;transform-origin:left;animation:fillx 3.5s linear forwards}
+@keyframes fillx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.reel .tap{position:absolute;top:0;bottom:30%;width:35%;z-index:2}
+.reel .tap.l{left:0}.reel .tap.r{right:0}
+.reel .meta{position:absolute;left:16px;right:84px;bottom:calc(28px + env(safe-area-inset-bottom));z-index:3}
+.reel .meta .cat{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2)}
+.reel .meta h3{margin:8px 0 4px;font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05}
+.reel .meta .pr{font-family:var(--serif);font-size:22px}
+.reel .meta .cl{margin-top:6px;font-size:12px;color:rgba(255,255,255,.7)}
+.reel .meta .go{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;background:var(--ink);color:#000;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.reel .side{position:absolute;right:12px;bottom:calc(36px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;gap:18px;align-items:center}
+.reel .side button,.reel .side a{width:50px;height:50px;border-radius:50%;border:0;background:rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer}
+.reel .side svg{width:22px;height:22px}
+.reel .side .on{color:#E8556B}.reel .side .on svg{fill:currentColor}
+.reel .side small{display:block;font-size:10px;text-align:center;margin-top:4px;color:rgba(255,255,255,.8)}
+.rclose{position:fixed;top:calc(22px + env(safe-area-inset-top));right:12px;z-index:75;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);color:#fff;font-size:20px;cursor:pointer}
+.rhint{position:fixed;left:50%;bottom:45%;transform:translateX(-50%);z-index:75;padding:10px 16px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);font-size:12px;letter-spacing:.06em;pointer-events:none;animation:hint 2.6s forwards}
+@keyframes hint{0%,70%{opacity:1}100%{opacity:0}}
+/* brand video */
+.bvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
 </style>
 </head>
@@ -216,6 +256,7 @@ footer a{color:var(--gold2)}
 </footer>
 <nav class="dock" id="dock">
 <a href="#" id="dHome" class="on" aria-label="Каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>Каталог</a>
+<button id="dReels" aria-label="Reels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="4"/><path d="M10 9v6l5-3z" fill="currentColor"/></svg></button>
 <a href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener" aria-label="Бутик"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></a>
 <a href="#" id="waTop" class="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>Написать</a>
 </nav>
@@ -277,22 +318,34 @@ const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b)
 let state = { type: "", q: "", color: 0, size: null };
 let heroTimer = null, io = null;
 
+const ICON_HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 4 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.3 0 5.7 3.1 4.5 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>`;
+const buzz = (ms=8) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} };
+let FAV = []; try { FAV = JSON.parse(localStorage.getItem("a_fav") || "[]"); } catch(e) {}
+const isFav = k => FAV.includes(k);
+function toggleFav(k, btn){
+  FAV = isFav(k) ? FAV.filter(x => x !== k) : [k, ...FAV]; try { localStorage.setItem("a_fav", JSON.stringify(FAV)); } catch(e) {}
+  buzz(isFav(k) ? 15 : 6);
+  document.querySelectorAll(`[data-fav="${CSS.escape(k)}"]`).forEach(b => { b.classList.toggle("on", isFav(k)); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); });
+  if (isFav(k)) track({ t: "fav", k });
+  const st = document.querySelector('.st[data-t="♥"]'); if (!st && FAV.length && $("#stories")) { $("#stories").outerHTML = storiesHTML(); bindStories(); }
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-fav]"); if (b) { e.preventDefault(); e.stopPropagation(); toggleFav(b.dataset.fav, b); } }, true);
 const ICON_WA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>`;
 const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
 
 function tile(p, cls){
   const a = p.pics[0] || p.img, b = p.pics[1];
-  return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img class="a" loading="lazy" src="${esc(a)}" alt="${esc(p.title)}">${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
+  return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img class="a" loading="lazy" src="${esc(a)}" alt="${esc(p.title)}">${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
 }
 function gridHTML(){
   const q = state.q.trim().toLowerCase();
-  const ps = PRODUCTS.filter(p => (!state.type || p.type === state.type) && (!q || (p.title + " " + p.type + " " + p.colors.map(c=>c.name).join(" ")).toLowerCase().includes(q)));
+  const ps = PRODUCTS.filter(p => (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type + " " + p.colors.map(c=>c.name).join(" ")).toLowerCase().includes(q)));
   if (!ps.length) return `<div class="empty">Ничего не нашли.<br>Напишите нам в <a href="${wa("Здравствуйте! Ищу на сайте: " + state.q)}" target="_blank" rel="noopener">WhatsApp</a> — подберём вещь.</div>`;
   return `<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`;
 }
 function storiesHTML(){
   const one = t => PRODUCTS.find(p => p.type === t && p.pics.length);
-  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">All</div></div></div><span>Все</span></button>${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
+  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">All</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#E8556B">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
 }
 function list(){
   document.body.classList.remove("pdp");
@@ -305,19 +358,52 @@ function list(){
     <div class="cap"><div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br><em>style.</em></h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
     <div class="hdots">${heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция <b>✦</b></span><span>Доставка по Алматы в день заказа <b>✦</b></span><span>Примерка в Riviera Park <b>✦</b></span><span>Казпочта и СДЭК по Казахстану <b>✦</b></span>`).join("")}</div></div>
-  <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small>Листайте →</small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
-  <section id="cat"><div class="sh"><h2>Каталог</h2><small id="cnt"></small></div>${storiesHTML()}
+  <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
+  <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
     <div id="grid">${gridHTML()}</div></section>
-  <div class="bout">${shopImg?`<img loading="lazy" src="${esc(shopImg)}" alt="">`:""}<div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
+  <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
   <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
   bindList(); startHero(); observe(); count();
 }
-function count(){ const n = $("#grid").querySelectorAll(".tile").length; if ($("#cnt")) $("#cnt").textContent = n ? `${n} ${plural(n,"модель","модели","моделей")}` : ""; }
+function count(){ const n = $("#grid").querySelectorAll(".tile").length; if ($("#cnt")) $("#cnt").textContent = `${PRODUCTS.length} ${plural(PRODUCTS.length,"модель","модели","моделей")} →`; }
 function bindList(){
   $("#toCat").onclick = () => $("#cat").scrollIntoView({ behavior: "smooth" });
-  $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type || "Все" }); });
+  bindStories();
+  $("#reelGo").onclick = () => openReels(0);
   let tm; $("#q").oninput = e => { state.q = e.target.value; clearTimeout(tm); tm = setTimeout(() => { $("#grid").innerHTML = gridHTML(); observe(); count(); }, 180); };
+}
+function bindStories(){ $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type || "Все" }); }); }
+/* Reels-режим: вертикальная лента товаров на весь экран */
+let reelTimer = null;
+function reelList(){ const q = state.q.trim().toLowerCase(); return PRODUCTS.filter(p => p.pics.length && p.stock > 0 && (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type).toLowerCase().includes(q))); }
+function openReels(start){
+  const ps = reelList(); if (!ps.length) return;
+  buzz(10); track({ t: "reels" });
+  const box = document.createElement("div"); box.className = "reels"; box.id = "reels";
+  box.innerHTML = ps.map((p,i) => `<div class="reel" data-i="${i}" data-k="${esc(p.key)}" data-n="0">
+    <div class="pb">${p.pics.slice(0,6).map((_,j)=>`<i class="${j?"":"cur"}"></i>`).join("")}</div>
+    <img class="cur" ${i>1?'loading="lazy"':""} src="${esc(p.pics[0])}" alt="${esc(p.title)}">
+    <div class="tap l"></div><div class="tap r"></div>
+    <div class="side"><div><button class="${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button><small>Нравится</small></div>
+      <div><a href="${wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}`)}" target="_blank" rel="noopener" data-wa="${esc(p.key)}">${ICON_WA}</a><small>Спросить</small></div>
+      <div><button data-share="${esc(p.key)}" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></button><small>Отправить</small></div></div>
+    <div class="meta"><div class="cat">${esc(p.type||"ACTUAL")}</div><h3>${esc(p.title)}</h3><div class="pr">${fmt(p.price)}</div>${p.colors.length>1?`<div class="cl">${p.colors.map(c=>esc(c.name)).join(" · ")}</div>`:""}<a class="go" href="#p=${encodeURIComponent(p.key)}">Выбрать размер →</a></div></div>`).join("");
+  document.body.appendChild(box); document.body.style.overflow = "hidden";
+  const x = document.createElement("button"); x.className = "rclose"; x.id = "rclose"; x.innerHTML = "×"; x.setAttribute("aria-label","Закрыть"); document.body.appendChild(x);
+  const h = document.createElement("div"); h.className = "rhint"; h.textContent = "Листайте вверх ↑  ·  тап — следующее фото"; document.body.appendChild(h); setTimeout(() => h.remove(), 2700);
+  const close = () => { clearInterval(reelTimer); box.remove(); x.remove(); document.body.style.overflow = ""; };
+  x.onclick = close;
+  box.querySelectorAll(".go").forEach(a => a.addEventListener("click", close));
+  const show = (r, n) => { const p = ps[+r.dataset.i], k = Math.min(p.pics.length, 6); n = (n + k) % k; r.dataset.n = n; const im = r.querySelector("img"); im.classList.remove("cur"); void im.offsetWidth; im.src = p.pics[n]; im.classList.add("cur"); r.querySelectorAll(".pb i").forEach((b,j) => { b.className = j < n ? "done" : (j === n ? "cur" : ""); }); };
+  box.querySelectorAll(".reel").forEach(r => { r.querySelector(".tap.r").onclick = () => { buzz(4); show(r, +r.dataset.n + 1); }; r.querySelector(".tap.l").onclick = () => { buzz(4); show(r, +r.dataset.n - 1); }; });
+  box.querySelectorAll("[data-wa]").forEach(a => a.addEventListener("click", function(){ const p = PRODUCTS.find(x => x.key === this.dataset.wa), o = rid(4).toUpperCase(); this.href = wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}
+Код: ${o}`); track({ t: "wa", k: p.key, n: p.title, p: p.price, o }); flush(); }));
+  box.querySelectorAll("[data-share]").forEach(b => b.onclick = async () => { const p = PRODUCTS.find(x => x.key === b.dataset.share), url = location.origin + location.pathname + "#p=" + encodeURIComponent(p.key); try { if (navigator.share) await navigator.share({ title: p.title, text: `${p.title} — ${fmt(p.price)}`, url }); else { await navigator.clipboard.writeText(url); b.parentNode.querySelector("small").textContent = "Скопировано"; } } catch(e) {} });
+  let cur = null;
+  const ob = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && e.intersectionRatio > .6) { if (cur) cur.classList.remove("on"); cur = e.target; cur.classList.add("on"); clearInterval(reelTimer); const p = ps[+cur.dataset.i]; track({ t: "view", k: p.key, n: p.title }); if (p.pics.length > 1) reelTimer = setInterval(() => { if (!document.body.contains(cur)) return clearInterval(reelTimer); show(cur, +cur.dataset.n + 1); }, 3500); } }), { root: box, threshold: [.6] });
+  box.querySelectorAll(".reel").forEach(r => ob.observe(r));
+  if (start) box.querySelector(`.reel[data-i="${start}"]`)?.scrollIntoView();
 }
 function startHero(){
   clearInterval(heroTimer);
@@ -349,7 +435,7 @@ function product(p){
       <div class="slides" id="slides">${imgs.length?imgs.map((u,i) => `<img ${i?'loading="lazy"':""} src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div></div>
     <div class="info">
       <div class="cat">${esc(p.type||"ACTUAL")}</div>
-      <h1>${esc(p.title)}</h1>
+      <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
       ${p.code?`<div class="code">Артикул ${esc(p.code)}</div>`:""}
       <div class="price">${fmt(price)}</div>
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}
@@ -370,7 +456,7 @@ function product(p){
   $("#back").onclick = () => { history.length > 1 && document.referrer.includes(location.host) ? history.back() : (location.hash = ""); };
   if ($("#fit")) $("#fit").onclick = () => fitSheet(p, c);
   document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; const y = scrollY; product(p); scrollTo(0, y); });
-  document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { state.size = b.dataset.s; const y = scrollY; product(p); scrollTo(0, y); });
+  document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { buzz(); state.size = b.dataset.s; const y = scrollY; product(p); scrollTo(0, y); });
   const sl = $("#slides"), br = $("#bars");
   if (sl && br) sl.addEventListener("scroll", () => { const i = Math.round(sl.scrollLeft / sl.clientWidth); br.querySelectorAll("i").forEach((d,k)=>d.classList.toggle("on",k<=i)); }, {passive:true});
 }
@@ -410,6 +496,7 @@ addEventListener("scroll", () => {
   lastY = y;
 }, { passive: true });
 $("#srchTop").onclick = () => { if (location.hash) { location.hash = ""; setTimeout(() => $("#q") && $("#q").focus(), 350); } else { $("#cat").scrollIntoView({ behavior: "smooth" }); setTimeout(() => $("#q").focus({ preventScroll: true }), 500); } };
+$("#dReels").onclick = () => openReels(0);
 $("#dHome").onclick = e => { e.preventDefault(); if (location.hash) location.hash = ""; else $("#cat").scrollIntoView({ behavior: "smooth" }); };
 
 let lastView = "", listY = 0;
