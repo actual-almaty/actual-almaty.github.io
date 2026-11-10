@@ -272,6 +272,13 @@ footer a{color:#fff}
 .duo .sum{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px;color:var(--ink2)}
 .duo .sum b{font-weight:800;font-size:22px;color:var(--ink)}
 .duo .btn{margin-top:10px;width:100%}
+.curb{height:32px;min-width:44px;padding:0 10px;border-radius:999px;border:1.5px solid var(--ink);background:none;font-weight:700;font-size:13px;cursor:pointer}
+.curs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.curs button{height:56px;border-radius:14px;border:1.5px solid transparent;background:var(--bg2);font-weight:600;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.curs button b{font-weight:800}
+.curs button.on{border-color:var(--ink);background:#fff}
+.fx{margin-top:6px;font-size:12px;line-height:1.5;color:var(--ink2)}
+.fx b{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
 </style>
 </head>
@@ -281,7 +288,7 @@ footer a{color:#fff}
 <div class="bar">
 <a class="ib" href="https://instagram.com/actual.almaty" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
 <a class="logo" href="#">ACTUAL</a>
-<button class="ib" id="srchTop" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></button>
+<div style="display:flex;align-items:center"><button class="curb" id="curBtn" aria-label="Валюта">₸</button><button class="ib" id="srchTop" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></button></div>
 </div>
 </header>
 <main id="main"></main>
@@ -301,12 +308,22 @@ footer a{color:#fff}
 
 <script>
 const DATA = __DATA__;
+const RATES = __RATES__;
 const SHOP_WA = "77776111082";
 const SHOES = new Set(["Ботинки","Кеды","Челси","Кроссовки","Туфли","Лоферы","Сапоги","Мокасины","Обувь","Слипоны"]);
 const MODEL_NOTE = "Модель на фото: рост 175 см, вес 70 кг, носит M или L";
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmt = n => String(Math.round(+n||0)).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₸";
+const grp = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const fmtT = n => grp(Math.round(+n||0)) + " ₸";
+/* Валюта показа цен: тенге, рубли, доллары и др. по курсу Нацбанка РК (обновляется при каждом обновлении сайта) */
+const CUR = { KZT: { s: "₸", n: "Тенге" }, RUB: { s: "₽", n: "Рубли", r: 10 }, USD: { s: "$", n: "Доллары", r: 1 }, EUR: { s: "€", n: "Евро", r: 1 }, KGS: { s: "сом", n: "Сомы", r: 10 }, UZS: { s: "сум", n: "Сумы", r: 1000 } };
+Object.keys(CUR).forEach(k => { if (k !== "KZT" && !(RATES && RATES[k] > 0)) delete CUR[k]; });
+let cur = "KZT";
+try { cur = localStorage.getItem("a_cur") || ""; } catch(e) {}
+if (!CUR[cur]) { const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || ""); cur = /Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay/.test(tz) ? "KZT" : (/Moscow|Samara|Yekaterinburg|Novosibirsk|Omsk|Krasnoyarsk|Irkutsk|Yakutsk|Vladivostok|Kaliningrad|Volgograd|Saratov|Ulyanovsk|Kirov|Astrakhan|Barnaul|Tomsk|Novokuznetsk|Chita|Magadan|Kamchatka|Sakhalin/.test(tz) && CUR.RUB ? "RUB" : (/Bishkek/.test(tz) && CUR.KGS ? "KGS" : (/Tashkent|Samarkand/.test(tz) && CUR.UZS ? "UZS" : (tz && !/Asia\/(Almaty|Qyzylorda)/.test(tz) && CUR.USD ? "USD" : "KZT")))); }
+const conv = n => { if (cur === "KZT") return Math.round(+n||0); const c = CUR[cur]; return Math.ceil((+n||0) / RATES[cur] / c.r) * c.r; };
+const fmt = n => cur === "KZT" ? fmtT(n) : (cur === "USD" ? "$" + grp(conv(n)) : cur === "EUR" ? "€" + grp(conv(n)) : grp(conv(n)) + " " + CUR[cur].s);
 const wa = text => "https://wa.me/" + SHOP_WA + "?text=" + encodeURIComponent(text);
 const TRACK = "https://actual.app.n8n.cloud/webhook/shop-track";
 const rid = n => { const a = "abcdefghijkmnpqrstuvwxyz23456789"; let r = ""; try { crypto.getRandomValues(new Uint8Array(n)).forEach(b => r += a[b % 32]); } catch(e) { for (let i = 0; i < n; i++) r += a[Math.floor(Math.random() * 32)]; } return r; };
@@ -454,7 +471,7 @@ function openReels(start){
     <img class="cur" ${i>1?'loading="lazy"':""} src="${esc(p.pics[0])}" alt="${esc(p.title)}">
     <div class="tap l"></div><div class="tap r"></div>
     <div class="side"><div><button class="${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button><small>Нравится</small></div>
-      <div><a href="${wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}`)}" target="_blank" rel="noopener" data-wa="${esc(p.key)}">${ICON_WA}</a><small>Спросить</small></div>
+      <div><a href="${wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmtT(p.price)}`)}" target="_blank" rel="noopener" data-wa="${esc(p.key)}">${ICON_WA}</a><small>Спросить</small></div>
       <div><button data-share="${esc(p.key)}" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></button><small>Отправить</small></div></div>
     <div class="meta"><div class="cat">${esc(p.type||"ACTUAL")}</div><h3>${esc(p.title)}</h3><div class="pr">${fmt(p.price)}</div>${p.colors.length>1?`<div class="cl">${p.colors.map(c=>esc(c.name)).join(" · ")}</div>`:""}<a class="go" href="#p=${encodeURIComponent(p.key)}">Выбрать размер →</a></div></div>`).join("");
   document.body.appendChild(box); document.body.style.overflow = "hidden";
@@ -505,7 +522,7 @@ function product(p){
       <div class="cat">${esc(p.type||"ACTUAL")}</div>
       <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
       ${p.code?`<div class="code">Артикул ${esc(p.code)}</div>`:""}
-      <div class="price">${fmt(price)}</div>
+      <div class="price">${fmt(price)}</div>${cur!=="KZT"?`<div class="fx"><b>${fmtT(price)}</b> · по курсу Нацбанка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата в тенге; при отправке за границу добавляется ~1 $ за конвертацию.</div>`:""}
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}
       ${p.colors.length>1?`<div class="lbl">Цвет · ${esc(c.name)}</div><div class="colors">${p.colors.map((x,i)=>`<button class="color ${i===state.color?"on":""}" data-i="${i}">${x.images&&x.images[0]?`<img src="${esc(x.images[0])}" alt="">`:`<span class="nx"></span>`}${esc(x.name||"—")}</button>`).join("")}</div>`:(c.name?`<div class="lbl">Цвет · ${esc(c.name)}</div>`:"")}
       ${one?"":`<div class="lbl">Размер ${shoes?"":`<button id="fit">Подобрать размер</button>`}</div>
@@ -519,11 +536,11 @@ function product(p){
     </div>
   </div>
   ${similar.length?`<section class="more"><div class="sh"><h2>Вам может <em>понравиться</em></h2></div><div class="rail">${similar.map(x => tile(x)).join("")}</div></section>`:""}`;
-  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmt(price)}\n${location.href}`;
+  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
   $("#waAsk").href = wa(askText);
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
   if ($("#duoGo")) { let pick = duoFor(p)[0];
-    const upd = () => { $("#duoSum").textContent = fmt(price + pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmt(price)}\n2) ${pick.title} — ${fmt(pick.price)} (размер подскажите)\nИтого: ${fmt(price + pick.price)}`); };
+    const upd = () => { $("#duoSum").textContent = fmt(price + pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmtT(price)}\n2) ${pick.title} — ${fmtT(pick.price)} (размер подскажите)\nИтого: ${fmtT(price + pick.price)}`); };
     document.querySelectorAll(".duo .opt").forEach(b => b.onclick = () => { buzz(); pick = PRODUCTS.find(x => x.key === b.dataset.k); document.querySelectorAll(".duo .opt").forEach(x => x.classList.toggle("on", x === b)); upd(); });
     upd(); $("#duoGo").addEventListener("click", function(){ const o = rid(4).toUpperCase(); this.href += encodeURIComponent("\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title + " + " + pick.title, c: c.name||"", z: state.size||"", p: price + pick.price, o }); flush(); }); }
   $("#back").onclick = () => { history.length > 1 && document.referrer.includes(location.host) ? history.back() : (location.hash = ""); };
@@ -573,6 +590,12 @@ $("#srchTop").onclick = () => { if (location.hash) { location.hash = ""; setTime
 $("#dReels").onclick = () => openReels(0);
 $("#dHome").onclick = e => { e.preventDefault(); if (location.hash) location.hash = ""; else $("#cat").scrollIntoView({ behavior: "smooth" }); };
 
+function curSheet(){
+  openSheet(`<h2>Валюта</h2><div class="sub">Цены пересчитываются по курсу Национального банка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата — в тенге. При отправке за границу добавляется ~1 $ за конвертацию.</div><div class="curs">${Object.entries(CUR).map(([k,v]) => `<button class="${k===cur?"on":""}" data-c="${k}"><b>${v.s}</b>${v.n}</button>`).join("")}</div>`);
+  document.querySelectorAll(".curs button").forEach(b => b.onclick = () => { cur = b.dataset.c; try { localStorage.setItem("a_cur", cur); } catch(e) {} buzz(); closeSheet(); $("#curBtn").textContent = CUR[cur].s; track({ t: "cur", n: cur }); const y = scrollY; render(); scrollTo(0, y); });
+}
+$("#curBtn").textContent = CUR[cur].s;
+$("#curBtn").onclick = curSheet;
 let lastView = "", listY = 0;
 function render(){
   if (location.hash === "#c=great-steppe") { const go = () => { lastView = ""; gsPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "great-steppe", n: "Коллекция The Great Steppe" }); }; if (document.startViewTransition) document.startViewTransition(go); else go(); return; }

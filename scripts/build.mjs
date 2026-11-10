@@ -176,13 +176,26 @@ if (!stock) {
 
 rows.sort((a, b) => String(a.title).localeCompare(String(b.title), 'ru'));
 const data = JSON.stringify(rows.map(r => ({ model_key: r.model_key, title: r.title, category_id: r.category_id, price: r.price, image_url: r.image_url, variants: r.variants }))).replace(/</g, '\\u003c');
-const html = fs.readFileSync('scripts/template.html', 'utf8').replace('__DATA__', () => data);
+// Курсы валют Нацбанка РК (тенге за 1 единицу) для цен в рублях, долларах, евро и т.д.
+let RATES = null;
+try {
+  const d = new Date(Date.now() + 5 * 3600e3), dd = String(d.getUTCDate()).padStart(2, '0') + '.' + String(d.getUTCMonth() + 1).padStart(2, '0') + '.' + d.getUTCFullYear();
+  const xml = await (await fetch('https://nationalbank.kz/rss/get_rates.cfm?fdate=' + dd, { signal: AbortSignal.timeout(15000) })).text();
+  const r = {};
+  for (const m of xml.matchAll(/<item>\s*<fullname>[\s\S]*?<\/fullname>\s*<title>([A-Z]{3})<\/title>\s*<description>([\d.]+)<\/description>\s*<quant>(\d+)<\/quant>/g)) r[m[1]] = +(+m[2] / +m[3]).toFixed(4);
+  if (!r.USD) for (const m of xml.matchAll(/<title>([A-Z]{3})<\/title>\s*<description>([\d.]+)<\/description>\s*<quant>(\d+)<\/quant>/g)) r[m[1]] = +(+m[2] / +m[3]).toFixed(4);
+  if (r.USD && r.RUB) RATES = { date: dd, USD: r.USD, RUB: r.RUB, EUR: r.EUR, KGS: r.KGS, UZS: r.UZS };
+  console.log('Курсы НБ РК на', dd, RATES ? `USD ${RATES.USD}, RUB ${RATES.RUB}` : 'не получены');
+} catch (e) { console.log('Курсы не получены:', e.message); }
+if (!RATES) { try { RATES = JSON.parse(fs.readFileSync('index.html', 'utf8').match(/const RATES = (\{.*?\});/)[1]); console.log('Беру прошлые курсы на', RATES.date); } catch (e) { RATES = { date: '', USD: 0, RUB: 0 }; } }
+const ratesJson = JSON.stringify(RATES);
+const html = fs.readFileSync('scripts/template.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson);
 const old = fs.existsSync('index.html') ? fs.readFileSync('index.html', 'utf8') : '';
 
 // Предпросмотр нового дизайна: /new/ (тот же каталог, другой шаблон)
 if (fs.existsSync('scripts/template-new.html')) {
   fs.mkdirSync('new', { recursive: true });
-  const nh = fs.readFileSync('scripts/template-new.html', 'utf8').replace('__DATA__', () => data);
+  const nh = fs.readFileSync('scripts/template-new.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson);
   if (!fs.existsSync('new/index.html') || fs.readFileSync('new/index.html', 'utf8') !== nh) fs.writeFileSync('new/index.html', nh);
 }
 if (old === html) { console.log('Изменений нет'); } else { fs.writeFileSync('index.html', html); console.log('Сайт обновлён, моделей:', rows.length); }
