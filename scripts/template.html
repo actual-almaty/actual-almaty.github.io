@@ -235,6 +235,44 @@ footer a{color:var(--gold2)}
 @keyframes hint{0%,70%{opacity:1}100%{opacity:0}}
 /* brand video */
 .bvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
+/* THE GREAT STEPPE */
+.gs{position:relative;margin:56px 0 0;overflow:hidden;background:linear-gradient(180deg,#1A120A 0%,#3B2614 38%,#8A5A2B 70%,#C99556 100%);color:#F6EBD9;isolation:isolate}
+.gs.page{margin:0;min-height:100svh;padding-top:62px}
+.gs .sun{position:absolute;left:50%;top:22%;width:min(70vw,420px);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#F4C56E 0%,#E59A3C 45%,rgba(229,154,60,0) 70%);opacity:.85;filter:blur(2px);z-index:-1;animation:sun 9s ease-in-out infinite alternate}
+@keyframes sun{to{transform:translate(-50%,10px) scale(1.05)}}
+.gs .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;z-index:-1}
+.gs .wind{position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(100deg,rgba(255,255,255,0) 0 60px,rgba(255,240,210,.05) 60px 61px);animation:wind 6s linear infinite}
+@keyframes wind{to{background-position:240px 0}}
+.gs .in{position:relative;max-width:1100px;margin:0 auto;padding:70px 20px 40px}
+.gs .kz{font-family:var(--serif);font-style:italic;font-size:20px;color:#F4C56E}
+.gs h2{margin:6px 0 0;font-family:var(--sans);font-weight:800;font-size:clamp(44px,14vw,130px);line-height:.86;letter-spacing:-.03em;text-transform:uppercase}
+.gs h2 span{display:block;-webkit-text-stroke:1.5px #F6EBD9;color:transparent}
+.gs .orn{display:block;width:180px;height:22px;margin:22px 0;color:#F4C56E}
+.gs .lead{max-width:560px;font-size:16px;line-height:1.7;color:rgba(246,235,217,.9)}
+.gs .vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:26px}
+.gs .val{padding:16px;border-radius:18px;background:rgba(26,18,10,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(246,235,217,.16)}
+.gs .val b{display:block;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#F4C56E;margin-bottom:6px}
+.gs .val span{font-size:13px;line-height:1.55;color:rgba(246,235,217,.85)}
+.gs .soon{margin-top:26px;padding:22px;border-radius:22px;border:1px dashed rgba(246,235,217,.4);text-align:center;font-size:14px;line-height:1.6}
+.gs .soon b{display:block;font-family:var(--serif);font-weight:400;font-size:28px;margin-bottom:6px}
+.gs .grid{padding:0;margin-top:26px}
+.gs .tile .t{color:#F6EBD9}.gs .tile .p{color:#F4C56E}
+.gs .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.gs .cta{background:#F6EBD9;color:#1A120A}
+.gs .cta.ln{background:none;border:1px solid rgba(246,235,217,.5);color:#F6EBD9}
+/* двойка */
+.duo{margin-top:26px;padding:16px;border-radius:20px;background:var(--bg2);border:1px solid var(--gold)}
+.duo h4{margin:0 0 4px;font-family:var(--serif);font-weight:400;font-size:24px}
+.duo .sub{font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.5}
+.duo .opts{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.duo .opt{flex:none;width:120px;border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:6px;text-align:left;cursor:pointer}
+.duo .opt.on{border-color:var(--gold)}
+.duo .opt img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px}
+.duo .opt span{display:block;font-size:11px;margin-top:6px;line-height:1.35;color:rgba(243,239,232,.85)}
+.duo .opt b{display:block;font-family:var(--serif);font-weight:400;font-size:16px;margin-top:2px}
+.duo .sum{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px;color:var(--ink2)}
+.duo .sum b{font-family:var(--serif);font-size:24px;color:var(--gold2);font-weight:400}
+.duo .btn{margin-top:10px;width:100%}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
 </style>
 </head>
@@ -333,6 +371,32 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-fav]
 const ICON_WA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>`;
 const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
 
+/* Коллекция THE GREAT STEPPE: товары, в названии которых есть Great Steppe / Steppe / Ұлы Дала (так их помечаем в Paloma) */
+const GS_RX = /great\s*steppe|\bsteppe\b|ұлы\s*дала|улы\s*дала/i;
+const isGS = p => GS_RX.test(p.title + " " + p.key + " " + (p.desc||""));
+const ORN = `<svg class="orn" viewBox="0 0 180 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M0 11h62M118 11h62"/><path d="M90 3c-6 0-9 4-9 8s3 8 9 8 9-4 9-8-3-8-9-8z"/><path d="M81 11c-4-6-11-7-14-3 3 0 5 2 5 3s-2 3-5 3c3 4 10 3 14-3zM99 11c4-6 11-7 14-3-3 0-5 2-5 3s2 3 5 3c-3 4-10 3-14-3z"/></svg>`;
+const HILLS = `<svg class="hills" viewBox="0 0 1200 400" preserveAspectRatio="none"><path d="M0 230C150 170 300 210 450 180S750 120 900 170 1100 190 1200 160V400H0z" fill="#6B4320" opacity=".55"/><path d="M0 290C200 240 350 280 520 250S860 210 1000 250 1150 260 1200 240V400H0z" fill="#3B2614" opacity=".8"/><path d="M0 340C220 310 420 335 640 315S1000 300 1200 320V400H0z" fill="#1A120A"/></svg>`;
+function gsHTML(page){
+  const ps = PRODUCTS.filter(isGS);
+  return `<section class="gs ${page?"page":""}" id="gs"><div class="sun"></div><div class="wind"></div>${HILLS}<div class="in">
+    <div class="kz">Ұлы Дала</div>
+    <h2>The Great<span>Steppe</span></h2>${ORN}
+    <p class="lead">Коллекция о пространстве, которое нас сформировало. Бескрайняя степь — это ветер, движение и выносливость. Мы перевели это ощущение в спортивную одежду для города: свободный крой, тёплые цвета земли и простор, который хочется носить с собой.</p>
+    <div class="vals"><div class="val"><b>Простор</b><span>Свободная посадка, в которой легко двигаться весь день.</span></div><div class="val"><b>Ветер</b><span>Спортивный характер: от утренней прогулки до вечера в городе.</span></div><div class="val"><b>Корни</b><span>Цвета степи и мотивы, которые узнаёт каждый, кто вырос под этим небом.</span></div></div>
+    ${ps.length?`<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`:`<div class="soon"><b>Скоро в бутике</b>Худи, трико и аксессуары коллекции уже в пути.<br>Напишите нам — сообщим первыми.</div>`}
+    <div class="btns">${page?`<a class="cta" href="#">← В каталог</a>`:`<a class="cta" href="#c=great-steppe">Открыть коллекцию</a>`}<a class="cta ln" target="_blank" rel="noopener" href="${wa("Здравствуйте! Интересует коллекция The Great Steppe.")}">Узнать первым</a></div>
+  </div></section>`;
+}
+function gsPage(){ document.body.classList.remove("pdp"); clearInterval(heroTimer); $("#main").innerHTML = gsHTML(true) + `<section><div class="sh"><h2>Весь <em>каталог</em></h2></div><div class="rail">${PRODUCTS.filter(p=>p.pics.length&&p.stock>0).slice(0,10).map(p=>tile(p)).join("")}</div></section>`; observe(); }
+/* Двойка: к верху предлагаем низ и наоборот */
+const TOPS = /худи|толстовк|свитшот|олимпийк|зип/i, BOTS = /трико|спортивн.*брюк|джоггер|штаны/i;
+function duoFor(p){
+  const want = TOPS.test(p.type) ? BOTS : (BOTS.test(p.type) ? TOPS : null);
+  if (!want) return [];
+  const base = p.title.replace(/^\S+\s+/, "").split(/\s+/)[0];
+  return PRODUCTS.filter(x => x.key !== p.key && want.test(x.type) && x.stock > 0)
+    .sort((a,b) => (isGS(b)===isGS(p)) - (isGS(a)===isGS(p)) || (b.title.includes(base)) - (a.title.includes(base))).slice(0, 6);
+}
 function tile(p, cls){
   const a = p.pics[0] || p.img, b = p.pics[1];
   return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img class="a" loading="lazy" src="${esc(a)}" alt="${esc(p.title)}">${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
@@ -362,6 +426,7 @@ function list(){
   <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
     <div id="grid">${gridHTML()}</div></section>
+  ${gsHTML(false)}
   <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
   <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
   bindList(); startHero(); observe(); count();
@@ -445,6 +510,7 @@ function product(p){
       <div class="asia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><div>${shoes?"<b>Размеры обуви — европейская сетка (EU).</b> Сомневаетесь в размере — напишите нам, подскажем.":"<b>Азиатский стандарт — маломерит.</b> Если сомневаетесь, нажмите «Подобрать размер» или возьмите на размер больше."}</div></div>`}
       <div class="buy"><span class="bp">${fmt(price)}</span><a class="btn" id="waAsk" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать</a></div>
       <div class="hint">${state.size||one?"Откроется WhatsApp с готовым сообщением":"Выберите размер — он сразу попадёт в сообщение"}</div>
+      ${(() => { const d = duoFor(p); if (!d.length) return ""; const top = TOPS.test(p.type); return `<div class="duo"><h4>Соберите двойку</h4><div class="sub">${top?"К этому верху подойдут штаны":"К этим штанам подойдёт верх"} — продаются отдельно, можно заказать вместе.</div><div class="opts">${d.map((x,i)=>`<button class="opt ${i?"":"on"}" data-k="${esc(x.key)}"><img loading="lazy" src="${esc(x.pics[0]||x.img)}" alt=""><span>${esc(x.title)}</span><b>${fmt(x.price)}</b></button>`).join("")}</div><div class="sum"><span>Комплект</span><b id="duoSum">${fmt(price + d[0].price)}</b></div><a class="btn" id="duoGo" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать двойку</a></div>`; })()}
       ${p.desc?`<div class="desc">${esc(p.desc)}</div>`:""}
       <div class="shop">Примерка и покупка в бутике: ТРЦ Riviera Park, 1 этаж, 10:00–22:00.<br>Доставка по Алматы в день заказа, по Казахстану — Казпочта и СДЭК.</div>
     </div>
@@ -453,6 +519,10 @@ function product(p){
   const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmt(price)}\n${location.href}`;
   $("#waAsk").href = wa(askText);
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
+  if ($("#duoGo")) { let pick = duoFor(p)[0];
+    const upd = () => { $("#duoSum").textContent = fmt(price + pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmt(price)}\n2) ${pick.title} — ${fmt(pick.price)} (размер подскажите)\nИтого: ${fmt(price + pick.price)}`); };
+    document.querySelectorAll(".duo .opt").forEach(b => b.onclick = () => { buzz(); pick = PRODUCTS.find(x => x.key === b.dataset.k); document.querySelectorAll(".duo .opt").forEach(x => x.classList.toggle("on", x === b)); upd(); });
+    upd(); $("#duoGo").addEventListener("click", function(){ const o = rid(4).toUpperCase(); this.href += encodeURIComponent("\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title + " + " + pick.title, c: c.name||"", z: state.size||"", p: price + pick.price, o }); flush(); }); }
   $("#back").onclick = () => { history.length > 1 && document.referrer.includes(location.host) ? history.back() : (location.hash = ""); };
   if ($("#fit")) $("#fit").onclick = () => fitSheet(p, c);
   document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; const y = scrollY; product(p); scrollTo(0, y); });
@@ -502,6 +572,7 @@ $("#dHome").onclick = e => { e.preventDefault(); if (location.hash) location.has
 
 let lastView = "", listY = 0;
 function render(){
+  if (location.hash === "#c=great-steppe") { const go = () => { lastView = ""; gsPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "great-steppe", n: "Коллекция The Great Steppe" }); }; if (document.startViewTransition) document.startViewTransition(go); else go(); return; }
   const m = location.hash.match(/^#p=(.+)$/);
   const p = m && PRODUCTS.find(x => x.key === decodeURIComponent(m[1]));
   const go = () => {
