@@ -322,8 +322,13 @@ Object.keys(CUR).forEach(k => { if (k !== "KZT" && !(RATES && RATES[k] > 0)) del
 let cur = "KZT";
 try { cur = localStorage.getItem("a_cur") || ""; } catch(e) {}
 if (!CUR[cur]) { const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || ""); cur = /Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay/.test(tz) ? "KZT" : (/Moscow|Samara|Yekaterinburg|Novosibirsk|Omsk|Krasnoyarsk|Irkutsk|Yakutsk|Vladivostok|Kaliningrad|Volgograd|Saratov|Ulyanovsk|Kirov|Astrakhan|Barnaul|Tomsk|Novokuznetsk|Chita|Magadan|Kamchatka|Sakhalin/.test(tz) && CUR.RUB ? "RUB" : (/Bishkek/.test(tz) && CUR.KGS ? "KGS" : (/Tashkent|Samarkand/.test(tz) && CUR.UZS ? "UZS" : (tz && !/Asia\/(Almaty|Qyzylorda)/.test(tz) && CUR.USD ? "USD" : "KZT")))); }
-const conv = n => { if (cur === "KZT") return Math.round(+n||0); const c = CUR[cur]; return Math.ceil((+n||0) / RATES[cur] / c.r) * c.r; };
-const fmt = n => cur === "KZT" ? fmtT(n) : (cur === "USD" ? "$" + grp(conv(n)) : cur === "EUR" ? "€" + grp(conv(n)) : grp(conv(n)) + " " + CUR[cur].s);
+/* Наценка за конвертацию: +1 500 ₸ на каждую вещь для России, $, € и других стран вне СНГ; для тенге, сомов и сумов — без наценки */
+const FX_FEE = 1500, FEE_CUR = new Set(["RUB", "USD", "EUR"]);
+const fee = () => FEE_CUR.has(cur) ? FX_FEE : 0;
+const conv = n => { if (cur === "KZT") return Math.round(+n||0); const c = CUR[cur]; return Math.ceil(((+n||0) + fee()) / RATES[cur] / c.r) * c.r; };
+const fmtC = v => cur === "USD" ? "$" + grp(v) : cur === "EUR" ? "€" + grp(v) : grp(v) + " " + CUR[cur].s;
+const fmt = n => cur === "KZT" ? fmtT(n) : fmtC(conv(n));
+const fmtMany = (...ns) => cur === "KZT" ? fmtT(ns.reduce((a,b)=>a+b,0)) : fmtC(ns.reduce((a,n)=>a+conv(n),0)); // наценка — на каждую вещь
 const wa = text => "https://wa.me/" + SHOP_WA + "?text=" + encodeURIComponent(text);
 const TRACK = "https://actual.app.n8n.cloud/webhook/shop-track";
 const rid = n => { const a = "abcdefghijkmnpqrstuvwxyz23456789"; let r = ""; try { crypto.getRandomValues(new Uint8Array(n)).forEach(b => r += a[b % 32]); } catch(e) { for (let i = 0; i < n; i++) r += a[Math.floor(Math.random() * 32)]; } return r; };
@@ -522,7 +527,7 @@ function product(p){
       <div class="cat">${esc(p.type||"ACTUAL")}</div>
       <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
       ${p.code?`<div class="code">Артикул ${esc(p.code)}</div>`:""}
-      <div class="price">${fmt(price)}</div>${cur!=="KZT"?`<div class="fx"><b>${fmtT(price)}</b> · по курсу Нацбанка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата в тенге; при отправке за границу добавляется ~1 $ за конвертацию.</div>`:""}
+      <div class="price">${fmt(price)}</div>${cur!=="KZT"?`<div class="fx">${fee()?`<b>${fmtT(price + fee())}</b> = ${fmtT(price)} + ${fmtT(fee())} за конвертацию`:`<b>${fmtT(price)}</b>`} · по курсу Нацбанка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата в тенге.</div>`:""}
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}
       ${p.colors.length>1?`<div class="lbl">Цвет · ${esc(c.name)}</div><div class="colors">${p.colors.map((x,i)=>`<button class="color ${i===state.color?"on":""}" data-i="${i}">${x.images&&x.images[0]?`<img src="${esc(x.images[0])}" alt="">`:`<span class="nx"></span>`}${esc(x.name||"—")}</button>`).join("")}</div>`:(c.name?`<div class="lbl">Цвет · ${esc(c.name)}</div>`:"")}
       ${one?"":`<div class="lbl">Размер ${shoes?"":`<button id="fit">Подобрать размер</button>`}</div>
@@ -536,11 +541,11 @@ function product(p){
     </div>
   </div>
   ${similar.length?`<section class="more"><div class="sh"><h2>Вам может <em>понравиться</em></h2></div><div class="rail">${similar.map(x => tile(x)).join("")}</div></section>`:""}`;
-  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
+  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${fee()?` + ${fmtT(fee())} конвертация = ${fmtT(price + fee())}`:""}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
   $("#waAsk").href = wa(askText);
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
   if ($("#duoGo")) { let pick = duoFor(p)[0];
-    const upd = () => { $("#duoSum").textContent = fmt(price + pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmtT(price)}\n2) ${pick.title} — ${fmtT(pick.price)} (размер подскажите)\nИтого: ${fmtT(price + pick.price)}`); };
+    const upd = () => { $("#duoSum").textContent = fmtMany(price, pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmtT(price)}\n2) ${pick.title} — ${fmtT(pick.price)} (размер подскажите)\nИтого: ${fmtT(price + pick.price + 2*fee())}${fee()?` (вкл. ${fmtT(2*fee())} конвертация)`:""}${cur!=="KZT"?` ≈ ${fmtMany(price, pick.price)}`:""}`); };
     document.querySelectorAll(".duo .opt").forEach(b => b.onclick = () => { buzz(); pick = PRODUCTS.find(x => x.key === b.dataset.k); document.querySelectorAll(".duo .opt").forEach(x => x.classList.toggle("on", x === b)); upd(); });
     upd(); $("#duoGo").addEventListener("click", function(){ const o = rid(4).toUpperCase(); this.href += encodeURIComponent("\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title + " + " + pick.title, c: c.name||"", z: state.size||"", p: price + pick.price, o }); flush(); }); }
   $("#back").onclick = () => { history.length > 1 && document.referrer.includes(location.host) ? history.back() : (location.hash = ""); };
@@ -591,7 +596,7 @@ $("#dReels").onclick = () => openReels(0);
 $("#dHome").onclick = e => { e.preventDefault(); if (location.hash) location.hash = ""; else $("#cat").scrollIntoView({ behavior: "smooth" }); };
 
 function curSheet(){
-  openSheet(`<h2>Валюта</h2><div class="sub">Цены пересчитываются по курсу Национального банка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата — в тенге. При отправке за границу добавляется ~1 $ за конвертацию.</div><div class="curs">${Object.entries(CUR).map(([k,v]) => `<button class="${k===cur?"on":""}" data-c="${k}"><b>${v.s}</b>${v.n}</button>`).join("")}</div>`);
+  openSheet(`<h2>Валюта</h2><div class="sub">Цены пересчитываются по курсу Национального банка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата — в тенге. Для рублей, долларов и евро к каждой вещи добавляется ${fmtT(FX_FEE)} за конвертацию; для тенге, сомов и сумов — без доплаты.</div><div class="curs">${Object.entries(CUR).map(([k,v]) => `<button class="${k===cur?"on":""}" data-c="${k}"><b>${v.s}</b>${v.n}</button>`).join("")}</div>`);
   document.querySelectorAll(".curs button").forEach(b => b.onclick = () => { cur = b.dataset.c; try { localStorage.setItem("a_cur", cur); } catch(e) {} buzz(); closeSheet(); $("#curBtn").textContent = CUR[cur].s; track({ t: "cur", n: cur }); const y = scrollY; render(); scrollTo(0, y); });
 }
 $("#curBtn").textContent = CUR[cur].s;
