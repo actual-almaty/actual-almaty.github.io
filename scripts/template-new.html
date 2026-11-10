@@ -138,8 +138,8 @@ footer a{color:var(--gold2)}
 .gal{position:relative;background:#000}
 .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .slides::-webkit-scrollbar{display:none}
-.slides img{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start}
-@media(min-width:900px){.gal{background:none}.slides{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:visible}.slides img{border-radius:18px}.slides img:first-child{grid-column:span 2;aspect-ratio:4/5}}
+.slides img,.slides video{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start}
+@media(min-width:900px){.gal{background:none}.slides{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:visible}.slides img{border-radius:18px}.slides img:first-child{grid-column:span 2;aspect-ratio:4/5}.slides video{border-radius:18px}.slides video:first-child{grid-column:span 2;aspect-ratio:4/5}.slides video+img{grid-column:auto;aspect-ratio:3/4}}
 .bars{position:absolute;top:10px;left:12px;right:12px;display:flex;gap:4px;z-index:2}
 .bars i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.3)}
 .bars i.on{background:#fff}
@@ -431,8 +431,8 @@ function product(p){
   $("#main").innerHTML = `
   <div class="pd">
     <div class="gal"><button class="bk" id="back">← Каталог</button>
-      ${imgs.length>1?`<div class="bars" id="bars">${imgs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
-      <div class="slides" id="slides">${imgs.length?imgs.map((u,i) => `<img ${i?'loading="lazy"':""} src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div></div>
+      ${imgs.length>1?`<div class="bars" id="bars">${[...(c.videos||[]),...imgs].map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
+      <div class="slides" id="slides">${(c.videos||[]).map(u => `<video src="${esc(u)}" muted loop playsinline autoplay preload="auto"></video>`).join("")}${imgs.length?imgs.map((u,i) => `<img ${i?'loading="lazy"':""} src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div></div>
     <div class="info">
       <div class="cat">${esc(p.type||"ACTUAL")}</div>
       <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
@@ -458,6 +458,7 @@ function product(p){
   document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; const y = scrollY; product(p); scrollTo(0, y); });
   document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { buzz(); state.size = b.dataset.s; const y = scrollY; product(p); scrollTo(0, y); });
   const sl = $("#slides"), br = $("#bars");
+  if (sl) sl.querySelectorAll("video").forEach(v => { v.muted = true; v.play().catch(() => {}); });
   if (sl && br) sl.addEventListener("scroll", () => { const i = Math.round(sl.scrollLeft / sl.clientWidth); br.querySelectorAll("i").forEach((d,k)=>d.classList.toggle("on",k<=i)); }, {passive:true});
 }
 function openSheet(html){ $("#sheet").innerHTML = `<button class="close" aria-label="Закрыть" onclick="closeSheet()">×</button>` + html; $("#veil").classList.remove("hidden"); }

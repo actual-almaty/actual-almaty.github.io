@@ -3,7 +3,7 @@ const lat = s => s.replace(/М/g,'M').replace(/Т/g,'T').replace(/С/g,'C').repl
 const stock = {};
 for (const s of $('Остатки из таблицы').all()) { if (s.json.item_id) stock[String(s.json.item_id)] = Number(s.json.quantity || 0); }
 const extra = {};
-for (const p of $('Фото сайта').all()) { const j = p.json || {}; if (!j.code || !j.url) continue; const k = String(j.code).toUpperCase().trim(); (extra[k] = extra[k] || []).push({ color: String(j.color || '').toLowerCase().trim(), url: String(j.url), t: String(j.created_at || '') }); }
+for (const p of $('Фото сайта').all()) { const j = p.json || {}; if (!j.code || !j.url) continue; const k = String(j.code).toUpperCase().trim(); (extra[k] = extra[k] || []).push({ color: String(j.color || '').toLowerCase().trim(), url: String(j.url), t: String(j.created_at || ''), video: !!j.video }); }
 for (const k in extra) extra[k].sort((a, b) => a.t.localeCompare(b.t));
 const TYPE_MAP = { 'Кардиганы': 'Кардиган', 'Классическая': 'Костюм', 'Классический': 'Костюм', 'Костюмы': 'Костюм', 'Куртки': 'Куртка', 'Джинсы': 'Джинсы', 'Полу': 'Полузамок', 'Полу-замок': 'Полузамок', 'Полузамок': 'Полузамок' };
 const COLOR_RU = { 'flower coffee': 'Кофейный', 'dark-blue': 'Тёмно-синий', 'dark-blue navy': 'Тёмно-синий', 'navy': 'Тёмно-синий', 'темно-синий': 'Тёмно-синий', 'тёмно-синий': 'Тёмно-синий', 'black': 'Чёрный', 'черный': 'Чёрный', 'чёрный': 'Чёрный', 'grey': 'Серый', 'gray': 'Серый', 'серый': 'Серый', 'dark grey': 'Тёмно-серый', 'dark gray': 'Тёмно-серый', 'темно-серый': 'Тёмно-серый', 'coffee': 'Кофейный', 'кофе': 'Кофейный', 'red coffee': 'Красно-коричневый', 'brown': 'Коричневый', 'коричневый': 'Коричневый', 'khaki': 'Хаки', 'burgundy': 'Бордовый', 'maroon': 'Бордовый', 'бордовый': 'Бордовый', 'flower grey': 'Серый меланж', 'flower khaki gray': 'Хаки меланж', 'grey-blue': 'Серо-голубой', 'dark purple': 'Тёмно-фиолетовый', 'white': 'Белый', 'белый': 'Белый', 'beige': 'Бежевый', 'бежевый': 'Бежевый', 'orange': 'Оранжевый', 'оранжевый': 'Оранжевый' };
@@ -55,7 +55,7 @@ const now = new Date().toISOString();
 const out = [];
 for (const m of Object.values(models)) {
   const ex = extra[String(m.code || '').toUpperCase()] || [];
-  if ((!m.hasImg && !ex.length) || !m.prices.length) continue;
+  if ((!m.hasImg && !ex.some(e => !e.video)) || !m.prices.length) continue;
   let colors = Object.values(m.colors);
   const fallback = colors.flatMap(c => c.images);
   const isLetter = z => z !== 'ONE' && ORDER.includes(z);
@@ -63,7 +63,7 @@ for (const m of Object.values(models)) {
   colors = colors.map(c => ({ ...c, sizes: c.sizes.filter(s => keep(s.s)) })).filter(c => c.sizes.length);
   if (!colors.length) continue;
   if (colors.length > 1) colors = colors.filter(c => c.name) .length ? colors.filter(c => c.name) : colors;
-  if (ex.length) for (const c of colors) { const names = [c.name.toLowerCase(), ...(c.alias || [])].filter(Boolean); const mine = ex.filter(e => !e.color || names.some(n => n.includes(e.color) || e.color.includes(n)) || (COLOR_RU[e.color] && COLOR_RU[e.color] === c.name)).map(e => e.url); if (mine.length) c.images = [...new Set([...mine, ...c.images])]; }
+  if (ex.length) for (const c of colors) { const names = [c.name.toLowerCase(), ...(c.alias || [])].filter(Boolean); const mineAll = ex.filter(e => !e.color || names.some(n => n.includes(e.color) || e.color.includes(n)) || (COLOR_RU[e.color] && COLOR_RU[e.color] === c.name)); const mine = mineAll.filter(e => !e.video).map(e => e.url); const vids = mineAll.filter(e => e.video).map(e => e.url); if (mine.length) c.images = [...new Set([...mine, ...c.images])]; if (vids.length) c.videos = vids; }
   for (const c of colors) {
     const seen = new Set();
     c.sizes = c.sizes.slice().sort((a, b) => b.qty - a.qty).filter(s => !seen.has(s.s) && seen.add(s.s)).sort((a, b) => rank(a.s) - rank(b.s));

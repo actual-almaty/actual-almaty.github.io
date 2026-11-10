@@ -116,11 +116,11 @@ function loadSitePhotos() {
     const dir = path.join('img', code);
     if (!fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
-      const m = f.match(/^(.*)-([0-9a-z]{6,})-(\d+)\.(jpe?g|png|webp)$/i);
+      const m = f.match(/^(.*)-([0-9a-z]{6,})-(\d+)\.(jpe?g|png|webp|mp4)$/i);
       if (!m) continue;
       const color = m[1] === 'all' ? '' : m[1];
       const t = String(parseInt(m[2], 36)).padStart(16, '0') + String(m[3]).padStart(3, '0');
-      out.push({ json: { code, color, url: 'https://actual-almaty.github.io/img/' + encodeURIComponent(code) + '/' + encodeURIComponent(f), created_at: t } });
+      out.push({ json: { code, color, url: 'https://actual-almaty.github.io/img/' + encodeURIComponent(code) + '/' + encodeURIComponent(f), created_at: t, video: /\.mp4$/i.test(f) } });
     }
   }
   return out;
