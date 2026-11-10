@@ -3,113 +3,263 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0B">
 <title>ACTUAL · Мужская одежда · Алматы</title>
 <meta name="description" content="ACTUAL — бутик мужской одежды в ТРЦ Riviera Park, Алматы. Каталог, размеры, заказ онлайн.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F6F4F0;--card:#EDEAE4;--ink:#111;--ink2:#555;--line:#DAD5CC;--gold:#A8843F;--serif:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,sans-serif}
+:root{--bg:#0B0B0B;--bg2:#141414;--card:#1B1B1B;--ink:#F3EFE8;--ink2:#9C978F;--line:rgba(243,239,232,.12);--gold:#C9A45C;--gold2:#E6CB8F;--serif:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,sans-serif;--ease:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;-webkit-font-smoothing:antialiased}
-a{color:inherit}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit;color:inherit}
+img{display:block}
 .hidden{display:none!important}
-header{position:sticky;top:0;z-index:20;background:rgba(246,244,240,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px;padding:0 18px}
-.logo{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:.38em;padding-left:.38em;text-decoration:none}
-.icon-btn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;background:none;cursor:pointer;text-decoration:none}
-.icon-btn svg{width:22px;height:22px}
-.chips{max-width:1200px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:0 14px 12px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border:0;background:none;padding:8px 10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);cursor:pointer;border-bottom:1px solid transparent}
-.chip.on{color:var(--ink);border-bottom-color:var(--ink)}
-main{max-width:1200px;margin:0 auto;padding:18px 14px 80px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 10px}
-@media(min-width:760px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 16px}}
-.tile{text-decoration:none;display:block}
-.tile .im{aspect-ratio:3/4;background:var(--card);overflow:hidden}
-.tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
-.tile:hover img{transform:scale(1.03)}
-.tile .t{margin-top:10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;line-height:1.35}
-.tile .p{margin-top:4px;font-size:13px;color:var(--ink2)}
-.tile .dots{display:flex;gap:5px;margin-top:6px}
-.tile .dots i{width:7px;height:7px;border-radius:50%;border:1px solid var(--line);background:var(--card)}
-.empty{text-align:center;color:var(--ink2);padding:60px 10px;line-height:1.7}
+::selection{background:var(--gold);color:#000}
+/* grain */
+body::after{content:"";position:fixed;inset:-50%;z-index:100;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1s steps(4) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+/* intro */
+.intro{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .7s var(--ease),visibility .7s}
+.intro.done{opacity:0;visibility:hidden}
+.intro .w{font-family:var(--serif);font-size:clamp(40px,12vw,96px);letter-spacing:.35em;padding-left:.35em;display:flex;overflow:hidden}
+.intro .w span{display:inline-block;transform:translateY(110%);animation:up .9s var(--ease) forwards}
+.intro .s{font-size:10px;letter-spacing:.5em;color:var(--gold);opacity:0;animation:fade 1s .9s forwards;padding-left:.5em}
+.intro .ln{width:0;height:1px;background:var(--gold);animation:ln 1s .6s var(--ease) forwards}
+@keyframes up{to{transform:none}}@keyframes fade{to{opacity:1}}@keyframes ln{to{width:60px}}
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:30;transition:background .4s,backdrop-filter .4s,transform .4s var(--ease)}
+header.solid{background:rgba(11,11,11,.72);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
+header.up{transform:translateY(-100%)}
+.bar{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 14px}
+.logo{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:.38em;padding-left:.38em}
+.ib{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;background:none;cursor:pointer;border-radius:50%}
+.ib svg{width:21px;height:21px}
+/* hero */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#000}
+.hero .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
+.hero .slide.on{opacity:1}
+.hero .slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:brightness(.72) contrast(1.05)}
+.hero .slide.on img{animation:kb 9s linear forwards}
+@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(11,11,11,.95) 100%)}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:0 20px calc(54px + env(safe-area-inset-bottom));max-width:1280px;margin:0 auto}
+.kicker{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold2);display:flex;align-items:center;gap:12px}
+.kicker:before{content:"";width:28px;height:1px;background:var(--gold)}
+.hero h1{margin:14px 0 0;font-family:var(--serif);font-weight:400;font-size:clamp(46px,13vw,124px);line-height:.92;letter-spacing:-.01em}
+.hero h1 em{color:var(--gold2)}
+.hero p{margin:16px 0 0;max-width:420px;color:rgba(243,239,232,.78);font-size:14px;line-height:1.6}
+.cta{display:inline-flex;align-items:center;gap:12px;margin-top:24px;padding:16px 24px;border-radius:999px;background:var(--ink);color:#000;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border:0;cursor:pointer;transition:transform .3s var(--ease),background .3s}
+.cta:active{transform:scale(.96)}
+.cta.gold{background:linear-gradient(135deg,#E6CB8F,#C9A45C 55%,#9E7B3A);color:#111}
+.cta svg{width:16px;height:16px}
+.hdots{position:absolute;right:20px;bottom:calc(60px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;gap:8px}
+.hdots i{width:2px;height:18px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden;position:relative}
+.hdots i.on:after{content:"";position:absolute;inset:0;background:var(--gold2);animation:fill 6s linear forwards;transform-origin:top}
+@keyframes fill{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+/* marquee */
+.mq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;background:var(--bg)}
+.mq .tr{display:flex;width:max-content;animation:mq 28s linear infinite}
+.mq span{font-family:var(--serif);font-style:italic;font-size:20px;padding:0 22px;white-space:nowrap;color:var(--ink)}
+.mq span b{font-style:normal;color:var(--gold);font-weight:400}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* sections */
+section{max-width:1280px;margin:0 auto;padding:44px 0 0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;padding:0 16px;margin-bottom:18px;gap:12px}
+.sh h2{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(30px,8vw,48px);line-height:1}
+.sh h2 em{color:var(--gold2)}
+.sh small{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);white-space:nowrap}
+/* stories */
+.stories{display:flex;gap:14px;overflow-x:auto;padding:4px 16px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
+.stories::-webkit-scrollbar{display:none}
+.st{flex:none;width:74px;text-align:center;border:0;background:none;padding:0;cursor:pointer;scroll-snap-align:start}
+.st .ring{width:74px;height:74px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#E6CB8F,#9E7B3A,#E6CB8F,#C9A45C,#E6CB8F);transition:transform .3s var(--ease)}
+.st.on .ring{background:var(--ink)}
+.st .ring div{width:100%;height:100%;border-radius:50%;border:2.5px solid var(--bg);overflow:hidden;background:var(--card)}
+.st img{width:100%;height:100%;object-fit:cover}
+.st .all{display:flex;align-items:center;justify-content:center;height:100%;font-family:var(--serif);font-size:22px;color:var(--gold2)}
+.st span{display:block;margin-top:7px;font-size:11px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st.on span{color:var(--ink)}
+.st:active .ring{transform:scale(.92)}
+/* rail */
+.rail{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail .tile{flex:none;width:68vw;max-width:300px;scroll-snap-align:start}
+/* search */
+.search{display:flex;align-items:center;gap:10px;margin:0 16px 18px;padding:0 16px;height:48px;border-radius:999px;background:var(--bg2);border:1px solid var(--line)}
+.search svg{width:18px;height:18px;color:var(--ink2);flex:none}
+.search input{flex:1;border:0;background:none;outline:none;font-size:15px;min-width:0}
+.search input::placeholder{color:var(--ink2)}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 10px;padding:0 12px}
+@media(min-width:760px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 18px;padding:0 16px}}
+@media(min-width:1100px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.grid .tile:nth-child(6n+1){grid-column:span 2}
+.grid .tile:nth-child(6n+1) .im{aspect-ratio:4/5}
+@media(min-width:760px){.grid .tile:nth-child(6n+1){grid-column:span 1}.grid .tile:nth-child(6n+1) .im{aspect-ratio:3/4}}
+.tile{display:block;position:relative}
+.tile .im{position:relative;aspect-ratio:3/4;background:var(--card);overflow:hidden;border-radius:18px}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease),opacity .6s}
+.tile img.b{opacity:0}
+@media(hover:hover){.tile:hover img.a{transform:scale(1.06)}.tile:hover img.b{opacity:1;transform:scale(1.03)}}
+.tile .tag{position:absolute;left:10px;top:10px;padding:6px 10px;border-radius:999px;background:rgba(11,11,11,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.tile .sw{position:absolute;right:10px;bottom:10px;display:flex;gap:4px;padding:6px 8px;border-radius:999px;background:rgba(11,11,11,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:10px;letter-spacing:.08em}
+.tile .t{margin-top:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:1.4;color:rgba(243,239,232,.85)}
+.tile .p{margin-top:5px;font-family:var(--serif);font-size:20px}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.empty{text-align:center;color:var(--ink2);padding:60px 20px;line-height:1.7}
+.empty a{color:var(--gold2)}
+/* boutique */
+.bout{margin:56px 16px 0;border-radius:26px;overflow:hidden;position:relative;min-height:340px;display:flex;align-items:flex-end;background:#000}
+.bout img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5)}
+.bout .in{position:relative;padding:26px}
+.bout h3{margin:10px 0 8px;font-family:var(--serif);font-weight:400;font-size:clamp(30px,8vw,44px);line-height:1}
+.bout p{margin:0;color:rgba(243,239,232,.8);font-size:14px;line-height:1.6}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 16px 0}
+.perk{padding:16px 12px;border-radius:18px;background:var(--bg2);border:1px solid var(--line);font-size:12px;line-height:1.45;color:var(--ink2)}
+.perk b{display:block;color:var(--ink);font-family:var(--serif);font-weight:500;font-size:19px;margin-bottom:4px}
+footer{margin-top:56px;border-top:1px solid var(--line);padding:34px 18px calc(110px + env(safe-area-inset-bottom));text-align:center;font-size:12px;line-height:2;color:var(--ink2)}
+footer .logo{display:block;margin-bottom:10px;color:var(--ink)}
+footer a{color:var(--gold2)}
+/* dock */
+.dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:35;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(27,27,27,.72);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.5);transition:transform .45s var(--ease),opacity .3s}
+.dock.away{transform:translate(-50%,140%);opacity:0}
+.dock a,.dock button{display:flex;align-items:center;gap:8px;height:46px;padding:0 16px;border-radius:999px;border:0;background:none;cursor:pointer;font-size:12px;letter-spacing:.06em}
+.dock .on{background:var(--ink);color:#000}
+.dock svg{width:19px;height:19px}
+.dock .wa{background:linear-gradient(135deg,#E6CB8F,#C9A45C 55%,#9E7B3A);color:#111;font-weight:600}
 /* product */
-.pd{display:grid;gap:22px}
-@media(min-width:900px){.pd{grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}.info{position:sticky;top:90px}}
-.back{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0 0 14px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--ink2);min-height:40px}
-.gal{position:relative}
-.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--card)}
+.pd{padding-top:62px}
+@media(min-width:900px){.pd{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;max-width:1280px;margin:0 auto;padding:86px 16px 0;align-items:start}.info{position:sticky;top:90px}}
+.gal{position:relative;background:#000}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .slides::-webkit-scrollbar{display:none}
-.slides img,.slides video{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start;display:block}
-@media(min-width:900px){.slides{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;background:none}.slides img{width:100%}}
-.pager{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
-.pager i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}
-.pager i.on{background:#fff}
-@media(min-width:900px){.pager{display:none}}
-.note{font-size:12px;color:var(--ink2);margin-top:8px;letter-spacing:.02em}
-.info h1{margin:0;font-weight:500;font-size:20px;letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
-.code{margin-top:6px;font-size:12px;color:var(--ink2);letter-spacing:.08em}
-.price{margin-top:14px;font-size:20px}
-.lbl{margin:22px 0 10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);display:flex;justify-content:space-between;align-items:center}
-.lbl button{border:0;background:none;padding:0;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:underline;cursor:pointer;color:var(--ink);min-height:32px}
+.slides img,.slides video{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start}
+@media(min-width:900px){.gal{background:none}.slides{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:visible}.slides img{border-radius:18px}.slides img:first-child{grid-column:span 2;aspect-ratio:4/5}.slides video{border-radius:18px}.slides video:first-child{grid-column:span 2;aspect-ratio:4/5}.slides video+img{grid-column:auto;aspect-ratio:3/4}}
+.bars{position:absolute;top:10px;left:12px;right:12px;display:flex;gap:4px;z-index:2}
+.bars i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.3)}
+.bars i.on{background:#fff}
+@media(min-width:900px){.bars{display:none}}
+.gal .bk{position:absolute;top:22px;left:12px;z-index:3;display:flex;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;border:0;background:rgba(11,11,11,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:12px;cursor:pointer}
+@media(min-width:900px){.gal .bk{top:-48px;left:0;background:none;padding:0}}
+.info{padding:22px 16px 140px;position:relative;margin-top:-26px;border-radius:26px 26px 0 0;background:var(--bg);z-index:2}
+@media(min-width:900px){.info{margin:0;padding:0 0 60px;border-radius:0}}
+.info .cat{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold2)}
+.info h1{margin:10px 0 0;font-family:var(--serif);font-weight:400;font-size:clamp(30px,8vw,44px);line-height:1.05}
+.code{margin-top:8px;font-size:11px;color:var(--ink2);letter-spacing:.12em}
+.price{margin-top:14px;font-family:var(--serif);font-size:30px;color:var(--gold2)}
+.note{font-size:12px;color:var(--ink2);margin-top:8px;line-height:1.5}
+.lbl{margin:26px 0 12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);display:flex;justify-content:space-between;align-items:center}
+.lbl button{border:0;background:none;padding:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);cursor:pointer;min-height:32px;text-decoration:underline;text-underline-offset:4px}
 .colors{display:flex;flex-wrap:wrap;gap:8px}
-.color{border:1px solid var(--line);background:none;padding:9px 14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;min-height:40px}
-.color.on{border-color:var(--ink)}
-.sizes{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px}
-.size{position:relative;border:1px solid var(--line);background:none;height:46px;cursor:pointer;font-size:14px}
-.size.on{border-color:var(--ink);background:var(--ink);color:#fff}
-.size.out{color:#aaa;cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.035) 6px 7px)}
-.size small{position:absolute;left:0;right:0;bottom:2px;font-size:9px;letter-spacing:.06em;color:var(--gold)}
-.asia{margin-top:12px;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);font-size:13px;line-height:1.5}
-.asia b{font-weight:600}
+.color{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg2);padding:5px 14px 5px 5px;border-radius:999px;font-size:12px;cursor:pointer;min-height:44px;transition:border-color .3s}
+.color img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.color .nx{width:32px;height:32px;border-radius:50%;background:var(--card)}
+.color.on{border-color:var(--gold)}
+.sizes{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px}
+.size{position:relative;border:1px solid var(--line);background:var(--bg2);height:50px;border-radius:14px;cursor:pointer;font-size:14px;transition:all .25s var(--ease)}
+.size.on{border-color:var(--ink);background:var(--ink);color:#000;transform:scale(1.04)}
+.size.out{color:#555;cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(255,255,255,.04) 6px 7px)}
+.asia{margin-top:12px;display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:16px;background:var(--bg2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink2)}
+.asia b{color:var(--ink);font-weight:600}
 .asia svg{flex:none;width:18px;height:18px;margin-top:1px;color:var(--gold)}
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:13px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:none;margin-top:10px}
-.btn.ghost{background:none;color:var(--ink)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
+.desc{margin-top:22px;font-size:14px;line-height:1.75;color:var(--ink2);white-space:pre-line}
+.shop{margin-top:22px;padding:16px;border-radius:16px;background:var(--bg2);font-size:13px;line-height:1.8;color:var(--ink2)}
+.buy{position:fixed;left:0;right:0;bottom:0;z-index:36;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(11,11,11,0),rgba(11,11,11,.92) 30%);display:flex;gap:10px;align-items:center}
+@media(min-width:900px){.buy{position:static;background:none;padding:0;margin-top:22px}}
+.buy .bp{flex:none;font-family:var(--serif);font-size:22px;padding:0 6px}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border:0;border-radius:999px;background:linear-gradient(135deg,#E6CB8F,#C9A45C 55%,#9E7B3A);color:#111;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px rgba(201,164,92,.25);transition:transform .25s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink);box-shadow:none;margin-top:10px}
 .btn svg{width:18px;height:18px}
-.desc{margin-top:22px;font-size:14px;line-height:1.7;color:var(--ink2);white-space:pre-line}
-.shop{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;line-height:1.8;color:var(--ink2)}
+.hint{text-align:center;font-size:11px;color:var(--ink2);margin-top:10px;letter-spacing:.04em}
+.more{margin-top:40px}
 /* sheet */
-.veil{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.veil{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:60;display:flex;align-items:flex-end;justify-content:center}
 @media(min-width:700px){.veil{align-items:center}}
-.sheet{width:100%;max-width:480px;max-height:92vh;overflow:auto;background:var(--bg);padding:24px 20px calc(24px + env(safe-area-inset-bottom))}
-.sheet h2{margin:0 0 4px;font-family:var(--serif);font-weight:500;font-size:26px}
-.sheet .sub{font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.5}
+.sheet{width:100%;max-width:480px;max-height:92vh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-radius:26px 26px 0 0;padding:26px 20px calc(24px + env(safe-area-inset-bottom));animation:sh .45s var(--ease)}
+@media(min-width:700px){.sheet{border-radius:26px}}
+@keyframes sh{from{transform:translateY(40px);opacity:0}}
+.sheet h2{margin:0 0 6px;font-family:var(--serif);font-weight:400;font-size:30px}
+.sheet .sub{font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.55}
 .fld{display:block;margin-top:12px}
 .fld span{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
-.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line);background:#fff;padding:13px 12px;font-size:16px;border-radius:0;-webkit-appearance:none;appearance:none}
-.fld textarea{min-height:70px;resize:vertical}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.err{margin-top:10px;color:#A3261F;font-size:13px;line-height:1.5}
-.close{float:right;border:0;background:none;width:40px;height:40px;margin:-10px -10px 0 0;cursor:pointer;font-size:22px}
-.res{margin-top:16px;padding:14px;border:1px solid var(--ink);font-size:15px;line-height:1.5}
-.ok{text-align:center}
-.ok .num{font-family:var(--serif);font-size:34px;margin:6px 0}
-footer{border-top:1px solid var(--line);padding:28px 18px 40px;text-align:center;font-size:12px;line-height:1.9;color:var(--ink2)}
-footer a{text-decoration:none}
-.nophoto{display:flex;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;width:100%;background:#f2f2f2;color:#777;font-size:14px;line-height:1.5;padding:20px;box-sizing:border-box}
+.fld input{width:100%;border:1px solid var(--line);background:var(--bg);padding:14px;font-size:16px;border-radius:14px;outline:none}
+.fld input:focus{border-color:var(--gold)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.err{margin-top:10px;color:#E0786F;font-size:13px}
+.close{float:right;border:0;background:var(--card);width:36px;height:36px;border-radius:50%;margin:-8px -6px 0 0;cursor:pointer;font-size:18px}
+.res{margin-top:16px;padding:16px;border-radius:16px;border:1px solid var(--gold);font-size:15px;line-height:1.55}
+.nophoto{display:flex;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;width:100%;background:var(--card);color:var(--ink2);font-size:14px;line-height:1.6;padding:24px}
+/* favorites */
+.fav{position:absolute;right:10px;top:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:0;background:rgba(11,11,11,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:transform .3s var(--ease)}
+.fav svg{width:17px;height:17px}
+.fav.on{color:#E8556B}.fav.on svg{fill:currentColor}
+.fav.pop{animation:pop .45s var(--ease)}
+@keyframes pop{40%{transform:scale(1.35)}}
+.info .fav{position:static;width:44px;height:44px;background:var(--bg2);border:1px solid var(--line);flex:none}
+.ttl{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+/* reels */
+.reelbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--gold);background:none;color:var(--gold2);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.reelbtn svg{width:12px;height:12px}
+.reels{position:fixed;inset:0;z-index:70;background:#000;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.reels::-webkit-scrollbar{display:none}
+.reel{position:relative;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s}
+.reel.on img.cur{animation:kb 7s linear forwards}
+.reel:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,0) 25%,rgba(0,0,0,0) 55%,rgba(0,0,0,.85));pointer-events:none}
+.reel .pb{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;z-index:3;display:flex;gap:4px}
+.reel .pb i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}
+.reel .pb i.done{background:#fff}
+.reel .pb i.cur:after{content:"";display:block;height:100%;background:#fff;transform-origin:left;animation:fillx 3.5s linear forwards}
+@keyframes fillx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.reel .tap{position:absolute;top:0;bottom:30%;width:35%;z-index:2}
+.reel .tap.l{left:0}.reel .tap.r{right:0}
+.reel .meta{position:absolute;left:16px;right:84px;bottom:calc(28px + env(safe-area-inset-bottom));z-index:3}
+.reel .meta .cat{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2)}
+.reel .meta h3{margin:8px 0 4px;font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05}
+.reel .meta .pr{font-family:var(--serif);font-size:22px}
+.reel .meta .cl{margin-top:6px;font-size:12px;color:rgba(255,255,255,.7)}
+.reel .meta .go{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;background:var(--ink);color:#000;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.reel .side{position:absolute;right:12px;bottom:calc(36px + env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;gap:18px;align-items:center}
+.reel .side button,.reel .side a{width:50px;height:50px;border-radius:50%;border:0;background:rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer}
+.reel .side svg{width:22px;height:22px}
+.reel .side .on{color:#E8556B}.reel .side .on svg{fill:currentColor}
+.reel .side small{display:block;font-size:10px;text-align:center;margin-top:4px;color:rgba(255,255,255,.8)}
+.rclose{position:fixed;top:calc(22px + env(safe-area-inset-top));right:12px;z-index:75;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);color:#fff;font-size:20px;cursor:pointer}
+.rhint{position:fixed;left:50%;bottom:45%;transform:translateX(-50%);z-index:75;padding:10px 16px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);font-size:12px;letter-spacing:.06em;pointer-events:none;animation:hint 2.6s forwards}
+@keyframes hint{0%,70%{opacity:1}100%{opacity:0}}
+/* brand video */
+.bvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
 </style>
 </head>
 <body>
-<header>
+<div class="intro" id="intro"><div class="w"><span>A</span><span style="animation-delay:.06s">C</span><span style="animation-delay:.12s">T</span><span style="animation-delay:.18s">U</span><span style="animation-delay:.24s">A</span><span style="animation-delay:.3s">L</span></div><div class="ln"></div><div class="s">TIMELESS STYLE · ALMATY</div></div>
+<header id="hdr">
 <div class="bar">
-<a class="icon-btn" href="https://instagram.com/actual.almaty" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+<a class="ib" href="https://instagram.com/actual.almaty" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
 <a class="logo" href="#">ACTUAL</a>
-<a class="icon-btn" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/><path d="M9 8.8c.2 2.6 2.6 5 5.2 5.2l1-1.2-1.8-.9-.8.7a4 4 0 0 1-2.2-2.2l.7-.8-.9-1.8z"/></svg></a>
+<button class="ib" id="srchTop" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></button>
 </div>
-<nav class="chips" id="chips"></nav>
 </header>
 <main id="main"></main>
-<footer>
-<div>ACTUAL · Алматы, ул. Каныш Сатпаева 90/21, ТРЦ Riviera Park, 1 этаж</div>
+<footer id="foot">
+<span class="logo">ACTUAL</span>
+<div>Алматы, ул. Каныш Сатпаева 90/21, ТРЦ Riviera Park, 1 этаж</div>
 <div>Ежедневно 10:00–22:00 · <a href="tel:+77776111082">+7 777 611 1082</a></div>
 <div><a href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a> · <a href="https://instagram.com/actual.almaty" target="_blank" rel="noopener">@actual.almaty</a></div>
 </footer>
-
+<nav class="dock" id="dock">
+<a href="#" id="dHome" class="on" aria-label="Каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>Каталог</a>
+<button id="dReels" aria-label="Reels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="4"/><path d="M10 9v6l5-3z" fill="currentColor"/></svg></button>
+<a href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener" aria-label="Бутик"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></a>
+<a href="#" id="waTop" class="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>Написать</a>
+</nav>
 <div class="veil hidden" id="veil"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
 
 <script>
@@ -157,61 +307,159 @@ addEventListener("pagehide", flush);
 $("#waTop").href = wa("Здравствуйте! Пишу с сайта ACTUAL.");
 $("#waTop").addEventListener("click", function(){ const o = rid(4).toUpperCase(); this.href = wa("Здравствуйте! Пишу с сайта ACTUAL.\nКод: " + o); track({ t: "wa", n: "Вопрос с сайта", o }); flush(); });
 
+/* intro: один раз за сессию */
+(() => { const el = $("#intro"); let seen = false; try { seen = sessionStorage.getItem("a_intro") === "1"; sessionStorage.setItem("a_intro","1"); } catch(e) {}
+  if (seen || location.hash) { el.remove(); return; } setTimeout(() => { el.classList.add("done"); setTimeout(() => el.remove(), 800); }, 1900); })();
+
 const PRODUCTS = DATA.map(r => { let v = {}; try { v = JSON.parse(r.variants || "{}"); } catch(e){} return { key: r.model_key, title: r.title, type: r.category_id, price: +r.price, img: r.image_url, colors: v.colors || [], code: v.code || "", desc: v.desc || "" }; })
   .filter(p => p.colors.length);
-const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))];
-let state = { type: "", color: 0, size: null };
+PRODUCTS.forEach(p => { p.pics = (p.colors.find(c => c.images && c.images.length) || {}).images || []; p.stock = p.colors.reduce((n,c)=>n+c.sizes.reduce((m,s)=>m+(s.qty>0?s.qty:0),0),0); });
+const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b) => PRODUCTS.filter(p=>p.type===b).length - PRODUCTS.filter(p=>p.type===a).length);
+let state = { type: "", q: "", color: 0, size: null };
+let heroTimer = null, io = null;
 
-function chips(){
-  const all = [["", "Все"], ...TYPES.map(t => [t, t])];
-  $("#chips").innerHTML = all.map(([k,l]) => `<button class="chip ${state.type===k?"on":""}" data-t="${esc(k)}">${esc(l)}</button>`).join("");
-  $("#chips").querySelectorAll(".chip").forEach(b => b.onclick = () => { state.type = b.dataset.t; location.hash = ""; render(); });
+const ICON_HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 4 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.3 0 5.7 3.1 4.5 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>`;
+const buzz = (ms=8) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} };
+let FAV = []; try { FAV = JSON.parse(localStorage.getItem("a_fav") || "[]"); } catch(e) {}
+const isFav = k => FAV.includes(k);
+function toggleFav(k, btn){
+  FAV = isFav(k) ? FAV.filter(x => x !== k) : [k, ...FAV]; try { localStorage.setItem("a_fav", JSON.stringify(FAV)); } catch(e) {}
+  buzz(isFav(k) ? 15 : 6);
+  document.querySelectorAll(`[data-fav="${CSS.escape(k)}"]`).forEach(b => { b.classList.toggle("on", isFav(k)); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); });
+  if (isFav(k)) track({ t: "fav", k });
+  const st = document.querySelector('.st[data-t="♥"]'); if (!st && FAV.length && $("#stories")) { $("#stories").outerHTML = storiesHTML(); bindStories(); }
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-fav]"); if (b) { e.preventDefault(); e.stopPropagation(); toggleFav(b.dataset.fav, b); } }, true);
+const ICON_WA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>`;
+const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
+
+function tile(p, cls){
+  const a = p.pics[0] || p.img, b = p.pics[1];
+  return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img class="a" loading="lazy" src="${esc(a)}" alt="${esc(p.title)}">${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
+}
+function gridHTML(){
+  const q = state.q.trim().toLowerCase();
+  const ps = PRODUCTS.filter(p => (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type + " " + p.colors.map(c=>c.name).join(" ")).toLowerCase().includes(q)));
+  if (!ps.length) return `<div class="empty">Ничего не нашли.<br>Напишите нам в <a href="${wa("Здравствуйте! Ищу на сайте: " + state.q)}" target="_blank" rel="noopener">WhatsApp</a> — подберём вещь.</div>`;
+  return `<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`;
+}
+function storiesHTML(){
+  const one = t => PRODUCTS.find(p => p.type === t && p.pics.length);
+  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">All</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#E8556B">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
 }
 function list(){
-  $("#chips").classList.remove("hidden");
-  const ps = PRODUCTS.filter(p => !state.type || p.type === state.type);
-  if (!ps.length){ $("#main").innerHTML = `<div class="empty">Каталог обновляется.<br>Напишите нам в <a href="${wa("Здравствуйте! Хочу посмотреть ассортимент.")}" target="_blank" rel="noopener">WhatsApp</a> — подберём вещь.</div>`; return; }
-  $("#main").innerHTML = `<div class="grid">${ps.map(p => {
-    const img = (p.colors[0].images||[])[0] || p.img;
-    return `<a class="tile" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img loading="lazy" src="${esc(img)}" alt="${esc(p.title)}"></div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div>${p.colors.length>1?`<div class="p">${p.colors.length} ${p.colors.length<5?"цвета":"цветов"}</div>`:""}</a>`; }).join("")}</div>`;
+  document.body.classList.remove("pdp");
+  const HERO = [["p/mt-40626/4.jpg","mt-40626"],["p/ms-161-1/1.jpg","m-161-1"],["p/mt-40626/5.jpg","mt-40626"],["p/mt-40626/7.jpg","mt-40626"]];
+  const heroes = HERO.map(([src,k]) => ({ src: "/" + src, p: PRODUCTS.find(x => x.key === k) })).filter(h => h.p);
+  const picks = PRODUCTS.filter(p => p.pics.length >= 2 && p.stock > 0).sort((a,b) => b.price - a.price).slice(0, 8);
+  const shopImg = "/p/brand/store-entrance.jpg";
+  $("#main").innerHTML = `
+  <div class="hero" id="hero">${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}"><img src="${esc(h.src)}" alt="${esc(h.p.title)}"></a>`).join("")}
+    <div class="cap"><div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br><em>style.</em></h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+    <div class="hdots">${heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
+  <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция <b>✦</b></span><span>Доставка по Алматы в день заказа <b>✦</b></span><span>Примерка в Riviera Park <b>✦</b></span><span>Казпочта и СДЭК по Казахстану <b>✦</b></span>`).join("")}</div></div>
+  <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
+  <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
+    <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
+    <div id="grid">${gridHTML()}</div></section>
+  <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
+  <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
+  bindList(); startHero(); observe(); count();
 }
+function count(){ const n = $("#grid").querySelectorAll(".tile").length; if ($("#cnt")) $("#cnt").textContent = `${PRODUCTS.length} ${plural(PRODUCTS.length,"модель","модели","моделей")} →`; }
+function bindList(){
+  $("#toCat").onclick = () => $("#cat").scrollIntoView({ behavior: "smooth" });
+  bindStories();
+  $("#reelGo").onclick = () => openReels(0);
+  let tm; $("#q").oninput = e => { state.q = e.target.value; clearTimeout(tm); tm = setTimeout(() => { $("#grid").innerHTML = gridHTML(); observe(); count(); }, 180); };
+}
+function bindStories(){ $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type || "Все" }); }); }
+/* Reels-режим: вертикальная лента товаров на весь экран */
+let reelTimer = null;
+function reelList(){ const q = state.q.trim().toLowerCase(); return PRODUCTS.filter(p => p.pics.length && p.stock > 0 && (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type).toLowerCase().includes(q))); }
+function openReels(start){
+  const ps = reelList(); if (!ps.length) return;
+  buzz(10); track({ t: "reels" });
+  const box = document.createElement("div"); box.className = "reels"; box.id = "reels";
+  box.innerHTML = ps.map((p,i) => `<div class="reel" data-i="${i}" data-k="${esc(p.key)}" data-n="0">
+    <div class="pb">${p.pics.slice(0,6).map((_,j)=>`<i class="${j?"":"cur"}"></i>`).join("")}</div>
+    <img class="cur" ${i>1?'loading="lazy"':""} src="${esc(p.pics[0])}" alt="${esc(p.title)}">
+    <div class="tap l"></div><div class="tap r"></div>
+    <div class="side"><div><button class="${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button><small>Нравится</small></div>
+      <div><a href="${wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}`)}" target="_blank" rel="noopener" data-wa="${esc(p.key)}">${ICON_WA}</a><small>Спросить</small></div>
+      <div><button data-share="${esc(p.key)}" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg></button><small>Отправить</small></div></div>
+    <div class="meta"><div class="cat">${esc(p.type||"ACTUAL")}</div><h3>${esc(p.title)}</h3><div class="pr">${fmt(p.price)}</div>${p.colors.length>1?`<div class="cl">${p.colors.map(c=>esc(c.name)).join(" · ")}</div>`:""}<a class="go" href="#p=${encodeURIComponent(p.key)}">Выбрать размер →</a></div></div>`).join("");
+  document.body.appendChild(box); document.body.style.overflow = "hidden";
+  const x = document.createElement("button"); x.className = "rclose"; x.id = "rclose"; x.innerHTML = "×"; x.setAttribute("aria-label","Закрыть"); document.body.appendChild(x);
+  const h = document.createElement("div"); h.className = "rhint"; h.textContent = "Листайте вверх ↑  ·  тап — следующее фото"; document.body.appendChild(h); setTimeout(() => h.remove(), 2700);
+  const close = () => { clearInterval(reelTimer); box.remove(); x.remove(); document.body.style.overflow = ""; };
+  x.onclick = close;
+  box.querySelectorAll(".go").forEach(a => a.addEventListener("click", close));
+  const show = (r, n) => { const p = ps[+r.dataset.i], k = Math.min(p.pics.length, 6); n = (n + k) % k; r.dataset.n = n; const im = r.querySelector("img"); im.classList.remove("cur"); void im.offsetWidth; im.src = p.pics[n]; im.classList.add("cur"); r.querySelectorAll(".pb i").forEach((b,j) => { b.className = j < n ? "done" : (j === n ? "cur" : ""); }); };
+  box.querySelectorAll(".reel").forEach(r => { r.querySelector(".tap.r").onclick = () => { buzz(4); show(r, +r.dataset.n + 1); }; r.querySelector(".tap.l").onclick = () => { buzz(4); show(r, +r.dataset.n - 1); }; });
+  box.querySelectorAll("[data-wa]").forEach(a => a.addEventListener("click", function(){ const p = PRODUCTS.find(x => x.key === this.dataset.wa), o = rid(4).toUpperCase(); this.href = wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}
+Код: ${o}`); track({ t: "wa", k: p.key, n: p.title, p: p.price, o }); flush(); }));
+  box.querySelectorAll("[data-share]").forEach(b => b.onclick = async () => { const p = PRODUCTS.find(x => x.key === b.dataset.share), url = location.origin + location.pathname + "#p=" + encodeURIComponent(p.key); try { if (navigator.share) await navigator.share({ title: p.title, text: `${p.title} — ${fmt(p.price)}`, url }); else { await navigator.clipboard.writeText(url); b.parentNode.querySelector("small").textContent = "Скопировано"; } } catch(e) {} });
+  let cur = null;
+  const ob = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && e.intersectionRatio > .6) { if (cur) cur.classList.remove("on"); cur = e.target; cur.classList.add("on"); clearInterval(reelTimer); const p = ps[+cur.dataset.i]; track({ t: "view", k: p.key, n: p.title }); if (p.pics.length > 1) reelTimer = setInterval(() => { if (!document.body.contains(cur)) return clearInterval(reelTimer); show(cur, +cur.dataset.n + 1); }, 3500); } }), { root: box, threshold: [.6] });
+  box.querySelectorAll(".reel").forEach(r => ob.observe(r));
+  if (start) box.querySelector(`.reel[data-i="${start}"]`)?.scrollIntoView();
+}
+function startHero(){
+  clearInterval(heroTimer);
+  const sl = [...document.querySelectorAll("#hero .slide")], dots = [...document.querySelectorAll("#hero .hdots i")];
+  if (sl.length < 2) return; let i = 0;
+  heroTimer = setInterval(() => { if (!$("#hero")) return clearInterval(heroTimer); sl[i].classList.remove("on"); dots[i].classList.remove("on"); i = (i + 1) % sl.length; sl[i].classList.add("on"); void dots[i].offsetWidth; dots[i].classList.add("on"); }, 6000);
+}
+function observe(){
+  const els = document.querySelectorAll(".reveal:not(.in)");
+  if (!("IntersectionObserver" in window)) { els.forEach(e => e.classList.add("in")); return; }
+  if (io) io.disconnect();
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.style.transitionDelay = ((+e.target.dataset.d||0) * 70) + "ms"; e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+  els.forEach((e, k) => { e.dataset.d = k % 2; io.observe(e); });
+}
+
 function product(p){
-  $("#chips").classList.add("hidden");
+  document.body.classList.add("pdp");
+  clearInterval(heroTimer);
   const c = p.colors[state.color] || p.colors[0];
   const one = c.sizes.every(s => s.s === "ONE"), shoes = SHOES.has(p.type);
   if (one) state.size = "ONE";
   const imgs = (c.images && c.images.length) ? c.images : [];
   const price = (c.sizes.find(s => s.s === state.size) || c.sizes[0] || {}).price || p.price;
+  const similar = PRODUCTS.filter(x => x.key !== p.key && x.type === p.type && x.pics.length).concat(PRODUCTS.filter(x => x.key !== p.key && x.type !== p.type && x.pics.length && x.stock > 0)).slice(0, 8);
   $("#main").innerHTML = `
-  <button class="back" id="back">← Каталог</button>
   <div class="pd">
-    <div class="gal"><div class="slides" id="slides">${(c.videos||[]).map(u => `<video src="${esc(u)}" muted loop playsinline autoplay preload="auto"></video>`).join("")}${imgs.length?imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div>
-      ${imgs.length>1?`<div class="pager" id="pager">${[...(c.videos||[]),...imgs].map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
-      ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}</div>
+    <div class="gal"><button class="bk" id="back">← Каталог</button>
+      ${imgs.length>1?`<div class="bars" id="bars">${[...(c.videos||[]),...imgs].map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
+      <div class="slides" id="slides">${(c.videos||[]).map(u => `<video src="${esc(u)}" muted loop playsinline autoplay preload="auto"></video>`).join("")}${imgs.length?imgs.map((u,i) => `<img ${i?'loading="lazy"':""} src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div></div>
     <div class="info">
-      <h1>${esc(p.title)}</h1>
+      <div class="cat">${esc(p.type||"ACTUAL")}</div>
+      <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
       ${p.code?`<div class="code">Артикул ${esc(p.code)}</div>`:""}
       <div class="price">${fmt(price)}</div>
-      ${p.colors.length>1?`<div class="lbl">Цвет: ${esc(c.name)}</div><div class="colors">${p.colors.map((x,i)=>`<button class="color ${i===state.color?"on":""}" data-i="${i}">${esc(x.name||"—")}</button>`).join("")}</div>`:(c.name?`<div class="lbl">Цвет: ${esc(c.name)}</div>`:"")}
+      ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}
+      ${p.colors.length>1?`<div class="lbl">Цвет · ${esc(c.name)}</div><div class="colors">${p.colors.map((x,i)=>`<button class="color ${i===state.color?"on":""}" data-i="${i}">${x.images&&x.images[0]?`<img src="${esc(x.images[0])}" alt="">`:`<span class="nx"></span>`}${esc(x.name||"—")}</button>`).join("")}</div>`:(c.name?`<div class="lbl">Цвет · ${esc(c.name)}</div>`:"")}
       ${one?"":`<div class="lbl">Размер ${shoes?"":`<button id="fit">Подобрать размер</button>`}</div>
       <div class="sizes">${c.sizes.map(s => `<button class="size ${s.qty>0?"":"out"} ${state.size===s.s?"on":""}" data-s="${esc(s.s)}" ${s.qty>0?"":"disabled"} aria-label="Размер ${esc(s.s)}${s.qty>0?"":", нет в наличии"}">${esc(s.s)}</button>`).join("")}</div>
       <div class="asia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><div>${shoes?"<b>Размеры обуви — европейская сетка (EU).</b> Сомневаетесь в размере — напишите нам, подскажем.":"<b>Азиатский стандарт — маломерит.</b> Если сомневаетесь, нажмите «Подобрать размер» или возьмите на размер больше."}</div></div>`}
-      <a class="btn" id="waAsk" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.5-4.3a8.5 8.5 0 1 1 15.5-4.6z"/></svg>Заказать в WhatsApp</a>
-      <div class="note" style="text-align:center">${state.size||one?"":"Выберите размер — он сразу попадёт в сообщение"}</div>
+      <div class="buy"><span class="bp">${fmt(price)}</span><a class="btn" id="waAsk" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать</a></div>
+      <div class="hint">${state.size||one?"Откроется WhatsApp с готовым сообщением":"Выберите размер — он сразу попадёт в сообщение"}</div>
       ${p.desc?`<div class="desc">${esc(p.desc)}</div>`:""}
       <div class="shop">Примерка и покупка в бутике: ТРЦ Riviera Park, 1 этаж, 10:00–22:00.<br>Доставка по Алматы в день заказа, по Казахстану — Казпочта и СДЭК.</div>
     </div>
-  </div>`;
+  </div>
+  ${similar.length?`<section class="more"><div class="sh"><h2>Вам может <em>понравиться</em></h2></div><div class="rail">${similar.map(x => tile(x)).join("")}</div></section>`:""}`;
   const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmt(price)}\n${location.href}`;
   $("#waAsk").href = wa(askText);
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
-  $("#back").onclick = () => { location.hash = ""; };
+  $("#back").onclick = () => { history.length > 1 && document.referrer.includes(location.host) ? history.back() : (location.hash = ""); };
   if ($("#fit")) $("#fit").onclick = () => fitSheet(p, c);
-  document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; product(p); });
-  document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { state.size = b.dataset.s; product(p); });
-  const sl = $("#slides"), pg = $("#pager");
+  document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; const y = scrollY; product(p); scrollTo(0, y); });
+  document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { buzz(); state.size = b.dataset.s; const y = scrollY; product(p); scrollTo(0, y); });
+  const sl = $("#slides"), br = $("#bars");
   if (sl) sl.querySelectorAll("video").forEach(v => { v.muted = true; v.play().catch(() => {}); });
-  if (sl && pg) sl.addEventListener("scroll", () => { const i = Math.round(sl.scrollLeft / sl.clientWidth); pg.querySelectorAll("i").forEach((d,k)=>d.classList.toggle("on",k===i)); }, {passive:true});
+  if (sl && br) sl.addEventListener("scroll", () => { const i = Math.round(sl.scrollLeft / sl.clientWidth); br.querySelectorAll("i").forEach((d,k)=>d.classList.toggle("on",k<=i)); }, {passive:true});
 }
 function openSheet(html){ $("#sheet").innerHTML = `<button class="close" aria-label="Закрыть" onclick="closeSheet()">×</button>` + html; $("#veil").classList.remove("hidden"); }
 function closeSheet(){ $("#veil").classList.add("hidden"); }
@@ -227,24 +475,44 @@ function suggest(h, w){
 function fitSheet(p, c){
   openSheet(`<h2>Подбор размера</h2><div class="sub">Размеры по азиатскому стандарту, они меньше европейских. Ориентир: модель 175 см / 70 кг носит M или L.</div>
   <div class="row"><label class="fld"><span>Рост, см</span><input id="fh" inputmode="numeric" placeholder="175"></label><label class="fld"><span>Вес, кг</span><input id="fw" inputmode="numeric" placeholder="72"></label></div>
-  <button class="btn" id="fgo">Подобрать</button><div id="fres"></div>`);
+  <button class="btn" id="fgo" style="width:100%">Подобрать</button><div id="fres"></div>`);
   $("#fgo").onclick = () => {
     const r = suggest(+$("#fh").value, +$("#fw").value);
     if (!r){ $("#fres").innerHTML = `<div class="err">Укажите вес.</div>`; return; }
     const has = c.sizes.find(s => s.s === r.main && s.qty > 0);
-    $("#fres").innerHTML = `<div class="res">${r.text}${has?"":`<br><small>Размера ${r.main} в этом цвете сейчас нет — напишите нам, подберём альтернативу.</small>`}</div>${has?`<button class="btn ghost" id="fpick">Выбрать ${r.main}</button>`:""}`;
+    $("#fres").innerHTML = `<div class="res">${r.text}${has?"":`<br><small>Размера ${r.main} в этом цвете сейчас нет — напишите нам, подберём альтернативу.</small>`}</div>${has?`<button class="btn ghost" id="fpick" style="width:100%">Выбрать ${r.main}</button>`:""}`;
     if (has) $("#fpick").onclick = () => { state.size = r.main; closeSheet(); product(p); };
   };
 }
-let lastView = "";
+
+/* шапка и док при прокрутке */
+let lastY = 0;
+addEventListener("scroll", () => {
+  const y = scrollY, h = $("#hdr"), d = $("#dock"), pdp = document.body.classList.contains("pdp");
+  h.classList.toggle("solid", y > 40 || pdp);
+  h.classList.toggle("up", y > 300 && y > lastY + 4);
+  if (y < lastY - 4 || y < 300) h.classList.remove("up");
+  d.classList.toggle("away", pdp || (y > 300 && y > lastY + 4));
+  if (!pdp && (y < lastY - 4 || y < 300)) d.classList.remove("away");
+  lastY = y;
+}, { passive: true });
+$("#srchTop").onclick = () => { if (location.hash) { location.hash = ""; setTimeout(() => $("#q") && $("#q").focus(), 350); } else { $("#cat").scrollIntoView({ behavior: "smooth" }); setTimeout(() => $("#q").focus({ preventScroll: true }), 500); } };
+$("#dReels").onclick = () => openReels(0);
+$("#dHome").onclick = e => { e.preventDefault(); if (location.hash) location.hash = ""; else $("#cat").scrollIntoView({ behavior: "smooth" }); };
+
+let lastView = "", listY = 0;
 function render(){
-  chips();
   const m = location.hash.match(/^#p=(.+)$/);
   const p = m && PRODUCTS.find(x => x.key === decodeURIComponent(m[1]));
-  if (p) { product(p); if (lastView !== p.key) { lastView = p.key; track({ t: "view", k: p.key, n: p.title }); } } else { lastView = ""; list(); }
-  scrollTo(0, 0);
+  const go = () => {
+    if (p) { product(p); scrollTo(0, 0); if (lastView !== p.key) { lastView = p.key; track({ t: "view", k: p.key, n: p.title }); } }
+    else { lastView = ""; list(); scrollTo(0, listY); }
+    $("#hdr").classList.toggle("solid", !!p || scrollY > 40);
+    $("#dock").classList.toggle("away", !!p);
+  };
+  if (document.startViewTransition) document.startViewTransition(go); else go();
 }
-addEventListener("hashchange", () => { state.color = 0; state.size = null; render(); });
+addEventListener("hashchange", () => { if (!document.body.classList.contains("pdp")) listY = scrollY; state.color = 0; state.size = null; render(); });
 render();
 </script>
 </body>
