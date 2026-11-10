@@ -482,7 +482,7 @@ function openReels(start){
   box.querySelectorAll(".go").forEach(a => a.addEventListener("click", close));
   const show = (r, n) => { const p = ps[+r.dataset.i], k = Math.min(p.pics.length, 6); n = (n + k) % k; r.dataset.n = n; const im = r.querySelector("img"); im.classList.remove("cur"); void im.offsetWidth; im.src = p.pics[n]; im.classList.add("cur"); r.querySelectorAll(".pb i").forEach((b,j) => { b.className = j < n ? "done" : (j === n ? "cur" : ""); }); };
   box.querySelectorAll(".reel").forEach(r => { r.querySelector(".tap.r").onclick = () => { buzz(4); show(r, +r.dataset.n + 1); }; r.querySelector(".tap.l").onclick = () => { buzz(4); show(r, +r.dataset.n - 1); }; });
-  box.querySelectorAll("[data-wa]").forEach(a => a.addEventListener("click", function(){ const p = PRODUCTS.find(x => x.key === this.dataset.wa), o = rid(4).toUpperCase(); this.href = wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmt(p.price)}
+  box.querySelectorAll("[data-wa]").forEach(a => a.addEventListener("click", function(){ const p = PRODUCTS.find(x => x.key === this.dataset.wa), o = rid(4).toUpperCase(); this.href = wa(`Здравствуйте! Интересует с сайта: ${p.title}, ${fmtT(p.price)}
 Код: ${o}`); track({ t: "wa", k: p.key, n: p.title, p: p.price, o }); flush(); }));
   box.querySelectorAll("[data-share]").forEach(b => b.onclick = async () => { const p = PRODUCTS.find(x => x.key === b.dataset.share), url = location.origin + location.pathname + "#p=" + encodeURIComponent(p.key); try { if (navigator.share) await navigator.share({ title: p.title, text: `${p.title} — ${fmt(p.price)}`, url }); else { await navigator.clipboard.writeText(url); b.parentNode.querySelector("small").textContent = "Скопировано"; } } catch(e) {} });
   let cur = null;
