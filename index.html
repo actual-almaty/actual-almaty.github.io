@@ -43,7 +43,7 @@ main{max-width:1200px;margin:0 auto;padding:18px 14px 80px}
 .gal{position:relative}
 .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--card)}
 .slides::-webkit-scrollbar{display:none}
-.slides img{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start;display:block}
+.slides img,.slides video{flex:none;width:100%;aspect-ratio:3/4;object-fit:cover;scroll-snap-align:start;display:block}
 @media(min-width:900px){.slides{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;background:none}.slides img{width:100%}}
 .pager{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
 .pager i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}
@@ -185,8 +185,8 @@ function product(p){
   $("#main").innerHTML = `
   <button class="back" id="back">← Каталог</button>
   <div class="pd">
-    <div class="gal"><div class="slides" id="slides">${imgs.length?imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div>
-      ${imgs.length>1?`<div class="pager" id="pager">${imgs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
+    <div class="gal"><div class="slides" id="slides">${(c.videos||[]).map(u => `<video src="${esc(u)}" muted loop playsinline autoplay preload="auto"></video>`).join("")}${imgs.length?imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.title)}">`).join(""):`<div class="nophoto">Фото этого цвета скоро добавим.<br>Попросите фото в WhatsApp</div>`}</div>
+      ${imgs.length>1?`<div class="pager" id="pager">${[...(c.videos||[]),...imgs].map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}</div>
     <div class="info">
       <h1>${esc(p.title)}</h1>
@@ -210,6 +210,7 @@ function product(p){
   document.querySelectorAll(".color").forEach(b => b.onclick = () => { state.color = +b.dataset.i; state.size = null; product(p); });
   document.querySelectorAll(".size:not(.out)").forEach(b => b.onclick = () => { state.size = b.dataset.s; product(p); });
   const sl = $("#slides"), pg = $("#pager");
+  if (sl) sl.querySelectorAll("video").forEach(v => { v.muted = true; v.play().catch(() => {}); });
   if (sl && pg) sl.addEventListener("scroll", () => { const i = Math.round(sl.scrollLeft / sl.clientWidth); pg.querySelectorAll("i").forEach((d,k)=>d.classList.toggle("on",k===i)); }, {passive:true});
 }
 function openSheet(html){ $("#sheet").innerHTML = `<button class="close" aria-label="Закрыть" onclick="closeSheet()">×</button>` + html; $("#veil").classList.remove("hidden"); }
