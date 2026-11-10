@@ -63,6 +63,7 @@ for (const m of Object.values(models)) {
   colors = colors.map(c => ({ ...c, sizes: c.sizes.filter(s => keep(s.s)) })).filter(c => c.sizes.length);
   if (!colors.length) continue;
   if (colors.length > 1) colors = colors.filter(c => c.name) .length ? colors.filter(c => c.name) : colors;
+  if (colors.length > 1) { const live = colors.filter(c => c.images.length || c.sizes.some(z => z.qty > 0)); if (live.length) colors = live; } // пустой цвет-дубль без фото и остатка не показываем
   if (ex.length) for (const c of colors) { const names = [c.name.toLowerCase(), ...(c.alias || [])].filter(Boolean); const mineAll = ex.filter(e => !e.color || names.some(n => n.includes(e.color) || e.color.includes(n)) || (COLOR_RU[e.color] && COLOR_RU[e.color] === c.name)); const mine = mineAll.filter(e => !e.video).map(e => e.url); const vids = mineAll.filter(e => e.video).map(e => e.url); if (mine.length) c.images = [...new Set([...mine, ...c.images])]; if (vids.length) c.videos = vids; }
   for (const c of colors) {
     const seen = new Set();
