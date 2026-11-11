@@ -254,6 +254,7 @@ footer a{color:#fff}
 .gs .val span{font-size:13px;line-height:1.5;color:rgba(255,255,255,.78)}
 .gs .soon{margin-top:20px;padding:20px;border-radius:18px;border:1px dashed rgba(179,144,98,.6);text-align:center;font-size:14px;line-height:1.6;color:rgba(255,255,255,.85)}
 .gs .soon b{display:block;font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:-.02em;color:#fff;margin-bottom:4px}
+.gs:not(.page) h2{font-size:clamp(38px,11vw,96px)}.gs:not(.page) .lead{font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.gs .gsr{margin:18px -18px 0;padding:0 18px}
 .gs .grid{padding:0;margin-top:20px}
 .gs .tile .t{color:#fff}.gs .tile .p{color:var(--gold)}
 .gs .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
@@ -403,8 +404,8 @@ function gsHTML(page){
     <div class="kz">Ұлы Дала</div>
     <h2>The Great<span>Steppe</span></h2>${ORN}
     <p class="lead">Коллекция о пространстве, которое нас сформировало. Бескрайняя степь — это ветер, движение и выносливость. Мы перевели это ощущение в спортивную одежду для города: свободный крой, тёплые цвета земли и простор, который хочется носить с собой.</p>
-    <div class="vals"><div class="val"><b>Простор</b><span>Свободная посадка, в которой легко двигаться весь день.</span></div><div class="val"><b>Ветер</b><span>Спортивный характер: от утренней прогулки до вечера в городе.</span></div><div class="val"><b>Корни</b><span>Цвета степи и мотивы, которые узнаёт каждый, кто вырос под этим небом.</span></div></div>
-    ${ps.length?`<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`:`<div class="soon"><b>Скоро в бутике</b>Худи, трико и аксессуары коллекции уже в пути.<br>Напишите нам — сообщим первыми.</div>`}
+    ${page?`<div class="vals"><div class="val"><b>Простор</b><span>Свободная посадка, в которой легко двигаться весь день.</span></div><div class="val"><b>Ветер</b><span>Спортивный характер: от утренней прогулки до вечера в городе.</span></div><div class="val"><b>Корни</b><span>Цвета степи и мотивы, которые узнаёт каждый, кто вырос под этим небом.</span></div></div>`:""}
+    ${ps.length?(page?`<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`:`<div class="rail gsr">${ps.map(p => tile(p)).join("")}</div>`):`<div class="soon"><b>Скоро в бутике</b>Худи, трико и аксессуары коллекции уже в пути.<br>Напишите нам — сообщим первыми.</div>`}
     <div class="btns">${page?`<a class="cta" href="#">← В каталог</a>`:`<a class="cta" href="#c=great-steppe">Открыть коллекцию</a>`}<a class="cta ln" target="_blank" rel="noopener" href="${wa("Здравствуйте! Интересует коллекция The Great Steppe.")}">Узнать первым</a></div>
   </div></section>`;
 }
@@ -422,15 +423,16 @@ function tile(p, cls){
   const a = p.pics[0] || p.img, b = p.pics[1];
   return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im"><img class="a" loading="lazy" src="${esc(a)}" alt="${esc(p.title)}">${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
 }
+const tOk = p => !state.type || p.type === state.type || (state.type === "♥" && isFav(p.key)) || (state.type === "GS" && isGS(p));
 function gridHTML(){
   const q = state.q.trim().toLowerCase();
-  const ps = PRODUCTS.filter(p => (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type + " " + p.colors.map(c=>c.name).join(" ")).toLowerCase().includes(q)));
+  const ps = PRODUCTS.filter(p => tOk(p) && (!q || (p.title + " " + p.type + " " + p.colors.map(c=>c.name).join(" ")).toLowerCase().includes(q)));
   if (!ps.length) return `<div class="empty">Ничего не нашли.<br>Напишите нам в <a href="${wa("Здравствуйте! Ищу на сайте: " + state.q)}" target="_blank" rel="noopener">WhatsApp</a> — подберём вещь.</div>`;
   return `<div class="grid">${ps.map(p => tile(p, "reveal")).join("")}</div>`;
 }
 function storiesHTML(){
   const one = t => PRODUCTS.find(p => p.type === t && p.pics.length);
-  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
+  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${(()=>{ const g = PRODUCTS.find(p => isGS(p) && p.pics.length); return PRODUCTS.some(isGS)?`<button class="st ${state.type==="GS"?"on":""}" data-t="GS"><div class="ring"><div>${g?`<img loading="lazy" src="${esc(g.pics[0])}" alt="">`:`<div class="all" style="font-size:10px">TGS</div>`}</div></div><span>Great Steppe</span></button>`:""; })()}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
 }
 function list(){
   document.body.classList.remove("pdp");
@@ -447,10 +449,10 @@ function list(){
     <div class="hdots">${heroes.length<2?"":heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция<b>●</b></span><span>Доставка по Алматы в день заказа<b>●</b></span><span>Примерка в Riviera Park<b>●</b></span><span>Казпочта и СДЭК по Казахстану<b>●</b></span>`).join("")}</div></div>
   <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
+  ${gsHTML(false)}
   <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
     <div id="grid">${gridHTML()}</div></section>
-  ${gsHTML(false)}
   <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
   <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
   bindList(); startHero(); observe(); count();
@@ -463,10 +465,10 @@ function bindList(){
   $("#reelGo").onclick = () => openReels(0);
   let tm; $("#q").oninput = e => { state.q = e.target.value; clearTimeout(tm); tm = setTimeout(() => { $("#grid").innerHTML = gridHTML(); observe(); count(); }, 180); };
 }
-function bindStories(){ $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type || "Все" }); }); }
+function bindStories(){ $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type === "GS" ? "The Great Steppe" : (state.type || "Все") }); }); }
 /* Reels-режим: вертикальная лента товаров на весь экран */
 let reelTimer = null;
-function reelList(){ const q = state.q.trim().toLowerCase(); return PRODUCTS.filter(p => p.pics.length && p.stock > 0 && (!state.type || p.type === state.type || (state.type === "♥" && isFav(p.key))) && (!q || (p.title + " " + p.type).toLowerCase().includes(q))); }
+function reelList(){ const q = state.q.trim().toLowerCase(); return PRODUCTS.filter(p => p.pics.length && p.stock > 0 && tOk(p) && (!q || (p.title + " " + p.type).toLowerCase().includes(q))); }
 function openReels(start){
   const ps = reelList(); if (!ps.length) return;
   buzz(10); track({ t: "reels" });
