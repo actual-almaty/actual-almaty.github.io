@@ -288,7 +288,8 @@ footer a{color:#fff}
 .fx{margin-top:6px;font-size:12px;line-height:1.5;color:var(--ink2)}
 .fx b{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
-video::-webkit-media-controls-start-playback-button,video::-webkit-media-controls{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls{display:none!important}
 </style>
 </head>
 <body>
@@ -627,10 +628,24 @@ function render(){
 }
 addEventListener("hashchange", () => { if (!document.body.classList.contains("pdp")) listY = scrollY; state.color = 0; state.size = null; render(); });
 render();
-/* iOS (режим энергосбережения) блокирует автозапуск видео — запускаем при первом касании/прокрутке */
-function kickVideos(){ document.querySelectorAll("video[autoplay]").forEach(v => { v.muted = true; v.playsInline = true; if (v.paused) v.play().catch(() => {}); }); }
-["touchstart","pointerdown","scroll","visibilitychange"].forEach(ev => addEventListener(ev, kickVideos, { passive: true }));
-let kvT; new MutationObserver(() => { clearTimeout(kvT); kvT = setTimeout(kickVideos, 120); }).observe(document.documentElement, { childList: true, subtree: true });
+/* iOS (энергосбережение, браузер Instagram) не даёт видео запускаться само и рисует кнопку ▶.
+   Пока видео не играет — показываем вместо него картинку-обложку; при первом касании запускаем видео. */
+function vidFallback(v){
+  if (v.dataset.fb || !v.paused) return; v.dataset.fb = 1;
+  const src = v.getAttribute("poster"); v.style.display = "none";
+  if (src) { const im = document.createElement("img"); im.src = src; im.alt = ""; im.className = v.className; im.dataset.vfb = 1; v.before(im); v._fb = im; }
+}
+function kickVideos(gesture){
+  document.querySelectorAll("video[autoplay]").forEach(v => {
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.removeAttribute("controls");
+    if (!v.dataset.w) { v.dataset.w = 1; v.addEventListener("playing", () => { v.style.display = ""; if (v._fb) { v._fb.remove(); v._fb = null; } delete v.dataset.fb; }); }
+    if (v.paused) { const pr = v.play(); if (pr && pr.catch) pr.catch(() => vidFallback(v)); if (!gesture) setTimeout(() => { if (v.paused) vidFallback(v); }, 700); }
+  });
+}
+["touchstart","pointerdown","click"].forEach(ev => addEventListener(ev, () => kickVideos(true), { passive: true }));
+addEventListener("scroll", () => kickVideos(false), { passive: true });
+let kvT; new MutationObserver(() => { clearTimeout(kvT); kvT = setTimeout(() => kickVideos(false), 120); }).observe(document.documentElement, { childList: true, subtree: true });
+kickVideos(false);
 </script>
 </body>
 </html>
