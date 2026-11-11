@@ -290,6 +290,12 @@ footer a{color:#fff}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
 video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
 video::-webkit-media-controls{display:none!important}
+.salebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;margin:8px 10px 0;padding:12px 16px;border-radius:18px;background:#0A0A0A;color:#fff;text-align:center;font-size:14px;font-weight:600;line-height:1.3}
+.salebar b{color:var(--gold);font-weight:900;font-size:20px;letter-spacing:.02em}
+.salebar i{font-style:normal;font-variant-numeric:tabular-nums;color:var(--gold);font-weight:800}
+.tile .sale{position:absolute;left:8px;top:38px;padding:5px 9px;border-radius:999px;background:var(--gold);color:#0A0A0A;font-size:12px;font-weight:800}
+.tile .p s,.price s{color:#9a9a9a;font-weight:500;font-size:.8em;margin-left:6px}
+.price .sb{display:inline-block;margin-left:10px;padding:4px 10px;border-radius:999px;background:var(--gold);color:#0A0A0A;font-size:13px;font-weight:800;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -380,8 +386,14 @@ $("#waTop").addEventListener("click", function(){ const o = rid(4).toUpperCase()
 (() => { const el = $("#intro"); let seen = false; try { seen = sessionStorage.getItem("a_intro") === "1"; sessionStorage.setItem("a_intro","1"); } catch(e) {}
   if (seen || location.hash) { el.remove(); return; } setTimeout(() => { el.classList.add("done"); setTimeout(() => el.remove(), 800); }, 1900); })();
 
+/* Акция 11.11: −10% на всё. 11.11 — «только сегодня», 12.11 — «по просьбе клиентов продлили на 1 день». С 13.11 цены обычные. */
+const SALE = { pct: 10, from: Date.parse("2026-11-11T00:00:00+05:00"), until: Date.parse("2026-11-13T00:00:00+05:00"), ext: Date.parse("2026-11-12T00:00:00+05:00") };
+const SALE_ON = Date.now() >= SALE.from && Date.now() < SALE.until;
+const SALE_EXT = SALE_ON && Date.now() >= SALE.ext;
+const saleP = n => SALE_ON && n ? Math.round(n * (100 - SALE.pct) / 100 / 10) * 10 : n;
 const PRODUCTS = DATA.map(r => { let v = {}; try { v = JSON.parse(r.variants || "{}"); } catch(e){} return { key: r.model_key, title: r.title, type: r.category_id, price: +r.price, img: r.image_url, colors: v.colors || [], code: v.code || "", desc: v.desc || "" }; })
   .filter(p => p.colors.length);
+if (SALE_ON) PRODUCTS.forEach(p => { p.old = p.price; p.price = saleP(p.price); p.colors.forEach(c => (c.sizes||[]).forEach(z => { if (z.price) { z.old = z.price; z.price = saleP(z.price); } })); });
 PRODUCTS.forEach(p => { p.pics = (p.colors.find(c => c.images && c.images.length) || {}).images || []; p.stock = p.colors.reduce((n,c)=>n+c.sizes.reduce((m,s)=>m+(s.qty>0?s.qty:0),0),0); });
 const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b) => PRODUCTS.filter(p=>p.type===b).length - PRODUCTS.filter(p=>p.type===a).length);
 let state = { type: "", q: "", color: 0, size: null };
@@ -431,7 +443,7 @@ function duoFor(p){
 const PH = `<div class="ph"><b>ACTUAL</b><span>Фото скоро</span></div>`;
 function tile(p, cls){
   const a = p.pics[0] || p.img, b = p.pics[1];
-  return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im">${a?`<img class="a" loading="lazy" src="${esc(a)}" alt="" onerror="this.outerHTML=PH">`:PH}${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="" onerror="this.remove()">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}</div></a>`;
+  return `<a class="tile ${cls||""}" href="#p=${encodeURIComponent(p.key)}"><div class="im">${a?`<img class="a" loading="lazy" src="${esc(a)}" alt="" onerror="this.outerHTML=PH">`:PH}${b?`<img class="b" loading="lazy" src="${esc(b)}" alt="" onerror="this.remove()">`:""}<span class="tag">${esc(p.type||"ACTUAL")}</span>${p.old?`<span class="sale">−${SALE.pct}%</span>`:""}<button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button>${p.colors.length>1?`<span class="sw">${p.colors.length} ${plural(p.colors.length,"цвет","цвета","цветов")}</span>`:""}</div><div class="t">${esc(p.title)}</div><div class="p">${fmt(p.price)}${p.old?` <s>${fmt(p.old)}</s>`:""}</div></a>`;
 }
 const tOk = p => !state.type || p.type === state.type || (state.type === "♥" && isFav(p.key)) || (state.type === "GS" && isGS(p));
 function gridHTML(){
@@ -454,6 +466,7 @@ function list(){
   const picks = PRODUCTS.filter(p => p.pics.length >= 2 && p.stock > 0).sort((a,b) => b.price - a.price).slice(0, 8);
   const shopImg = "/p/brand/store-entrance.jpg";
   $("#main").innerHTML = `
+  ${SALE_ON?`<a class="salebar" href="#cat" onclick="event.preventDefault();document.getElementById('cat').scrollIntoView({behavior:'smooth'})"><b>11.11</b><span>${SALE_EXT?"По просьбе клиентов продлили на 1 день · ":"Всемирный день шопинга · "}−${SALE.pct}% на всё · только сегодня</span><i id="saleCd"></i></a>`:""}
   <div class="hero" id="hero">${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}">${h.vid?`<video src="${esc(h.vid)}" poster="${esc((h.p.colors.find(c => c.videos) || h.p.colors[0]).images[0] || "")}" muted loop playsinline autoplay preload="auto"></video>`:`<img src="${esc(h.src)}" alt="${esc(h.p.title)}">`}</a>`).join("")}
     <div class="cap">${featVid?`<div class="kicker">Снова в наличии</div><h1>Орнамент<br>от капли<br>воды</h1><p>Куртка ${esc(FEAT.title.replace(/^Куртка\s*/,""))}: под дождём на ней проявляется наш орнамент. ${fmt(FEAT.price)}</p><a class="cta" href="#p=${encodeURIComponent(FEAT.key)}">Смотреть куртку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a> <button class="cta" id="toCat" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(8px)">Каталог</button>`:`<div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br>style</h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}</div>
     <div class="hdots">${heroes.length<2?"":heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>
@@ -539,7 +552,7 @@ function product(p){
       <div class="cat">${esc(p.type||"ACTUAL")}</div>
       <div class="ttl"><h1>${esc(p.title)}</h1><button class="fav ${isFav(p.key)?"on":""}" data-fav="${esc(p.key)}" aria-label="В избранное">${ICON_HEART}</button></div>
       ${p.code?`<div class="code">Артикул ${esc(p.code)}</div>`:""}
-      <div class="price">${fmt(price)}</div>${cur!=="KZT"?`<div class="fx">${fee()?`<b>${fmtT(price + fee())}</b> = ${fmtT(price)} + ${fmtT(fee())} за конвертацию`:`<b>${fmtT(price)}</b>`} · по курсу Нацбанка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата в тенге.</div>`:""}
+      <div class="price">${fmt(price)}${SALE_ON?` <s>${fmt(Math.round(price*100/(100-SALE.pct)/10)*10)}</s><span class="sb">−${SALE.pct}% · 11.11</span>`:""}</div>${cur!=="KZT"?`<div class="fx">${fee()?`<b>${fmtT(price + fee())}</b> = ${fmtT(price)} + ${fmtT(fee())} за конвертацию`:`<b>${fmtT(price)}</b>`} · по курсу Нацбанка РК${RATES.date?" на "+esc(RATES.date):""}. Оплата в тенге.</div>`:""}
       ${one||shoes?"":`<div class="note">${MODEL_NOTE}</div>`}
       ${p.colors.length>1?`<div class="lbl">Цвет · ${esc(c.name)}</div><div class="colors">${p.colors.map((x,i)=>`<button class="color ${i===state.color?"on":""}" data-i="${i}">${x.images&&x.images[0]?`<img src="${esc(x.images[0])}" alt="">`:`<span class="nx"></span>`}${esc(x.name||"—")}</button>`).join("")}</div>`:(c.name?`<div class="lbl">Цвет · ${esc(c.name)}</div>`:"")}
       ${one?"":`<div class="lbl">Размер ${shoes?"":`<button id="fit">Подобрать размер</button>`}</div>
@@ -553,7 +566,7 @@ function product(p){
     </div>
   </div>
   ${similar.length?`<section class="more"><div class="sh"><h2>Вам может <em>понравиться</em></h2></div><div class="rail">${similar.map(x => tile(x)).join("")}</div></section>`:""}`;
-  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${fee()?` + ${fmtT(fee())} конвертация = ${fmtT(price + fee())}`:""}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
+  const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${SALE_ON?` (со скидкой 11.11 −${SALE.pct}%)`:""}${fee()?` + ${fmtT(fee())} конвертация = ${fmtT(price + fee())}`:""}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
   $("#waAsk").href = wa(askText);
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
   if ($("#duoGo")) { let pick = duoFor(p)[0];
@@ -646,6 +659,8 @@ function kickVideos(gesture){
 addEventListener("scroll", () => kickVideos(false), { passive: true });
 let kvT; new MutationObserver(() => { clearTimeout(kvT); kvT = setTimeout(() => kickVideos(false), 120); }).observe(document.documentElement, { childList: true, subtree: true });
 kickVideos(false);
+/* Таймер акции до полуночи по Алматы */
+setInterval(() => { const e = document.getElementById("saleCd"); if (!e || !SALE_ON) return; const end = SALE_EXT ? SALE.until : SALE.ext; let d = Math.max(0, end - Date.now()) / 1000; const h = Math.floor(d/3600), m = Math.floor(d%3600/60), sc = Math.floor(d%60); e.textContent = "до конца " + [h,m,sc].map(x => String(x).padStart(2,"0")).join(":"); }, 1000);
 </script>
 </body>
 </html>
