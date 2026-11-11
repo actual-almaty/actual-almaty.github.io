@@ -1,0 +1,30 @@
+name: film-assets mirror
+on:
+  push:
+    branches: [film-assets]
+    paths: ['.github/workflows/mirror.yml']
+permissions:
+  contents: write
+jobs:
+  m:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: download
+        run: |
+          curl -sL https://actual-almaty.github.io/index.html -o site.html
+          node -e '
+            const s=require("fs").readFileSync("site.html","utf8");
+            const i=s.indexOf("const DATA = ")+13; let d=0,j=i;
+            for(;j<s.length;j++){if(s[j]=="[")d++;else if(s[j]=="]"){d--;if(!d)break}}
+            const D=JSON.parse(s.slice(i,j+1)); const u=new Set();
+            for(const r of D){u.add(r.image_url);for(const c of JSON.parse(r.variants).colors)(c.images||[]).forEach(x=>u.add(x))}
+            require("fs").writeFileSync("urls.txt",[...u].filter(x=>/^https:\/\/storage/.test(x)).join("\n"));'
+          mkdir -p img
+          cat urls.txt | xargs -P 16 -I{} sh -c 'f=img/$(basename {}); curl -sfL "{}" -o "$f" || rm -f "$f"'
+          mkdir -p font
+          curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36" "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" -o font/inter.css
+          grep -o 'https://fonts.gstatic.com[^)]*' font/inter.css | sort -u | while read u; do curl -sL "$u" -o font/$(basename $u); done
+          ls img | wc -l
+          git config user.name actual-bot; git config user.email actual-bot@users.noreply.github.com
+          git add img font urls.txt && git commit -qm "assets" && git push
