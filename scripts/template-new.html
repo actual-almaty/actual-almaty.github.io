@@ -288,6 +288,7 @@ footer a{color:#fff}
 .fx{margin-top:6px;font-size:12px;line-height:1.5;color:var(--ink2)}
 .fx b{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro{display:none}}
+video::-webkit-media-controls-start-playback-button,video::-webkit-media-controls{display:none!important;-webkit-appearance:none}
 </style>
 </head>
 <body>
@@ -440,7 +441,7 @@ function gridHTML(){
 }
 function storiesHTML(){
   const one = t => PRODUCTS.find(p => p.type === t && p.pics.length);
-  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${(()=>{ const g = PRODUCTS.find(p => isGS(p) && p.pics.length); return PRODUCTS.some(isGS)?`<button class="st ${state.type==="GS"?"on":""}" data-t="GS"><div class="ring"><div>${g?`<img loading="lazy" src="${esc(g.pics[0])}" alt="">`:`<div class="all" style="font-size:10px">TGS</div>`}</div></div><span>Great Steppe</span></button>`:""; })()}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}</div>`;
+  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}${(()=>{ const g = PRODUCTS.find(p => isGS(p) && p.pics.length); return PRODUCTS.some(isGS)?`<button class="st ${state.type==="GS"?"on":""}" data-t="GS"><div class="ring"><div>${g?`<img loading="lazy" src="${esc(g.pics[0])}" alt="">`:`<div class="all" style="font-size:10px">TGS</div>`}</div></div><span>Great Steppe</span></button>`:""; })()}</div>`;
 }
 function list(){
   document.body.classList.remove("pdp");
@@ -626,6 +627,10 @@ function render(){
 }
 addEventListener("hashchange", () => { if (!document.body.classList.contains("pdp")) listY = scrollY; state.color = 0; state.size = null; render(); });
 render();
+/* iOS (режим энергосбережения) блокирует автозапуск видео — запускаем при первом касании/прокрутке */
+function kickVideos(){ document.querySelectorAll("video[autoplay]").forEach(v => { v.muted = true; v.playsInline = true; if (v.paused) v.play().catch(() => {}); }); }
+["touchstart","pointerdown","scroll","visibilitychange"].forEach(ev => addEventListener(ev, kickVideos, { passive: true }));
+let kvT; new MutationObserver(() => { clearTimeout(kvT); kvT = setTimeout(kickVideos, 120); }).observe(document.documentElement, { childList: true, subtree: true });
 </script>
 </body>
 </html>
