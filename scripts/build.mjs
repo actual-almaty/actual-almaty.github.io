@@ -175,6 +175,17 @@ if (!stock) {
 }
 
 rows.sort((a, b) => String(a.title).localeCompare(String(b.title), 'ru'));
+// Битые фото: Paloma хранит ссылку, а файла на storage нет (404) — такие фото на сайт не ставим
+try {
+  const all = [...new Set(rows.flatMap(r => JSON.parse(r.variants).colors.flatMap(c => c.images || [])))].filter(u => /^https?:/.test(u));
+  const dead = new Set(); let i = 0;
+  const worker = async () => { while (i < all.length) { const u = all[i++]; try { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 8000); const r = await fetch(u, { method: 'HEAD', signal: ac.signal }); clearTimeout(t); if (r.status === 404 || r.status === 410) dead.add(u); } catch (e) {} } };
+  await Promise.all(Array.from({ length: 16 }, worker));
+  if (dead.size) {
+    console.log('Битые фото (404):', dead.size);
+    rows = rows.map(r => { const v = JSON.parse(r.variants); for (const c of v.colors) c.images = (c.images || []).filter(u => !dead.has(u)); const first = v.colors.find(c => c.images.length); return { ...r, image_url: dead.has(r.image_url) ? (first ? first.images[0] : '') : r.image_url, variants: JSON.stringify(v) }; });
+  }
+} catch (e) { console.log('Проверка фото пропущена:', e.message); }
 const data = JSON.stringify(rows.map(r => ({ model_key: r.model_key, title: r.title, category_id: r.category_id, price: r.price, image_url: r.image_url, variants: r.variants }))).replace(/</g, '\\u003c');
 // Курсы валют Нацбанка РК (тенге за 1 единицу) для цен в рублях, долларах, евро и т.д.
 let RATES = null;
