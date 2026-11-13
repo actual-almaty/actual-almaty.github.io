@@ -633,8 +633,16 @@ function curSheet(){
 $("#curBtn").textContent = CUR[cur].s;
 $("#curBtn").onclick = curSheet;
 let lastView = "", listY = 0;
+/* Плавный переход между экранами. Если браузер (Instagram, iPhone, свёрнутая вкладка) не запускает переход — рисуем сразу, без анимации. Первый показ всегда сразу. */
+let vtFirst = true;
+function vt(go){
+  if (vtFirst || !document.startViewTransition || document.hidden) { vtFirst = false; go(); return; }
+  let done = false; const run = () => { if (done) return; done = true; try { go(); } catch (e) { console.error(e); } };
+  let t = null; try { t = document.startViewTransition(run); t.finished.catch(() => {}); } catch (e) { run(); }
+  setTimeout(() => { if (!done) { try { t && t.skipTransition(); } catch (e) {} run(); } }, 250);
+}
 function render(){
-  if (location.hash === "#c=great-steppe") { const go = () => { lastView = ""; gsPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "great-steppe", n: "Коллекция The Great Steppe" }); }; if (document.startViewTransition) document.startViewTransition(go); else go(); return; }
+  if (location.hash === "#c=great-steppe") { const go = () => { lastView = ""; gsPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "great-steppe", n: "Коллекция The Great Steppe" }); }; vt(go); return; }
   const m = location.hash.match(/^#p=(.+)$/);
   const p = m && PRODUCTS.find(x => x.key === decodeURIComponent(m[1]));
   const go = () => {
@@ -643,7 +651,7 @@ function render(){
     $("#hdr").classList.toggle("solid", !!p || scrollY > 40);
     $("#dock").classList.toggle("away", !!p);
   };
-  if (document.startViewTransition) document.startViewTransition(go); else go();
+  vt(go);
 }
 addEventListener("hashchange", () => { if (!document.body.classList.contains("pdp")) listY = scrollY; state.color = 0; state.size = null; render(); });
 render();
