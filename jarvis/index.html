@@ -743,7 +743,7 @@ async function askBrain(q){
   $("cstate").textContent="думаю";$("said").innerHTML='<span style="opacity:.6">Думаю…</span>';
   let ans=null;
   try{const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),60000);
-    const r=await fetch(BRAIN,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({t:tok,sid:SID,q:q,ctx:ctxForBrain()}),signal:ctl.signal});
+    const fd=new URLSearchParams({t:typeof tok==="string"?tok:JSON.stringify(tok),sid:SID,q:q,ctx:JSON.stringify(ctxForBrain())});const r=await fetch(BRAIN,{method:"POST",body:fd,signal:ctl.signal});
     clearTimeout(to);const j=await r.json().catch(()=>null);if(j&&j.ok&&j.answer)ans=String(j.answer).trim()}catch(e){}
   if(!ans){await speak("Сейчас не могу ответить сам: сервер n8n, через который я думаю, не отвечает. Цифры на экране работают.","Сервер n8n не ответил. Вопрос: «"+q+"»");return}
   await speak(ans.replace(/[*_#`]/g,""))}

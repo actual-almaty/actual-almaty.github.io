@@ -456,7 +456,7 @@ function ago(iso){var d=Date.parse(iso);if(!d)return "";var m=Math.round((Date.n
 function clean(t){return String(t||"").replace(/\*\*(.+?)\*\*/g,"$1").replace(/^#{1,6}\s*/gm,"").replace(/^\s*[-*]\s+/gm,"• ").trim()}
 function busy(id){var a=O.agents[id];return !!(a&&a.status==="working"&&(Date.now()-Date.parse(a.updated||0))<STALE)}
 function byId(id){return TEAM.filter(function(t){return t.id===id})[0]}
-function post(path,body){return fetch(HOOK+path,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)}).then(function(r){return r.json().catch(function(){return {ok:false,error:r.status===401?"auth":"bad"}})})}
+function post(path,body){var f=new URLSearchParams();Object.keys(body).forEach(function(k){f.append(k,body[k]==null?"":String(body[k]))});return fetch(HOOK+path,{method:"POST",body:f}).then(function(r){return r.json().catch(function(){return {ok:false,error:r.status===401?"auth":"bad"}})})}
 function rnd(a,b){return a+Math.random()*(b-a)}
 
 /* ---------- котик ---------- */
