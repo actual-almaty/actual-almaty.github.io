@@ -440,15 +440,16 @@ const RU_PREF=[/dmitry.*natural/i,/pavel/i,/yuri|юрий/i,/natural/i,/(yuri|mi
 let ruVoices=[],kkVoice=null;
 function pickVoice(){const all=speechSynthesis.getVoices();ruVoices=all.filter(v=>/^ru/i.test(v.lang));
   const saved=(()=>{try{return localStorage.getItem("jv_voice")}catch(e){return null}})();
-  voice=ruVoices.find(v=>v.name===saved)||null;
+  voice=all.find(v=>v.name===saved&&/^(ru|kk)/i.test(v.lang))||null;
   if(!voice)for(const r of RU_PREF){voice=ruVoices.find(v=>r.test(v.name));if(voice)break}
   if(!voice)voice=ruVoices[0]||null;
   kkVoice=all.filter(v=>/^kk/i.test(v.lang)).sort((a,b)=>(/daulet/i.test(b.name)-/daulet/i.test(a.name))||(/natural/i.test(b.name)-/natural/i.test(a.name)))[0]||null;
+  ruVoices=ruVoices.concat(all.filter(v=>/^kk/i.test(v.lang)));
   const bv=$("bVoice");if(bv)bv.textContent="Голос: "+(voice?voice.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim():"нет русского");
-  const good=voice&&/dmitry.*natural/i.test(voice.name);const h=$("vHint");if(h)h.style.display=good?"none":"block"}
+  const good=voice&&/(dmitry|daulet).*natural/i.test(voice.name);const h=$("vHint");if(h)h.style.display=good?"none":"block"}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;[500,1500,4000].forEach(t=>setTimeout(pickVoice,t))}
 let pulseT=null;
-function utter(t,lang,v){return new Promise(res0=>{let done=false;const res=()=>{if(!done){done=true;res0()}};setTimeout(res,2500+t.length*110);const u=new SpeechSynthesisUtterance(t);u.lang=lang;if(v)u.voice=v;const nat=v&&/natural/i.test(v.name);u.rate=nat?1.05:1;u.pitch=nat?1:.95;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
+function utter(t,lang,v){return new Promise(res0=>{let done=false;const res=()=>{if(!done){done=true;res0()}};setTimeout(res,2500+t.length*110);const u=new SpeechSynthesisUtterance(t);u.lang=v&&v.lang?v.lang:lang;if(v)u.voice=v;const nat=v&&/natural/i.test(v.name);u.rate=nat?1.05:1;u.pitch=nat?1:.95;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
 async function speak(txt,html,kz){
   $("said").innerHTML=(html||txt)+(kz?`<div class="kz">${kz}</div>`:"");
   if(muted||!("speechSynthesis" in window))return;
@@ -616,8 +617,21 @@ function briefing(){const t=new Date(),p=[];p.push(`${hello()}, Жанерке.`
   if(A.deadV)p.push(`На складе ${say$(A.deadV)} по закупке не продавалось месяц. Советую сделать по ним акцию или рилс.`);
   return p.join(" ")}
 const RU={"ноль":0,"один":1,"два":2,"три":3,"четыре":4,"пять":5,"шесть":6,"семь":7,"восемь":8,"девять":9};
+function setVoice(v,msg){voice=v;try{localStorage.setItem("jv_voice",v.name)}catch(e){}pickVoice();return speak(msg)}
+async function voiceCmd(s){
+  if(!/(голос|дауле|дмитри|daulet|dmitr)/.test(s)||!/(включ|постав|смен|поменя|давай|дауле|дмитри|daulet|dmitr)/.test(s))return false;
+  const all=speechSynthesis.getVoices();
+  if(/(дауле|daulet|казах|қазақ)/.test(s)){const v=kkVoice||all.find(v=>/daulet/i.test(v.name));
+    if(!v){await speak("Голоса Даулет на этом компьютере нет. Откройте Джарвиса в Microsoft Edge.");return true}
+    await setVoice(v,"Сәлем, бастық! Енді мен Даулетпін. Теперь говорю голосом Даулета.");return true}
+  if(/(дмитри|dmitr|русск|прежн|обратно)/.test(s)){const v=all.find(v=>/dmitry/i.test(v.name))||all.find(v=>/^ru/i.test(v.lang));
+    if(!v){await speak("Русского голоса на этом компьютере нет.");return true}
+    await setVoice(v,"Вернул голос Дмитрия.");return true}
+  if(/(смен|поменя|друг|следующ)/.test(s)){nextVoice();return true}
+  return false}
 async function handle(q){
   $("heard").textContent="«"+q+"»";const s=q.toLowerCase().replace(/ё/g,"е");$("cstate").textContent="считаю";
+  if(await voiceCmd(s))return;
   if(!A.days){await speak("Ещё загружаю данные из Паломы, секунду.");return}
   const t=new Date();let m;
   const dig=s.replace(/(\d)\s+(?=\d)/g,"$1").match(/\d{3,6}/);
