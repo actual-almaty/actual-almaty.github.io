@@ -34,7 +34,8 @@ for (const page of $('Загрузить товары Paloma365').all()) {
     const rawColor = rest.filter(t => t !== '/' && t !== '-' && !/^\d{1,3}(-\d{1,3})?$/.test(t)).join(' ').replace(/\s*\/\s*/g, ' / ').replace(/^[-\s/]+|[-\s/]+$/g, '').trim();
     const ck = rawColor.replace(/-\d+$/, '').replace(/\s*\/\s*/g, ' ').toLowerCase().trim();
     const color = COLOR_RU[ck] || rawColor.replace(/-\d+$/, '');
-    const key = (numCode ? title : (code || title)).toLowerCase().replace(/[^a-z0-9а-я]+/gi, '-').replace(/^-|-$/g, '');
+    let key = (numCode ? title : (code || title)).toLowerCase().replace(/[^a-z0-9а-я]+/gi, '-').replace(/^-|-$/g, '');
+    { const ty = TYPE_MAP[tok[0]] || tok[0]; if (models[key] && models[key].type !== ty) key = key + '-' + ty.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-'); } // один артикул у разных вещей (Термос TGS-001 и Футболка TGS-001) — разные карточки
     const ttl = (TYPE_MAP[tok[0]] && TITLE_FIX.has(tok[0])) ? (TYPE_MAP[tok[0]] + ' ' + title.split(' ').slice(tok[0] === 'Полу' && tok[1] === 'замок' ? 2 : 1).join(' ')) : title;
     const m = models[key] || (models[key] = { key, title: ttl.trim(), code, type: TYPE_MAP[tok[0]] || tok[0], desc: '', colors: {}, hasImg: false, prices: [], waist: {} });
     if (m.title === m.code && ttl.trim() !== code && ci > 0) { m.title = ttl.trim(); m.type = TYPE_MAP[tok[0]] || tok[0]; }
