@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
+<link rel="manifest" href="/app/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ACTUAL">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>ACTUAL · Мужская одежда · Алматы</title>
 <meta name="description" content="ACTUAL — бутик мужской одежды в ТРЦ Riviera Park, Алматы. Каталог, размеры, заказ онлайн.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -302,6 +308,8 @@ video::-webkit-media-controls{display:none!important}
 .tile .sale{position:absolute;left:8px;top:38px;padding:5px 9px;border-radius:999px;background:var(--gold);color:#0A0A0A;font-size:12px;font-weight:800}
 .tile .p s,.price s{color:#9a9a9a;font-weight:500;font-size:.8em;margin-left:6px}
 .price .sb{display:inline-block;margin-left:10px;padding:4px 10px;border-radius:999px;background:var(--gold);color:#0A0A0A;font-size:13px;font-weight:800;vertical-align:middle}
+.inst{position:fixed;left:10px;right:10px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:60;display:flex;gap:12px;align-items:center;padding:14px 14px 14px 16px;border-radius:18px;background:#0A0A0A;color:#fff;box-shadow:0 14px 40px rgba(0,0,0,.3);font-size:14px;line-height:1.35;transform:translateY(20px);opacity:0;transition:.35s}
+.inst.on{transform:none;opacity:1}.inst img{width:44px;height:44px;border-radius:11px;flex:none}.inst b{display:block;font-size:15px}.inst span{color:rgba(255,255,255,.7)}.inst .x{margin-left:auto;background:none;border:0;color:#fff;font-size:22px;padding:4px 6px;flex:none}
 </style>
 </head>
 <body>
@@ -675,6 +683,24 @@ let kvT; new MutationObserver(() => { clearTimeout(kvT); kvT = setTimeout(() => 
 kickVideos(false);
 /* Таймер акции до полуночи по Алматы */
 setInterval(() => { const e = document.getElementById("saleCd"); if (!e || !SALE_ON) return; const end = SALE_EXT ? SALE.until : SALE.ext; let d = Math.max(0, end - Date.now()) / 1000; const h = Math.floor(d/3600), m = Math.floor(d%3600/60), sc = Math.floor(d%60); e.textContent = "до конца " + [h,m,sc].map(x => String(x).padStart(2,"0")).join(":"); }, 1000);
+/* Приложение ACTUAL: установка на экран «Домой» (iPhone — через «Поделиться», Android — кнопкой) */
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+(() => {
+  const ua = navigator.userAgent, standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const inApp = /Instagram|FBAN|FBAV|TikTok|WhatsApp/i.test(ua), ios = /iPhone|iPad/.test(ua);
+  let seen = false; try { seen = localStorage.getItem("a_inst") === "1"; } catch (e) {}
+  if (standalone || inApp || seen) return;
+  let defer = null; addEventListener("beforeinstallprompt", e => { e.preventDefault(); defer = e; });
+  setTimeout(() => {
+    if (!ios && !defer) return;
+    const d = document.createElement("div"); d.className = "inst";
+    d.innerHTML = `<img src="/app/icon-180.png" alt=""><div><b>Приложение ACTUAL</b><span>${ios ? "Нажмите «Поделиться» ⬆︎ и «На экран Домой»" : "Установите — каталог будет под рукой"}</span></div>${ios ? "" : `<button class="cta gold" id="instGo" style="padding:10px 14px">Установить</button>`}<button class="x" aria-label="Закрыть">×</button>`;
+    document.body.appendChild(d); requestAnimationFrame(() => d.classList.add("on"));
+    const close = () => { d.classList.remove("on"); setTimeout(() => d.remove(), 400); try { localStorage.setItem("a_inst", "1"); } catch (e) {} };
+    d.querySelector(".x").onclick = close;
+    const g = d.querySelector("#instGo"); if (g) g.onclick = () => { defer.prompt(); defer.userChoice.finally(close); };
+  }, 25000);
+})();
 </script>
 </body>
 </html>
