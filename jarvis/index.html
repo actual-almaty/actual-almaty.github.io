@@ -745,7 +745,7 @@ async function askBrain(q){
   try{const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),60000);
     const r=await fetch(BRAIN,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({t:tok,sid:SID,q:q,ctx:ctxForBrain()}),signal:ctl.signal});
     clearTimeout(to);const j=await r.json().catch(()=>null);if(j&&j.ok&&j.answer)ans=String(j.answer).trim()}catch(e){}
-  if(!ans){await speak("Не смог сейчас ответить, связь с мозгом прервалась. Спросите ещё раз через минуту.");return}
+  if(!ans){await speak("Сейчас не могу ответить сам: сервер n8n, через который я думаю, не отвечает. Цифры на экране работают.","Сервер n8n не ответил. Вопрос: «"+q+"»");return}
   await speak(ans.replace(/[*_#`]/g,""))}
 
 /* ---------- запуск ---------- */
