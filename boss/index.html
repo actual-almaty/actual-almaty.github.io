@@ -522,8 +522,8 @@ function loadResults(){
 function schedule(ms){clearTimeout(O.timer);O.timer=setTimeout(tick,ms)}
 function tick(){
   if(location.hash!=="#office"){O.timer=null;return}
-  if(document.hidden){schedule(30000);return}
-  loadStatus().then(function(busy){paint();schedule(busy?8000:90000)});
+  if(document.hidden){schedule(300000);return}
+  loadStatus().then(function(busy){paint();schedule(busy?15000:300000)});
 }
 function send(){
   var ta=document.getElementById("ofTask"); var task=(ta&&ta.value||"").trim();
