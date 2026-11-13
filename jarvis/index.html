@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex">
+<title>J.A.R.V.I.S. · ACTUAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#e6c36a;--g2:#b8913a;--gd:rgba(230,195,106,.14);--c:#7fe3ff;--bg:#030303;--t:#f3ead2;--m:#8d8370;--red:#ff6b5a;--grn:#7dffb0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:Rajdhani,system-ui,sans-serif;overflow:hidden}
+#bgc{position:fixed;inset:0;z-index:0}
+.scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px)}
+.vign{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.85) 100%)}
+#app{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:minmax(260px,1fr) minmax(360px,1.25fr) minmax(260px,1fr);grid-template-rows:auto 1fr auto;gap:14px;padding:14px 18px}
+header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;font-family:Orbitron;letter-spacing:.25em;font-size:12px;color:var(--g2)}
+header .brand{color:var(--g);font-weight:800;font-size:15px;letter-spacing:.4em}
+header .st{display:flex;gap:18px;align-items:center}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 8px var(--grn);margin-right:6px;animation:bl 2s infinite}
+@keyframes bl{50%{opacity:.3}}
+.col{display:flex;flex-direction:column;gap:14px;min-height:0}
+.pn{position:relative;border:1px solid rgba(230,195,106,.28);background:linear-gradient(180deg,rgba(230,195,106,.06),rgba(230,195,106,.015));padding:12px 14px 12px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));transition:.4s;opacity:0;transform:translateY(10px)}
+.pn.on{opacity:1;transform:none}
+.pn::before{content:"";position:absolute;left:0;top:0;width:40px;height:2px;background:var(--g);box-shadow:0 0 10px var(--g)}
+.pn.focus{border-color:var(--g);background:linear-gradient(180deg,rgba(230,195,106,.18),rgba(230,195,106,.04));box-shadow:inset 0 0 30px rgba(230,195,106,.15)}
+.pn h3{font-family:Orbitron;font-size:10px;letter-spacing:.3em;color:var(--g2);font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between}
+.big{font-family:Orbitron;font-size:30px;font-weight:600;color:var(--g);text-shadow:0 0 18px rgba(230,195,106,.45);line-height:1.1}
+.sub{color:var(--m);font-size:14px;margin-top:3px}
+.up{color:var(--grn)}.dn{color:var(--red)}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:15px;padding:3px 0;border-bottom:1px dashed rgba(230,195,106,.1)}
+.row:last-child{border:0}
+.row .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .v{font-family:Orbitron;font-size:12px;color:var(--g);white-space:nowrap}
+.bar{height:4px;background:rgba(230,195,106,.1);margin-top:6px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--g2),var(--g));box-shadow:0 0 10px var(--g);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+svg.ch{width:100%;height:96px;display:block}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:0}
+#reactor{position:relative;width:min(40vh,380px);aspect-ratio:1;cursor:pointer;user-select:none}
+#reactor svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.r1{animation:rot 22s linear infinite;transform-origin:50% 50%}
+.r2{animation:rot 14s linear infinite reverse;transform-origin:50% 50%}
+.r3{animation:rot 8s linear infinite;transform-origin:50% 50%}
+.r4{animation:rot 40s linear infinite reverse;transform-origin:50% 50%}
+@keyframes rot{to{transform:rotate(360deg)}}
+#core{transform-origin:50% 50%;transition:transform .12s}
+#reactor.listen .r3{animation-duration:2s}
+#reactor.listen #corec{fill:var(--c)}
+#reactor.listen .ring{stroke:var(--c)}
+#reactor.speak .r2{animation-duration:3s}
+#ctext{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;font-family:Orbitron}
+#ctext .t{font-size:clamp(20px,3.4vh,34px);font-weight:800;letter-spacing:.12em;color:#fff;text-shadow:0 0 14px var(--g)}
+#ctext .s{font-size:10px;letter-spacing:.35em;color:var(--g);margin-top:4px}
+#heard{min-height:22px;font-size:17px;color:var(--c);text-align:center;max-width:90%;opacity:.9}
+#said{min-height:52px;font-size:19px;line-height:1.35;text-align:center;max-width:94%;color:var(--t)}
+#said b{color:var(--g);font-weight:600}
+.ctl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{font-family:Orbitron;font-size:10px;letter-spacing:.2em;color:var(--g);background:transparent;border:1px solid rgba(230,195,106,.4);padding:9px 14px;cursor:pointer;transition:.2s}
+.btn:hover,.btn.on{background:var(--gd);border-color:var(--g);box-shadow:0 0 14px rgba(230,195,106,.3)}
+#ask{display:flex;width:min(520px,94%);border:1px solid rgba(230,195,106,.35)}
+#ask input{flex:1;background:transparent;border:0;color:var(--t);font:500 16px Rajdhani;padding:10px 12px;outline:0}
+#ask button{border:0;border-left:1px solid rgba(230,195,106,.35)}
+footer{grid-column:1/-1;overflow:hidden;border-top:1px solid rgba(230,195,106,.2);border-bottom:1px solid rgba(230,195,106,.2);height:34px;position:relative}
+#tick{position:absolute;white-space:nowrap;top:0;line-height:34px;font-size:15px;color:var(--m);animation:tk 70s linear infinite;padding-left:100%}
+#tick span{margin-right:60px}#tick b{color:var(--g);font-weight:600}
+@keyframes tk{to{transform:translateX(-100%)}}
+.hint{font-size:13px;color:var(--m);text-align:center}
+#boot{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;cursor:pointer}
+#boot .l{font-family:Orbitron;font-size:clamp(26px,5vw,54px);font-weight:800;letter-spacing:.35em;color:var(--g);text-shadow:0 0 30px rgba(230,195,106,.6)}
+#boot .p{font-family:Orbitron;font-size:11px;letter-spacing:.4em;color:var(--m);animation:bl 1.6s infinite}
+#boot input{background:transparent;border:1px solid rgba(230,195,106,.4);color:var(--t);font:500 17px Rajdhani;padding:11px 14px;width:260px;outline:0;display:block;margin:0 auto 10px}
+#boot .err{color:var(--red);min-height:20px;text-align:center}
+.log{font-family:Orbitron;font-size:10px;letter-spacing:.15em;color:var(--g2);height:84px;overflow:hidden;text-align:left;width:300px}
+@media (max-width:900px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto}.center{order:-1}#reactor{width:min(70vw,320px)}footer{grid-column:1}}
+</style>
+</head>
+<body>
+<canvas id="bgc"></canvas><div class="scan"></div><div class="vign"></div>
+
+<div id="boot">
+  <div class="l">J.A.R.V.I.S.</div>
+  <div id="bootBody"><div class="p">НАЖМИТЕ, ЧТОБЫ АКТИВИРОВАТЬ</div></div>
+</div>
+
+<div id="app">
+  <header><div class="brand">ACTUAL · J.A.R.V.I.S.</div><div class="st"><span><span class="dot"></span><span id="sync">ПОДКЛЮЧЕНИЕ…</span></span><span id="clock">--:--</span></div></header>
+
+  <div class="col">
+    <div class="pn" id="p-today"><h3><span>ВЫРУЧКА · СЕГОДНЯ</span><span id="todayN"></span></h3><div class="big" id="today">—</div><div class="sub" id="todaySub">&nbsp;</div></div>
+    <div class="pn" id="p-days"><h3><span>14 ДНЕЙ</span><span id="wkS"></span></h3><svg class="ch" id="ch14" viewBox="0 0 280 96" preserveAspectRatio="none"></svg><div class="sub" id="wkSub">&nbsp;</div></div>
+    <div class="pn" id="p-month"><h3><span>МЕСЯЦ</span><span id="mName"></span></h3><div class="big" id="month">—</div><div class="sub" id="monthSub">&nbsp;</div><div class="bar"><i id="mBar" style="width:0"></i></div><div class="sub" id="fcSub" style="margin-top:6px">&nbsp;</div></div>
+  </div>
+
+  <div class="center">
+    <div id="reactor" title="Нажмите и говорите">
+      <svg viewBox="0 0 400 400">
+        <defs><radialGradient id="cg"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffe7a8"/><stop offset="1" stop-color="#e6c36a" stop-opacity="0"/></radialGradient>
+        <filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+        <g filter="url(#gl)" fill="none" stroke="#e6c36a">
+          <g class="r4"><circle class="ring" cx="200" cy="200" r="192" stroke-opacity=".25" stroke-dasharray="2 6"/><circle class="ring" cx="200" cy="200" r="184" stroke-opacity=".5" stroke-width="1"/></g>
+          <g class="r1"><circle class="ring" cx="200" cy="200" r="168" stroke-width="6" stroke-opacity=".7" stroke-dasharray="70 18 8 18"/></g>
+          <g class="r2"><circle class="ring" cx="200" cy="200" r="146" stroke-width="2" stroke-opacity=".8" stroke-dasharray="180 30 40 30"/><circle class="ring" cx="200" cy="200" r="136" stroke-width="10" stroke-opacity=".18" stroke-dasharray="4 8"/></g>
+          <g class="r3"><circle class="ring" cx="200" cy="200" r="116" stroke-width="3" stroke-dasharray="20 10"/></g>
+          <circle class="ring" cx="200" cy="200" r="96" stroke-width="1" stroke-opacity=".6"/>
+        </g>
+        <g id="core"><circle cx="200" cy="200" r="88" fill="url(#cg)" opacity=".35"/><circle id="corec" cx="200" cy="200" r="60" fill="#e6c36a" opacity=".12"/></g>
+      </svg>
+      <div id="ctext"><div class="t">ACTUAL</div><div class="s" id="cstate">ГОТОВ</div></div>
+    </div>
+    <div id="heard"></div>
+    <div id="said">Скажите «Джарвис», и вопрос. Или нажмите на реактор.</div>
+    <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Спросите текстом: выручка за неделю, остаток MS-25043…" autocomplete="off"><button class="btn">ОК</button></form>
+    <div class="ctl"><button class="btn" id="bWake">«ДЖАРВИС» ВКЛ</button><button class="btn" onclick="handle('доклад')">ДОКЛАД</button><button class="btn" id="bMute">ЗВУК ВКЛ</button><a class="btn" href="../boss/" style="text-decoration:none">РУКОВОДИТЕЛЬ</a></div>
+  </div>
+
+  <div class="col">
+    <div class="pn" id="p-top"><h3><span>ТОП ПРОДАЖ · 30 ДНЕЙ</span><span id="topN"></span></h3><div id="top"></div></div>
+    <div class="pn" id="p-stock"><h3><span>СКЛАД</span><span id="stN"></span></h3><div class="big" id="stock">—</div><div class="sub" id="stockSub">&nbsp;</div><div class="bar"><i id="deadBar" style="width:0;background:linear-gradient(90deg,#7a2a22,var(--red))"></i></div><div class="sub" id="deadSub" style="margin-top:6px">&nbsp;</div></div>
+    <div class="pn" id="p-cash"><h3><span>ДЕНЬГИ · КАССА И СЧЕТА</span></h3><div class="big" id="cash">—</div><div id="cashRows" style="margin-top:6px"></div></div>
+  </div>
+
+  <footer><div id="tick"><span>Системы ACTUAL загружаются…</span></div></footer>
+</div>
+
+<script>
+async function scryptKey(pass, salt, N, r, p, dkLen) {
+  var enc = new TextEncoder();
+  var pw = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+  var blen = 128 * r * p;
+  var B = new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc.encode(salt), iterations: 1, hash: "SHA-256" }, pw, blen * 8));
+  var R32 = 32 * r;
+  var X = new Uint32Array(R32), V = new Uint32Array(R32 * N), Y = new Uint32Array(R32), T = new Uint32Array(16), x = new Uint32Array(16);
+  function salsa(B16) {
+    for (var i = 0; i < 16; i++) x[i] = B16[i];
+    for (i = 0; i < 8; i += 2) {
+      var u;
+      u = x[0] + x[12]; x[4] ^= (u << 7) | (u >>> 25); u = x[4] + x[0]; x[8] ^= (u << 9) | (u >>> 23);
+      u = x[8] + x[4]; x[12] ^= (u << 13) | (u >>> 19); u = x[12] + x[8]; x[0] ^= (u << 18) | (u >>> 14);
+      u = x[5] + x[1]; x[9] ^= (u << 7) | (u >>> 25); u = x[9] + x[5]; x[13] ^= (u << 9) | (u >>> 23);
+      u = x[13] + x[9]; x[1] ^= (u << 13) | (u >>> 19); u = x[1] + x[13]; x[5] ^= (u << 18) | (u >>> 14);
+      u = x[10] + x[6]; x[14] ^= (u << 7) | (u >>> 25); u = x[14] + x[10]; x[2] ^= (u << 9) | (u >>> 23);
+      u = x[2] + x[14]; x[6] ^= (u << 13) | (u >>> 19); u = x[6] + x[2]; x[10] ^= (u << 18) | (u >>> 14);
+      u = x[15] + x[11]; x[3] ^= (u << 7) | (u >>> 25); u = x[3] + x[15]; x[7] ^= (u << 9) | (u >>> 23);
+      u = x[7] + x[3]; x[11] ^= (u << 13) | (u >>> 19); u = x[11] + x[7]; x[15] ^= (u << 18) | (u >>> 14);
+      u = x[0] + x[3]; x[1] ^= (u << 7) | (u >>> 25); u = x[1] + x[0]; x[2] ^= (u << 9) | (u >>> 23);
+      u = x[2] + x[1]; x[3] ^= (u << 13) | (u >>> 19); u = x[3] + x[2]; x[0] ^= (u << 18) | (u >>> 14);
+      u = x[5] + x[4]; x[6] ^= (u << 7) | (u >>> 25); u = x[6] + x[5]; x[7] ^= (u << 9) | (u >>> 23);
+      u = x[7] + x[6]; x[4] ^= (u << 13) | (u >>> 19); u = x[4] + x[7]; x[5] ^= (u << 18) | (u >>> 14);
+      u = x[10] + x[9]; x[11] ^= (u << 7) | (u >>> 25); u = x[11] + x[10]; x[8] ^= (u << 9) | (u >>> 23);
+      u = x[8] + x[11]; x[9] ^= (u << 13) | (u >>> 19); u = x[9] + x[8]; x[10] ^= (u << 18) | (u >>> 14);
+      u = x[15] + x[14]; x[12] ^= (u << 7) | (u >>> 25); u = x[12] + x[15]; x[13] ^= (u << 9) | (u >>> 23);
+      u = x[13] + x[12]; x[14] ^= (u << 13) | (u >>> 19); u = x[14] + x[13]; x[15] ^= (u << 18) | (u >>> 14);
+    }
+    for (i = 0; i < 16; i++) B16[i] = (B16[i] + x[i]) >>> 0;
+  }
+  function blockMix() { // X -> X, через Y
+    for (var k = 0; k < 16; k++) T[k] = X[(2 * r - 1) * 16 + k];
+    for (var i = 0; i < 2 * r; i++) {
+      for (k = 0; k < 16; k++) T[k] ^= X[i * 16 + k];
+      salsa(T);
+      var off = (i & 1) ? (r + (i >> 1)) * 16 : (i >> 1) * 16;
+      for (k = 0; k < 16; k++) Y[off + k] = T[k];
+    }
+    X.set(Y);
+  }
+  var dv = new DataView(B.buffer);
+  for (var pi = 0; pi < p; pi++) {
+    var base = pi * 128 * r;
+    for (var i = 0; i < R32; i++) X[i] = dv.getUint32(base + i * 4, true);
+    for (i = 0; i < N; i++) { V.set(X, i * R32); blockMix(); }
+    for (i = 0; i < N; i++) {
+      var j = X[(2 * r - 1) * 16] & (N - 1);
+      for (var k = 0; k < R32; k++) X[k] ^= V[j * R32 + k];
+      blockMix();
+    }
+    for (i = 0; i < R32; i++) dv.setUint32(base + i * 4, X[i], true);
+  }
+  var bk = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", salt: B, iterations: 1, hash: "SHA-256" }, bk, dkLen * 8));
+}
+function b64(s){ return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0)}); }
+function hex(u){ return Array.from(u,function(b){return b.toString(16).padStart(2,"0")}).join(""); }
+function unhex(h){ var u=new Uint8Array(h.length/2); for(var i=0;i<u.length;i++) u[i]=parseInt(h.substr(i*2,2),16); return u; }
+async function aesOpen(keyBytes, box){ var k=await crypto.subtle.importKey("raw",keyBytes,"AES-GCM",false,["decrypt"]); var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(box.iv)},k,b64(box.ct)); return JSON.parse(new TextDecoder().decode(pt)); }
+
+
+</script>
+<script>
+"use strict";
+const API="https://script.google.com/macros/s/AKfycbyQyJ7kTF21MbcRgo2IaqUFneBRqY0Ahm85K0fr15mbWcWmE0iU91ZDpij6XCcR1WGfsA/exec";
+const TK="boss_tok"; let tok=null; try{tok=localStorage.getItem(TK)}catch(e){}
+const $=id=>document.getElementById(id);
+const num=v=>Number(v)||0;
+const fmt=n=>Math.round(n).toLocaleString("ru-RU").replace(/,/g," ")+" ₸";
+const fmtS=n=>{n=Math.round(n);if(Math.abs(n)>=1e6)return (n/1e6).toFixed(n>=1e7?1:2).replace(".",",")+" млн";if(Math.abs(n)>=1e3)return Math.round(n/1e3)+" тыс";return String(n)};
+const say$=n=>{n=Math.round(n);if(n>=1e6){const m=Math.floor(n/1e6),k=Math.round((n%1e6)/1e3);return m+" "+plural(m,"миллион","миллиона","миллионов")+(k?" "+k+" "+plural(k,"тысяча","тысячи","тысяч"):"")+" тенге"}if(n>=1e3){const k=Math.round(n/1e3);return k+" "+plural(k,"тысяча","тысячи","тысяч")+" тенге"}return n+" тенге"};
+function plural(n,a,b,c){n=Math.abs(n)%100;const n1=n%10;if(n>10&&n<20)return c;if(n1>1&&n1<5)return b;if(n1===1)return a;return c}
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const MON=["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const DOW=["воскресенье","понедельник","вторник","среду","четверг","пятницу","субботу"];
+const DOWs=["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"];
+
+/* ---------- фон ---------- */
+(function(){const c=$("bgc"),x=c.getContext("2d");let W,H,P=[];function rs(){W=c.width=innerWidth;H=c.height=innerHeight;P=Array.from({length:Math.min(90,W/14)},()=>({x:Math.random()*W,y:Math.random()*H,v:.15+Math.random()*.4,r:Math.random()*1.6}))}rs();addEventListener("resize",rs);
+let t=0;(function f(){t+=.004;x.clearRect(0,0,W,H);x.strokeStyle="rgba(230,195,106,.05)";x.lineWidth=1;const g=48;for(let i=0;i<W;i+=g){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}for(let j=(t*40)%g;j<H;j+=g){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=H;p.x=Math.random()*W}x.fillStyle="rgba(230,195,106,"+(.25+p.r/4)+")";x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});requestAnimationFrame(f)})()})();
+setInterval(()=>{const d=new Date();$("clock").textContent=pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())},1000);
+
+/* ---------- голос ---------- */
+let muted=false,voice=null,speaking=false;
+function pickVoice(){const v=speechSynthesis.getVoices().filter(v=>/^ru/i.test(v.lang));voice=v.find(v=>/google/i.test(v.name))||v.find(v=>/(yuri|dmitri|pavel|male)/i.test(v.name))||v.find(v=>/milena|irina|svetlana/i.test(v.name))||v[0]||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+let pulseT=null;
+function speak(txt,html){
+  $("said").innerHTML=html||txt;
+  if(muted||!("speechSynthesis" in window))return Promise.resolve();
+  return new Promise(res=>{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt.replace(/₸/g,"тенге"));u.lang="ru-RU";if(voice)u.voice=voice;u.rate=1.04;u.pitch=.9;
+    u.onstart=()=>{speaking=true;$("reactor").classList.add("speak");$("cstate").textContent="ГОВОРЮ";clearInterval(pulseT);pulseT=setInterval(()=>{$("core").style.transform="scale("+(1+Math.random()*.18)+")"},90)};
+    const end=()=>{speaking=false;$("reactor").classList.remove("speak");clearInterval(pulseT);$("core").style.transform="";$("cstate").textContent=wake?"СЛУШАЮ «ДЖАРВИС»":"ГОТОВ";res()};
+    u.onend=end;u.onerror=end;speechSynthesis.speak(u)})}
+$("bMute").onclick=function(){muted=!muted;this.textContent=muted?"ЗВУК ВЫКЛ":"ЗВУК ВКЛ";if(muted)speechSynthesis.cancel()};
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,wake=false,oneShot=false,armed=false;
+function startRec(){if(!SR){speak("Этот браузер не умеет слушать. Откройте страницу в Google Chrome.");return}
+  if(rec)try{rec.abort()}catch(e){}
+  rec=new SR();rec.lang="ru-RU";rec.continuous=wake;rec.interimResults=true;
+  rec.onresult=e=>{let fin="",int="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else int+=t}
+    const show=(fin||int).trim();if(oneShot||armed||/д[жз]арвис|jarvis/i.test(show))$("heard").textContent="› "+show;
+    if(!fin)return;let t=fin.trim();
+    if(oneShot){oneShot=false;stopListenUI();handle(t);return}
+    const m=t.match(/(?:д[жз]арвис|jarvis)[,!. ]*(.*)$/i);
+    if(m){const q=m[1].trim();if(q.length>2)handle(q);else{armed=true;listenUI();speak("Слушаю.")}return}
+    if(armed){armed=false;stopListenUI();handle(t)}};
+  rec.onend=()=>{if(wake&&!oneShot)setTimeout(()=>{try{rec.start()}catch(e){}},250);else stopListenUI()};
+  rec.onerror=e=>{if(e.error==="not-allowed"){wake=false;$("bWake").classList.remove("on");speak("Нужен доступ к микрофону. Разрешите его в адресной строке браузера.")}};
+  try{rec.start()}catch(e){}}
+function listenUI(){$("reactor").classList.add("listen");$("cstate").textContent="СЛУШАЮ"}
+function stopListenUI(){$("reactor").classList.remove("listen");$("cstate").textContent=wake?"СЛУШАЮ «ДЖАРВИС»":"ГОТОВ"}
+$("reactor").onclick=()=>{speechSynthesis.cancel();oneShot=true;listenUI();$("heard").textContent="";if(wake&&rec){try{rec.abort()}catch(e){}}wakeSave=wake;wake=false;startRec();setTimeout(()=>{wake=wakeSave;if(wake&&!oneShot)startRec()},9000)};
+let wakeSave=false;
+$("bWake").onclick=function(){wake=!wake;this.classList.toggle("on",wake);this.textContent=wake?"«ДЖАРВИС» СЛУШАЕТ":"«ДЖАРВИС» ВКЛ";if(wake){startRec();$("cstate").textContent="СЛУШАЮ «ДЖАРВИС»"}else{try{rec&&rec.abort()}catch(e){}$("cstate").textContent="ГОТОВ"}};
+
+/* ---------- данные Paloma ---------- */
+function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
+async function pal(calls){const out={};for(let i=0;i<calls.length;i+=25){const b=calls.slice(i,i+25);const j=await post("paloma",{calls:b.map(c=>({tool:c.tool,args:c.args,ttl:c.ttl||0}))});
+  if(j&&j.error==="auth"){try{localStorage.removeItem(TK)}catch(e){}location.reload();return out}
+  b.forEach((c,k)=>{const r=j&&j.ok&&j.results?j.results[k]:null;out[c.k]=r&&r.ok&&r.payload&&r.payload.success!==false?r.payload:null})}return out}
+const D={};
+const tot=p=>p&&p.totals?p.totals:(p&&p.rows?p.rows.reduce((a,x)=>({salesum:a.salesum+num(x.salesum),quantity:a.quantity+num(x.quantity),profit:a.profit+num(x.profit)}),{salesum:0,quantity:0,profit:0}):null);
+async function loadFast(){
+  const t=new Date(),T=ymd(t),m1=ymd(new Date(t.getFullYear(),t.getMonth(),1));
+  const pm1=new Date(t.getFullYear(),t.getMonth()-1,1),pmEnd=new Date(t.getFullYear(),t.getMonth()-1,Math.min(t.getDate(),new Date(t.getFullYear(),t.getMonth(),0).getDate()));
+  const c=[{k:"tR",tool:"report_sales",args:{date_from:T,date_to:T,group_by:"warehouse"}},
+    {k:"tTop",tool:"report_sales",args:{date_from:T,date_to:T,top:10}},
+    {k:"mW",tool:"report_sales",args:{date_from:m1,date_to:T,group_by:"warehouse",source:"warehouse"},ttl:120},
+    {k:"pW",tool:"report_sales",args:{date_from:ymd(pm1),date_to:ymd(pmEnd),group_by:"warehouse",source:"warehouse"},ttl:21600},
+    {k:"top30",tool:"report_sales",args:{date_from:ymd(addD(t,-29)),date_to:T,top:200},ttl:600},
+    {k:"cash",tool:"report_cash_balance",args:{date_from:ymd(addD(t,-6)),date_to:T},ttl:300}];
+  for(let i=0;i<14;i++){const d=ymd(addD(t,-i));c.push({k:"d"+i,tool:"report_sales",args:{date_from:d,date_to:d,group_by:"warehouse",source:"warehouse"},ttl:i?21600:120})}
+  Object.assign(D,await pal(c));D.at=new Date();
+}
+async function loadStock(){const t=ymd(new Date()),c=[];for(let o=0;o<4000;o+=500)c.push({k:"s"+o,tool:"report_stock_remainder",args:{warehouse_id:1,only_nonzero:true,limit:500,offset:o,on_date:t},ttl:600});
+  const r=await pal(c);let rows=[];for(let o=0;o<4000;o+=500){const p=r["s"+o];if(p&&p.rows)rows=rows.concat(p.rows);if(!p||!p.has_more)break}D.stock=rows}
+async function loadGoals(){try{const j=await post("kvGet",{prefix:"settings/"});if(j&&j.ok){const g=(j.docs||[]).find(d=>d[0]==="settings/goals");if(g){const v=JSON.parse(g[1]);const k=ymd(new Date()).slice(0,7);D.plan=num(v.months&&v.months[k]&&v.months[k].monthRevenue)}}}catch(e){}}
+
+/* ---------- расчёты ---------- */
+function calc(){
+  const A={},t=new Date();
+  const tr=tot(D.tR),d0=tot(D.d0);
+  A.today=tr?num(tr.salesum):(d0?num(d0.salesum):null);A.todayQ=tr?num(tr.quantity):d0?num(d0.quantity):0;
+  A.days=[];for(let i=13;i>=0;i--){const x=tot(D["d"+i]);let v=x?num(x.salesum):null;if(i===0&&A.today!=null&&(!v||v<A.today))v=A.today;A.days.push({d:addD(t,-i),v})}
+  A.lw=A.days[6].v; // тот же день прошлой недели
+  A.w=A.days.slice(7).reduce((a,x)=>a+num(x.v),0);A.pw=A.days.slice(0,7).reduce((a,x)=>a+num(x.v),0);
+  A.y=A.days[12].v;
+  const mw=tot(D.mW),pw=tot(D.pW);
+  A.month=mw?num(mw.salesum)+((d0&&num(d0.salesum)>0)?0:num(A.today)):null;
+  A.profit=mw&&mw.profit!=null?num(mw.profit):null;
+  A.prevM=pw?num(pw.salesum):null;
+  const dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();
+  A.fc=A.month!=null?A.month/t.getDate()*dim:null;A.plan=D.plan||0;
+  // топ по артикулам
+  const art=n=>{const m=String(n).match(/[A-ZА-Я]{1,4}-?\d{3,6}(?:-\d)?|\b\d{4,6}(?:-\d)?\b/i);return m?m[0].toUpperCase():String(n).split(" ").slice(0,2).join(" ")};
+  const kind=n=>String(n).split(" ")[0];
+  const by={},cat={},sold={};(D.top30&&D.top30.rows||[]).forEach(r=>{const a=art(r.group_name);by[a]=by[a]||{a,name:kind(r.group_name)+" "+a,q:0,s:0};by[a].q+=num(r.quantity);by[a].s+=num(r.salesum);const k=kind(r.group_name);cat[k]=(cat[k]||0)+num(r.salesum);sold[r.group_id]=1});
+  A.top=Object.values(by).sort((a,b)=>b.s-a.s);A.cat=Object.entries(cat).sort((a,b)=>b[1]-a[1]);A.sum30=(D.top30&&tot(D.top30))?num(tot(D.top30).salesum):0;
+  A.todayTop=(D.tTop&&D.tTop.rows)||[];
+  if(D.stock){A.stQ=D.stock.reduce((a,x)=>a+num(x.quantity),0);A.stV=D.stock.reduce((a,x)=>a+num(x.costsum),0);A.stN=D.stock.length;
+    const dead=D.stock.filter(x=>!sold[x.item_id]);A.deadQ=dead.reduce((a,x)=>a+num(x.quantity),0);A.deadV=dead.reduce((a,x)=>a+num(x.costsum),0);
+    const dk={};dead.forEach(x=>{const a=art(x.item);dk[a]=dk[a]||{a,name:kind(x.item)+" "+a,q:0,v:0};dk[a].q+=num(x.quantity);dk[a].v+=num(x.costsum)});A.deadTop=Object.values(dk).sort((a,b)=>b.v-a.v)}
+  const cr=(D.cash&&D.cash.rows)||null;if(cr){A.cash=cr.reduce((a,x)=>a+num(x.closing_balance),0);A.cashRows=cr.map(x=>({n:x.name||x.account_name||x.account||"Счёт",v:num(x.closing_balance)}))}
+  return A}
+let A={};
+
+/* ---------- отрисовка ---------- */
+const pct=(a,b)=>b?Math.round((a-b)/b*100):null;
+const arrow=p=>p==null?"":p>=0?`<span class="up">▲ ${p}%</span>`:`<span class="dn">▼ ${Math.abs(p)}%</span>`;
+function countUp(el,to,f){if(to==null){el.textContent="—";return}const from=num(el.dataset.v);el.dataset.v=to;const t0=performance.now();(function s(n){const k=Math.min(1,(n-t0)/1200),e=1-Math.pow(1-k,3);el.textContent=f(from+(to-from)*e);if(k<1)requestAnimationFrame(s)})(t0)}
+function render(){
+  A=calc();const t=new Date();
+  countUp($("today"),A.today,fmt);$("todayN").textContent=A.todayQ?A.todayQ+" ШТ":"";
+  $("todaySub").innerHTML=A.lw!=null?`прошлая ${DOW[t.getDay()]}: ${fmt(A.lw)} ${arrow(pct(A.today,A.lw))}`:"&nbsp;";
+  const mx=Math.max(1,...A.days.map(x=>num(x.v)));let s="";A.days.forEach((x,i)=>{const h=num(x.v)/mx*78,w=280/14;s+=`<rect x="${i*w+3}" y="${84-h}" width="${w-6}" height="${Math.max(1,h)}" fill="${i===13?"#fff":"#e6c36a"}" opacity="${i===13?1:.45+.04*i}"><title>${x.d.getDate()}.${pad(x.d.getMonth()+1)}: ${fmt(num(x.v))}</title></rect><text x="${i*w+w/2}" y="95" fill="#8d8370" font-size="7" text-anchor="middle" font-family="Orbitron">${DOWs[x.d.getDay()]}</text>`});$("ch14").innerHTML=s;
+  $("wkS").innerHTML=arrow(pct(A.w,A.pw));$("wkSub").innerHTML=`7 дней: <b style="color:var(--g)">${fmt(A.w)}</b> · до этого ${fmt(A.pw)}`;
+  $("mName").textContent=MON[t.getMonth()].toUpperCase();countUp($("month"),A.month,fmt);
+  $("monthSub").innerHTML=(A.profit!=null?`валовая прибыль ${fmt(A.profit)} · `:"")+(A.prevM!=null?`к прошлому месяцу ${arrow(pct(A.month,A.prevM))}`:"");
+  if(A.plan){$("mBar").style.width=Math.min(100,A.month/A.plan*100)+"%";$("fcSub").innerHTML=`план ${fmtS(A.plan)} · выполнено ${Math.round(A.month/A.plan*100)}% · прогноз ${fmtS(A.fc)} (${Math.round(A.fc/A.plan*100)}%)`}
+  else{$("mBar").style.width=Math.min(100,t.getDate()/new Date(t.getFullYear(),t.getMonth()+1,0).getDate()*100)+"%";$("fcSub").innerHTML=A.fc?`прогноз на конец месяца: <b style="color:var(--g)">${fmtS(A.fc)}</b>`:"&nbsp;"}
+  const tm=Math.max(1,...A.top.slice(0,6).map(x=>x.s));$("top").innerHTML=A.top.slice(0,6).map(x=>`<div class="row"><span class="n">${x.name}</span><span class="v">${x.q} шт · ${fmtS(x.s)}</span></div><div class="bar" style="margin:0 0 4px;height:2px"><i style="width:${x.s/tm*100}%"></i></div>`).join("")||'<div class="sub">нет данных</div>';$("topN").textContent=A.sum30?fmtS(A.sum30):"";
+  if(A.stQ!=null){countUp($("stock"),A.stQ,v=>Math.round(v).toLocaleString("ru-RU")+" шт");$("stN").textContent=A.stN+" ПОЗ";$("stockSub").textContent="по закупке "+fmt(A.stV);$("deadBar").style.width=(A.stV?A.deadV/A.stV*100:0)+"%";$("deadSub").innerHTML=`<span class="dn">не продавалось 30 дней:</span> ${A.deadQ} шт · ${fmtS(A.deadV)} (${A.stV?Math.round(A.deadV/A.stV*100):0}%)`}
+  if(A.cash!=null){countUp($("cash"),A.cash,fmt);$("cashRows").innerHTML=A.cashRows.map(x=>`<div class="row"><span class="n">${x.n}</span><span class="v">${fmt(x.v)}</span></div>`).join("")}
+  $("sync").textContent="PALOMA · "+pad(D.at.getHours())+":"+pad(D.at.getMinutes());
+  ticker();document.querySelectorAll(".pn").forEach((p,i)=>setTimeout(()=>p.classList.add("on"),i*120));
+}
+function insights(){const t=new Date(),L=[];
+  if(A.today!=null&&A.lw)L.push(`Сегодня <b>${fmt(A.today)}</b>, в прошлую ${DOW[t.getDay()]} было ${fmt(A.lw)} (${pct(A.today,A.lw)>=0?"+":""}${pct(A.today,A.lw)}%)`);
+  if(A.w&&A.pw)L.push(`Неделя: <b>${fmt(A.w)}</b>, ${A.w>=A.pw?"выше":"ниже"} прошлой на ${Math.abs(pct(A.w,A.pw))}%`);
+  if(A.fc)L.push(`Прогноз месяца <b>${fmt(A.fc)}</b>`+(A.plan?` — это ${Math.round(A.fc/A.plan*100)}% плана`:""));
+  if(A.top[0])L.push(`Хит месяца: <b>${A.top[0].name}</b> — ${A.top[0].q} шт на ${fmt(A.top[0].s)}`);
+  if(A.cat[0])L.push(`Главная категория за 30 дней: <b>${A.cat[0][0]}</b> — ${A.sum30?Math.round(A.cat[0][1]/A.sum30*100):0}% выручки`);
+  if(A.deadTop&&A.deadTop[0])L.push(`Залежалось дольше всего по деньгам: <b>${A.deadTop[0].name}</b> — ${A.deadTop[0].q} шт на ${fmt(A.deadTop[0].v)}. Кандидат на акцию или Reels`);
+  const best=A.days.slice(7).reduce((a,x)=>num(x.v)>num(a.v)?x:a,A.days[7]);if(best&&best.v)L.push(`Лучший день недели: <b>${DOW[best.d.getDay()].replace(/у$/,"а")}</b>, ${fmt(best.v)}`);
+  return L}
+function ticker(){const L=insights();if(L.length)$("tick").innerHTML=L.map(x=>`<span>◆ ${x}</span>`).join("")}
+
+/* ---------- мозг: команды ---------- */
+function focus(...ids){document.querySelectorAll(".pn").forEach(p=>p.classList.toggle("focus",ids.includes(p.id)));clearTimeout(focus.t);focus.t=setTimeout(()=>document.querySelectorAll(".pn.focus").forEach(p=>p.classList.remove("focus")),12000)}
+const hello=()=>{const h=new Date().getHours();return h<5?"Доброй ночи":h<12?"Доброе утро":h<18?"Добрый день":"Добрый вечер"};
+function briefing(){const t=new Date(),p=[];p.push(`${hello()}, Жанерке.`);
+  if(A.today!=null)p.push(`Сегодня продано на ${say$(A.today)}`+(A.lw?`, это ${A.today>=A.lw?"больше":"меньше"}, чем в прошлую ${DOW[t.getDay()]}, на ${Math.abs(pct(A.today,A.lw))} процентов.`:"."));
+  if(A.month!=null)p.push(`С начала месяца ${say$(A.month)}`+(A.fc?`, прогноз на конец месяца — ${say$(A.fc)}`:"")+(A.plan?`, это ${Math.round(A.fc/A.plan*100)} процентов плана.`:"."));
+  if(A.top[0])p.push(`Лучше всего продаётся ${A.top[0].name.replace(/-/g," ")}.`);
+  if(A.deadV)p.push(`На складе ${say$(A.deadV)} по закупке не продавалось месяц. Советую сделать по ним акцию или рилс.`);
+  return p.join(" ")}
+const RU={"ноль":0,"один":1,"два":2,"три":3,"четыре":4,"пять":5,"шесть":6,"семь":7,"восемь":8,"девять":9};
+async function handle(q){
+  $("heard").textContent="› "+q;const s=q.toLowerCase().replace(/ё/g,"е");$("cstate").textContent="АНАЛИЗ";
+  if(!A.days){await speak("Ещё загружаю данные из Паломы, секунду.");return}
+  const t=new Date();let m;
+  const dig=s.replace(/(\d)\s+(?=\d)/g,"$1").match(/\d{3,6}/);
+  if(/(остат|есть ли|наличи|сколько (штук|осталось)|размер)/.test(s)&&dig){const code=dig[0];if(!D.stock){await speak("Склад ещё загружается.");return}
+    const rows=D.stock.filter(x=>String(x.item).replace(/\s/g,"").includes(code));focus("p-stock");
+    if(!rows.length){await speak(`Артикула ${code.split("").join(" ")} на складе нет.`,`Артикул <b>${code}</b>: на складе нет`);return}
+    const q=rows.reduce((a,x)=>a+num(x.quantity),0),sz=rows.map(x=>String(x.item).split(" ").slice(-1)[0]+(x.quantity>1?" ×"+x.quantity:""));
+    await speak(`По артикулу ${code} осталось ${q} ${plural(q,"штука","штуки","штук")}. Размеры: ${sz.join(", ").replace(/×/g,"по ")}.`,`<b>${code}</b> · ${q} шт<br>${rows.map(x=>x.item+" — "+x.quantity).join("<br>")}`);return}
+  if(/(доклад|брифинг|отчет|как дела|как мы|обстановк|сводк|статус)/.test(s)){focus("p-today","p-month","p-top","p-stock");await speak(briefing());return}
+  if(/прибыл|маржа|заработал/.test(s)){focus("p-month");await speak(A.profit!=null?`Валовая прибыль с начала месяца — ${say$(A.profit)}. Это без аренды и зарплат.`:"Прибыль сейчас недоступна.");return}
+  if(/прогноз|план/.test(s)){focus("p-month");await speak(A.plan?`План месяца ${say$(A.plan)}. Сделано ${Math.round(A.month/A.plan*100)} процентов. Если темп сохранится, выйдем на ${say$(A.fc)}, это ${Math.round(A.fc/A.plan*100)} процентов плана.`:`При текущем темпе месяц закроется на ${say$(A.fc)}.`);return}
+  if(/(топ|хит|лучше всего|что продает|что берут|популяр)/.test(s)){focus("p-top");const L=A.top.slice(0,3);await speak(`Топ за тридцать дней: `+L.map((x,i)=>`${i+1}. ${x.name.replace(/-/g," ")}, ${x.q} ${plural(x.q,"штука","штуки","штук")}`).join("; ")+`. Главная категория — ${A.cat[0]?A.cat[0][0]:""}.`);return}
+  if(/(залеж|не прода|неходов|мертв|завис)/.test(s)){focus("p-stock");const L=(A.deadTop||[]).slice(0,3);await speak(`За месяц не продавалось ${A.deadQ} ${plural(A.deadQ,"вещь","вещи","вещей")} на ${say$(A.deadV)}. Больше всего денег заморожено в: `+L.map(x=>x.name.replace(/-/g," ")).join(", ")+".",`Не продавалось 30 дней: <b>${A.deadQ} шт · ${fmt(A.deadV)}</b><br>`+L.map(x=>`${x.name} — ${x.q} шт · ${fmt(x.v)}`).join("<br>"));return}
+  if(/(склад|остатки|товара|сколько вещей)/.test(s)){focus("p-stock");await speak(`На складе ${A.stQ} ${plural(A.stQ,"вещь","вещи","вещей")} на ${say$(A.stV)} по закупке.`);return}
+  if(/(касс|счет|деньг|банк|налич)/.test(s)){focus("p-cash");await speak(A.cash!=null?`На кассах и счетах ${say$(A.cash)}.`:"Данные по кассе сейчас недоступны.");return}
+  if(/вчера/.test(s)){focus("p-days");await speak(`Вчера продано на ${say$(num(A.y))}.`);return}
+  if(/недел/.test(s)){focus("p-days");await speak(`За последние семь дней ${say$(A.w)}. Это ${A.w>=A.pw?"больше":"меньше"} предыдущей недели на ${Math.abs(pct(A.w,A.pw))} процентов.`);return}
+  if(/месяц/.test(s)){focus("p-month");await speak(`С начала месяца продано на ${say$(A.month)}`+(A.prevM?`, в прошлом месяце за те же дни было ${say$(A.prevM)}.`:"."));return}
+  if(/(сегодня|выручк|продал|продаж|касса дня)/.test(s)){focus("p-today");const tt=A.todayTop.slice(0,3).map(x=>x.group_name.split(" ")[0]).join(", ");await speak(`Сегодня ${A.todayQ} ${plural(A.todayQ,"продажа","продажи","продаж")} на ${say$(A.today)}.`+(tt?` Купили: ${tt}.`:""));return}
+  if(/(привет|здравств|салам|ты тут|проснись)/.test(s)){await speak(`${hello()}, Жанерке. Все системы ACTUAL в норме. Чем помочь?`);return}
+  if(/(спасибо|рахмет|молодец)/.test(s)){await speak("Всегда пожалуйста.");return}
+  if(/(обнови|перезагр)/.test(s)){await speak("Обновляю данные.");await refresh();await speak("Готово.");return}
+  // всё остальное — в Claude
+  const url="https://claude.ai/new?q="+encodeURIComponent(q);
+  await speak("Это задача для меня в Claude. Открываю.",`Это сделаю в Claude: <a href="${url}" target="_blank" style="color:var(--g)">открыть →</a>`);
+  window.open(url,"_blank");
+}
+
+/* ---------- запуск ---------- */
+async function refresh(){try{await loadFast();render()}catch(e){$("sync").textContent="НЕТ СВЯЗИ"}}
+async function boot(){
+  const log=$("bootBody");log.innerHTML='<div class="log" id="lg"></div>';const L=$("lg"),add=x=>{L.innerHTML+=x+"<br>";L.scrollTop=1e9};
+  if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(" ");speechSynthesis.speak(u)}
+  add("› ИНИЦИАЛИЗАЦИЯ ЯДРА…");await new Promise(r=>setTimeout(r,350));add("› ПОДКЛЮЧЕНИЕ К PALOMA365…");
+  try{await Promise.all([loadFast(),loadGoals()])}catch(e){add("› ОШИБКА СВЯЗИ");}
+  add("› ПРОДАЖИ: OK");add("› СКЛАД: ЗАГРУЗКА…");$("boot").style.transition="opacity .8s";$("boot").style.opacity=0;setTimeout(()=>$("boot").remove(),800);
+  render();speak(briefing());
+  loadStock().then(render).catch(()=>{});
+  setInterval(refresh,180000);setInterval(()=>loadStock().then(render).catch(()=>{}),900000);
+}
+function loginUI(){const b=$("bootBody");b.innerHTML='<input id="lL" placeholder="Логин руководителя" autocapitalize="none"><input id="lP" type="password" placeholder="Пароль"><div class="err" id="lE"></div><div style="text-align:center"><button class="btn" id="lB">ВОЙТИ</button></div>';
+  const go=async()=>{const l=$("lL").value.trim().toLowerCase(),p=$("lP").value;$("lE").textContent="";$("lB").textContent="ПРОВЕРКА…";
+    try{const users=await fetch("../team/d/users.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());const salt=users[l];const key=await scryptKey(p,salt||"x",16384,8,1,32);if(!salt)throw 0;
+      const box=await fetch("../team/d/"+l+".json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());let m;try{m=await aesOpen(key,box)}catch(x){throw 0}
+      if(!m.body||!m.body.me||m.body.me.role!=="admin")throw 1;tok=JSON.stringify({l:l,k:hex(key)});try{localStorage.setItem(TK,tok)}catch(x){}boot()}
+    catch(x){$("lE").textContent=x===1?"Только для руководителя":"Неверный логин или пароль";$("lB").textContent="ВОЙТИ"}};
+  $("lB").onclick=go;$("lP").onkeydown=e=>{if(e.key==="Enter")go()};$("lL").focus()}
+$("boot").addEventListener("click",function f(e){if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON")return;if(this.dataset.s)return;this.dataset.s=1;if(tok)boot();else loginUI()});
+</script>
+</body>
+</html>
