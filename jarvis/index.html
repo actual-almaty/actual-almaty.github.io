@@ -654,11 +654,22 @@ async function handle(q){
   if(/(привет|здравств|салам|сәлем|ты тут|проснись)/.test(s)){await speak(`${hello()}, Жанерке. Данные Паломы на экране. Что посмотреть?`,null,kz("hi",true));return}
   if(/(спасибо|рахмет|рақмет|молодец|жарайсың)/.test(s)){await speak("Всегда пожалуйста.",null,kz("thx",true));return}
   if(/(обнови|перезагр)/.test(s)){await speak("Обновляю данные.");await refresh();await speak("Готово.");return}
-  // всё остальное — в Claude
-  const url="https://claude.ai/new?q="+encodeURIComponent(q);
-  await speak("Это задача для меня в Claude. Открываю.",`Это сделаю в Claude: <a href="${url}" target="_blank" style="color:var(--gilt)">открыть чат</a>`);
-  window.open(url,"_blank");
+  // всё остальное — отвечаю сам (Claude + Палома через n8n)
+  await askBrain(q);
 }
+const BRAIN="https://actual.app.n8n.cloud/webhook/jarvis-ask";
+const SID="jv-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function ctxForBrain(){const o={};for(const k in A){const v=A[k];if(v==null)continue;
+  if(Array.isArray(v))o[k]=v.slice(0,8);else if(typeof v!=="function"&&typeof v!=="object")o[k]=v;else if(typeof v==="object"){try{const j=JSON.stringify(v);if(j.length<1500)o[k]=v}catch(e){}}}
+  return o}
+async function askBrain(q){
+  $("cstate").textContent="думаю";$("said").innerHTML='<span style="opacity:.6">Думаю…</span>';
+  let ans=null;
+  try{const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),60000);
+    const r=await fetch(BRAIN,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({t:tok,sid:SID,q:q,ctx:ctxForBrain()}),signal:ctl.signal});
+    clearTimeout(to);const j=await r.json().catch(()=>null);if(j&&j.ok&&j.answer)ans=String(j.answer).trim()}catch(e){}
+  if(!ans){await speak("Не смог сейчас ответить, связь с мозгом прервалась. Спросите ещё раз через минуту.");return}
+  await speak(ans.replace(/[*_#`]/g,""))}
 
 /* ---------- запуск ---------- */
 async function refresh(){try{await loadFast();render()}catch(e){$("sync").textContent="нет связи с Паломой"}}
