@@ -40,4 +40,10 @@ jobs:
           git add index.html status.txt team/d/stock.json team/d/stock-meta.json new/index.html 2>/dev/null || git add index.html status.txt
           if git diff --cached --quiet; then echo "Без изменений"; exit 0; fi
           git commit -m "Обновление каталога $(TZ=Asia/Almaty date '+%Y-%m-%d %H:%M')"
-          git push
+          # если за время сборки кто-то другой успел сохранить изменения — подтянуть их и повторить (до 5 раз)
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -X theirs || { git rebase --abort; git pull --no-rebase -X ours; }
+            sleep $((i*3))
+          done
+          exit 1
