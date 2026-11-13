@@ -294,6 +294,35 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 #boot input:focus{border-color:var(--gilt)}
 #boot .err{color:var(--red);min-height:20px;text-align:center;font-size:13px}
 .log{font-size:13px;color:var(--smoke);height:80px;overflow:hidden;text-align:left;width:280px;line-height:1.8}
+
+#morning{position:fixed;inset:0;z-index:15;background:#000;display:none;grid-template-columns:1.05fr 1fr;grid-template-rows:auto 1fr;column-gap:56px;padding:26px 44px 26px;overflow:auto}
+#morning.on{display:grid;animation:mIn .5s ease}
+@keyframes mIn{from{opacity:0}to{opacity:1}}
+#morning header{grid-column:1/-1}
+.m-l h2,.m-r h2{font-family:var(--fd);font-weight:500;font-size:30px;color:var(--ivory);margin:22px 0 4px}
+.m-l h2 i,.m-r h2 i{color:var(--gilt)}
+.m-k{color:var(--smoke);font-size:13.5px;margin-bottom:16px}
+.m-big{font-family:var(--fd);font-variant-numeric:lining-nums;font-weight:500;font-size:84px;line-height:1;color:var(--ivory)}
+.m-stats{display:flex;gap:36px;margin:14px 0 20px;color:var(--smoke);font-size:13.5px}
+.m-stats b{display:block;font-family:var(--fd);font-variant-numeric:lining-nums;font-size:26px;font-weight:500;color:var(--ivory)}
+.m-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.m-it{position:relative;aspect-ratio:3/4;background:#141311;overflow:hidden}
+.m-it img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85)}
+.m-it span{position:absolute;left:0;right:0;bottom:0;padding:18px 7px 6px;font-size:11px;line-height:1.3;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.m-it .ph{display:flex;align-items:center;justify-content:center;height:100%;font-family:var(--fd);font-size:15px;color:var(--smoke);text-align:center;padding:8px}
+.m-top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.m-card{border:1px solid var(--line);padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px}
+.m-card:first-child{border-color:var(--gilt)}
+.m-card .sc{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--fd);font-variant-numeric:lining-nums}
+.m-card .sc em{font-size:30px;color:var(--gilt);font-style:normal}
+.m-card .sc small{font-size:13px;color:var(--smoke);font-family:var(--fs)}
+.m-card h4{font-weight:500;font-size:14.5px;line-height:1.35}
+.m-card p{font-size:12.5px;color:var(--smoke);line-height:1.45}
+.m-card p.d{color:var(--ivory)}
+.m-list .row{grid-template-columns:30px 1fr auto}
+.m-list .row .v{font-family:var(--fd);font-size:17px;color:var(--gilt)}
+.m-close{position:fixed;top:24px;right:44px;z-index:16}
+@media (max-width:980px){#morning{grid-template-columns:1fr;padding:18px 20px}.m-grid{grid-template-columns:repeat(3,1fr)}.m-top3{grid-template-columns:1fr}.m-big{font-size:60px}}
 @media (max-width:980px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto;padding:18px 20px}.center{order:-1;padding:20px 0}#reactor{width:min(80vw,340px)}}
 @media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
@@ -338,7 +367,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
     <div id="heard"></div>
     <div id="said" aria-live="polite">Скажите «Джарвис» и вопрос или нажмите на циферблат.</div>
     <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Или напишите: выручка за неделю, остаток 25043" autocomplete="off" aria-label="Вопрос Джарвису"><button class="btn">Спросить</button></form>
-    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button><button class="btn" onclick="selfTest()">Проверка</button></div>
+    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" onclick="showMorning(true)">Утро</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button><button class="btn" onclick="selfTest()">Проверка</button></div>
     <div id="vHint" class="hint" style="display:none">Живой мужской голос «Дмитрий» есть только в <b>Microsoft Edge</b>.</div>
     <div id="tick"></div>
   </div>
@@ -350,6 +379,21 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
   </div>
 </div>
 
+
+<div id="morning" aria-live="polite">
+  <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><button class="btn" onclick="closeMorning()">Закрыть</button></div></header>
+  <div class="m-l">
+    <h2 id="mT">Пока вы спали</h2><div class="m-k" id="mK"></div>
+    <div class="m-big" id="mBig">—</div>
+    <div class="m-stats" id="mStats"></div>
+    <div class="m-grid" id="mGrid"></div>
+  </div>
+  <div class="m-r">
+    <h2>Ваш <i>следующий ход</i></h2><div class="m-k" id="mN"></div>
+    <div class="m-top3" id="mTop3"></div>
+    <div class="m-list" id="mList"></div>
+  </div>
+</div>
 <script>
 async function scryptKey(pass, salt, N, r, p, dkLen) {
   var enc = new TextEncoder();
@@ -508,6 +552,37 @@ async function selfTest(){
   if(SR){$("reactor").click()}
 }
 window.selfTest=selfTest;
+
+/* ---------- утро: «пока вы спали» + «следующий ход» ---------- */
+let CAT=null,MOVES=null;
+async function loadCatalog(){if(CAT)return CAT;CAT={};try{const h=await fetch("../index.html",{cache:"no-store"}).then(r=>r.text());const m=h.match(/const DATA = (\[[\s\S]*?\]);\n/);if(m){JSON.parse(m[1]).forEach(x=>{const c=String(x.model_key||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(c&&x.image_url)CAT[c]=x.image_url})}}catch(e){}return CAT}
+const keyOf=n=>{const m=String(n).match(/[A-ZА-Я]{1,4}-?\d{2,6}(?:-\d+)?|\b\d{3,6}(?:-\d+)?\b/i);if(!m)return "";return m[0].toUpperCase().replace(/М/g,"M").replace(/Т/g,"T").replace(/С/g,"S").replace(/[^A-Z0-9]/g,"")};
+async function showMorning(speakIt){
+  const t=new Date(),y=addD(t,-1),Y=ymd(y);
+  $("morning").classList.add("on");
+  const [r,cat,mv]=await Promise.all([pal([{k:"yT",tool:"report_sales",args:{date_from:Y,date_to:Y,top:60},ttl:3600},{k:"yW",tool:"report_sales",args:{date_from:Y,date_to:Y,group_by:"warehouse",source:"warehouse"},ttl:3600}]),loadCatalog(),fetch("moves.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).catch(()=>null)]);
+  MOVES=mv;
+  const rows=(r.yT&&r.yT.rows)||[],tt=tot(r.yT)||{salesum:0,quantity:0},yw=tot(r.yW);
+  const gross=num(tt.salesum),net=yw?num(yw.salesum):null,q=num(tt.quantity);
+  const lw=A.days&&A.days[6]?null:null;
+  const dayName=DOWn[y.getDay()];
+  $("mT").innerHTML=t.getHours()<13?"Пока вы <i>спали</i>":"Вчера, <i>"+dayName+"</i>";
+  $("mK").textContent=`Итоги дня: ${dayName}, ${y.getDate()} ${MONg[y.getMonth()]}`;
+  countUp($("mBig"),gross,fmt);
+  const by={};rows.forEach(x=>{const k=keyOf(x.group_name)||x.group_name;by[k]=by[k]||{k,name:x.group_name.split(" ")[0]+" "+(String(x.group_name).match(/[A-ZА-Я]{1,4}-?\d{2,6}(?:-\d+)?|\b\d{3,6}(?:-\d+)?\b/i)||[""])[0],q:0,s:0};by[k].q+=num(x.quantity);by[k].s+=num(x.salesum)});
+  const L=Object.values(by).sort((a,b)=>b.s-a.s);
+  const avg=q?gross/ (rows.length?rows.length:1):0;
+  const d7=A.days?A.days.slice(6,13).map(x=>num(x.v)):[];const avg7=d7.length?d7.reduce((a,b)=>a+b,0)/d7.length:0;
+  $("mStats").innerHTML=`<div><b>${q}</b>${plural(q,"вещь","вещи","вещей")}</div><div><b>${L.length}</b>${plural(L.length,"модель","модели","моделей")}</div>`+(net!=null&&net>0?`<div><b>${fmtS(net)}</b>после возвратов</div>`:"")+(avg7?`<div><b class="${gross>=avg7?"up":"dn"}">${gross>=avg7?"+":"−"}${Math.abs(Math.round((gross-avg7)/avg7*100))}%</b>к среднему дню недели</div>`:"");
+  $("mGrid").innerHTML=L.slice(0,12).map(x=>{const img=cat[x.k];return `<div class="m-it">${img?`<img src="${img}" alt="${x.name}" loading="lazy" onerror="this.outerHTML='<div class=ph>${x.name}</div>'">`:`<div class="ph">${x.name}</div>`}<span>${x.name}${x.q>1?" ×"+x.q:""}</span></div>`}).join("");
+  const M=(mv&&mv.moves||[]).slice().sort((a,b)=>b.score-a.score);
+  $("mN").textContent=M.length?`${M.length} ${plural(M.length,"ход","хода","ходов")} на сегодня. ${mv.note||""}`:"Ходы на сегодня ещё не готовы.";
+  $("mTop3").innerHTML=M.slice(0,3).map(x=>`<div class="m-card"><div class="sc"><em>${x.score}</em><small>${x.code||""}</small></div><h4>${x.title}</h4><p>${x.why}</p><p class="d">${x.do}</p></div>`).join("");
+  $("mList").innerHTML=M.slice(3).map((x,i)=>`<div class="row"><span class="i">${i+4}</span><span class="n" title="${x.why}">${x.title}</span><span class="v">${x.score}</span></div>`).join("");
+  if(speakIt){const top=L[0];await speak(`${t.getHours()<13?"Доброе утро":hello()}, Жанерке. ${t.getHours()<13?"Пока вы спали, я посчитал вчерашний день":"Вот итоги вчерашнего дня"}. Продано ${q} ${plural(q,"вещь","вещи","вещей")} на ${say$(gross)}.`+(top?` Лучше всего ушла ${top.name.replace(/-/g," ")}.`:"")+(M.length?` Я подготовил ${M.length} ${plural(M.length,"ход","хода","ходов")} на сегодня. Три главных справа на экране. Первый: ${M[0].title.replace(/-/g," ")}.`:""),null,kz(gross>=avg7?"up":"down"))}
+}
+function closeMorning(){$("morning").classList.remove("on")}
+window.showMorning=showMorning;window.closeMorning=closeMorning;
 /* ---------- данные Paloma ---------- */
 function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
 async function pal(calls){const out={};for(let i=0;i<calls.length;i+=25){const b=calls.slice(i,i+25);const j=await post("paloma",{calls:b.map(c=>({tool:c.tool,args:c.args,ttl:c.ttl||0}))});
@@ -640,6 +715,8 @@ async function handle(q){
     if(!rows.length){await speak(`Артикула ${code.split("").join(" ")} на складе нет.`,`Артикул <b>${code}</b>: на складе нет`);return}
     const q=rows.reduce((a,x)=>a+num(x.quantity),0),sz=rows.map(x=>String(x.item).split(" ").slice(-1)[0]+(x.quantity>1?" ×"+x.quantity:""));
     await speak(`По артикулу ${code} осталось ${q} ${plural(q,"штука","штуки","штук")}. Размеры: ${sz.join(", ").replace(/×/g,"по ")}.`,`<b>${code}</b> · ${q} шт<br>${rows.map(x=>x.item+" — "+x.quantity).join("<br>")}`);return}
+  if(/(доброе утро|утро|пока я спал|что нового|следующий ход|что делать сегодня|план на сегодня|идеи|сценари)/.test(s)){await showMorning(true);return}
+  if(/(закрой|назад|главн)/.test(s)){closeMorning();await speak("Хорошо.");return}
   if(/(доклад|брифинг|отчет|как дела|как мы|обстановк|сводк|статус)/.test(s)){focus("p-today","p-month","p-top","p-stock");await speak(briefing(),null,kz(A.lw&&A.today<A.lw?"down":"up"));return}
   if(/прибыл|маржа|заработал/.test(s)){focus("p-month");await speak(A.profit!=null?`Валовая прибыль с начала месяца — ${say$(A.profit)}. Это без аренды и зарплат.`:"Прибыль сейчас недоступна.");return}
   if(/прогноз|план/.test(s)){focus("p-month");await speak(A.plan?`План месяца ${say$(A.plan)}. Сделано ${prc(Math.round(A.month/A.plan*100))}. Если темп сохранится, выйдем на ${say$(A.fc)}, это ${prc(Math.round(A.fc/A.plan*100))} плана.`:`При текущем темпе месяц закроется на ${say$(A.fc)}.`);return}
@@ -679,7 +756,7 @@ async function boot(){
   add("Подключаюсь к Паломе…");
   try{await Promise.all([loadFast(),loadGoals()])}catch(e){add("Палома не отвечает, попробую ещё раз через 3 минуты");}
   add("Продажи загружены, склад догружается");$("boot").style.transition="opacity .8s";$("boot").style.opacity=0;setTimeout(()=>$("boot").remove(),800);
-  render();speak(briefing(),null,kz(A.lw&&A.today<A.lw?"down":"up",true));
+  render();if(new Date().getHours()<13)showMorning(true);else speak(briefing(),null,kz(A.lw&&A.today<A.lw?"down":"up",true));
   loadStock().then(render).catch(()=>{});
   setInterval(refresh,180000);setInterval(()=>loadStock().then(render).catch(()=>{}),900000);
 }
