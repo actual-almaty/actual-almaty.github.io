@@ -293,7 +293,8 @@ function render(){
   renderHeader();
   document.querySelectorAll("nav.tabs button").forEach(function(x){x.onclick=function(){S.tab=x.dataset.t;render();scrollTo(0,0)}});
   if(!b){ $("#view").innerHTML='<div class="empty"><span class="spin"></span><br>Загружаю…</div>'; return; }
-  if(b.me.role==="admin" && S.tab!=="tasks" && S.tab!=="stock"){ try{ localStorage.setItem("boss_tok", JSON.parse(localStorage.getItem("at_tok"))); }catch(e){} location.replace("../boss/"); return; }
+  var fromBoss=false;try{fromBoss=sessionStorage.getItem("from_boss")==="1"||/\/boss\//.test(document.referrer)}catch(e){}
+  if(b.me.role==="admin" && ((S.tab!=="tasks" && S.tab!=="stock") || !fromBoss)){ try{ localStorage.setItem("boss_tok", JSON.parse(localStorage.getItem("at_tok"))); }catch(e){} location.replace("../boss/"); return; }
   if(S.tab==="stock") return renderStock();
   if(S.tab==="tasks") return renderTasks();
   if(S.tab==="admin" && b.me.role==="admin") return renderAdmin();

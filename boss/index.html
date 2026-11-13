@@ -770,7 +770,7 @@ const VIEWS = [
   ["home","Главная"],["plan","План"],["sales","Продажи"],["stock","Склад"],["team","Команда"],
   ["money","Финансы"],["channels","Каналы"],["office","Офис"]
 ];
-const TASKS_LINK = `<a href="../team/#tasks"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg><span>Задачи</span></a>`;
+const TASKS_LINK = `<a href="../team/#tasks" onclick="try{sessionStorage.setItem('from_boss','1')}catch(e){}"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg><span>Задачи</span></a>`;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const num = v => { const n = Number(String(v ?? "").replace(/\s/g,"").replace(",", ".")); return isFinite(n) ? n : 0; };
@@ -808,7 +808,7 @@ function toast(t){ const el = $("#toast"); el.textContent = t; el.classList.add(
 
 /* ========== состояние ========== */
 const S = {
-  view: "home", period: "month", mcp: null, db: null, sample: null,
+  view: "home", period: (new Date().getHours() < 10 ? "yesterday" : "today"), /* по умолчанию — день: до открытия (до 10:00) показываем вчерашний закрытый день, потом сегодняшний */ mcp: null, db: null, sample: null,
   paloma: {}, errs: {}, fresh: null,
   stock: null, stockErr: null, stockLoading: false, catalog: null, catLoading: false, catDone: 0, catErr: null, stockQ: "", stockFilter: "all",
   financeMonth: monthKey(today()), teamFrom: monthKey(today())+"-01", teamTo: iso(today()), planMonth: monthKey(today()), daily: {}, dailyLoading: false, channelMonth: monthKey(today()), teamMonth: monthKey(today()),
@@ -1892,6 +1892,8 @@ function route(){ const h = location.hash.replace("#",""); S.view = VIEWS.some(v
 window.addEventListener("hashchange", route);
 
 /* ========== запуск ========== */
+/* При каждом новом открытии приложения — главный экран, а не последний раздел (Задачи, Склад и т.д.) */
+try { if (!sessionStorage.getItem("boss_open")) { sessionStorage.setItem("boss_open","1"); if (location.hash) history.replaceState(null, "", location.pathname); } } catch(e) {}
 route();
 (async () => {
   const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(()=>null) : Promise.resolve(null);
