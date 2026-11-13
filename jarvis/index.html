@@ -5,312 +5,349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex">
-<title>J.A.R.V.I.S. · ACTUAL</title>
+<title>ACTUAL Jarvis</title>
 <style>
-/* exo-2-cyrillic-ext-300-normal */
+/* golos-text-cyrillic-ext-400-normal */
 @font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300;
-  src:url(./fonts/exo-2-cyrillic-ext-300-normal.woff2) format('woff2');
-  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
-}
-/* exo-2-cyrillic-300-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300;
-  src:url(./fonts/exo-2-cyrillic-300-normal.woff2) format('woff2');
-  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
-}
-/* exo-2-latin-ext-300-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300;
-  src:url(./fonts/exo-2-latin-ext-300-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-/* exo-2-latin-300-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300;
-  src:url(./fonts/exo-2-latin-300-normal.woff2) format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-/* exo-2-cyrillic-ext-500-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src:url(./fonts/exo-2-cyrillic-ext-500-normal.woff2) format('woff2');
-  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
-}
-/* exo-2-cyrillic-500-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src:url(./fonts/exo-2-cyrillic-500-normal.woff2) format('woff2');
-  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
-}
-/* exo-2-latin-ext-500-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src:url(./fonts/exo-2-latin-ext-500-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-/* exo-2-latin-500-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src:url(./fonts/exo-2-latin-500-normal.woff2) format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-/* exo-2-cyrillic-ext-700-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:url(./fonts/exo-2-cyrillic-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
-}
-/* exo-2-cyrillic-700-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:url(./fonts/exo-2-cyrillic-700-normal.woff2) format('woff2');
-  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
-}
-/* exo-2-latin-ext-700-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:url(./fonts/exo-2-latin-ext-700-normal.woff2) format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-/* exo-2-latin-700-normal */
-@font-face {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:url(./fonts/exo-2-latin-700-normal.woff2) format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-/* jetbrains-mono-cyrillic-ext-400-normal */
-@font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src:url(./fonts/jetbrains-mono-cyrillic-ext-400-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-cyrillic-ext-400-normal.woff2) format('woff2');
   unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
 }
-/* jetbrains-mono-cyrillic-400-normal */
+/* golos-text-cyrillic-400-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src:url(./fonts/jetbrains-mono-cyrillic-400-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-cyrillic-400-normal.woff2) format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
-/* jetbrains-mono-latin-ext-400-normal */
+/* golos-text-latin-ext-400-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src:url(./fonts/jetbrains-mono-latin-ext-400-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-latin-ext-400-normal.woff2) format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
-/* jetbrains-mono-latin-400-normal */
+/* golos-text-latin-400-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src:url(./fonts/jetbrains-mono-latin-400-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-latin-400-normal.woff2) format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
-/* jetbrains-mono-cyrillic-ext-500-normal */
+/* golos-text-cyrillic-ext-500-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src:url(./fonts/jetbrains-mono-cyrillic-ext-500-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-cyrillic-ext-500-normal.woff2) format('woff2');
   unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
 }
-/* jetbrains-mono-cyrillic-500-normal */
+/* golos-text-cyrillic-500-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src:url(./fonts/jetbrains-mono-cyrillic-500-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-cyrillic-500-normal.woff2) format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
-/* jetbrains-mono-latin-ext-500-normal */
+/* golos-text-latin-ext-500-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src:url(./fonts/jetbrains-mono-latin-ext-500-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-latin-ext-500-normal.woff2) format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
-/* jetbrains-mono-latin-500-normal */
+/* golos-text-latin-500-normal */
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Golos Text';
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src:url(./fonts/jetbrains-mono-latin-500-normal.woff2) format('woff2');
+  src:url(./fonts/golos-text-latin-500-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* golos-text-cyrillic-ext-600-normal */
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/golos-text-cyrillic-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* golos-text-cyrillic-600-normal */
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/golos-text-cyrillic-600-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* golos-text-latin-ext-600-normal */
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/golos-text-latin-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* golos-text-latin-600-normal */
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/golos-text-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* cormorant-cyrillic-ext-500-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-cyrillic-ext-500-normal.woff2) format('woff2');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* cormorant-cyrillic-500-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-cyrillic-500-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* cormorant-latin-ext-500-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* cormorant-latin-500-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-latin-500-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* cormorant-cyrillic-ext-600-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/cormorant-cyrillic-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* cormorant-cyrillic-600-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/cormorant-cyrillic-600-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* cormorant-latin-ext-600-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/cormorant-latin-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* cormorant-latin-600-normal */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:url(./fonts/cormorant-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* cormorant-cyrillic-ext-500-italic */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-cyrillic-ext-500-italic.woff2) format('woff2');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+/* cormorant-cyrillic-500-italic */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-cyrillic-500-italic.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+/* cormorant-latin-ext-500-italic */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-latin-ext-500-italic.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* cormorant-latin-500-italic */
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src:url(./fonts/cormorant-latin-500-italic.woff2) format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
-:root{--c:#9be7ff;--c2:#4fb6d9;--cd:rgba(155,231,255,.10);--g:#f0cd7d;--bg:#000;--t:#eef6fa;--m:#7f939c;--red:#ff6b5e;--grn:#7ff0b4;
---fd:"Exo 2",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,monospace}
+:root{--ink:#000;--face:#141311;--gilt:#c9a55c;--gilt2:#8d743f;--ivory:#ece5d5;--smoke:#8a8478;--line:rgba(236,229,213,.12);--red:#c4472f;--moss:#9db08c;
+--fs:"Golos Text",system-ui,sans-serif;--fd:"Cormorant",Georgia,serif}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:radial-gradient(1300px 800px at 50% 42%,#071722 0%,#02070b 50%,#000 100%);color:var(--t);font-family:var(--fd);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
-#bgc{position:fixed;inset:0;z-index:0}
-.scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(155,231,255,.025) 0 1px,transparent 1px 3px)}
-.vign{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.85) 100%)}
-#app{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:minmax(290px,1fr) minmax(400px,1.25fr) minmax(290px,1fr);grid-template-rows:auto 1fr auto;gap:18px;padding:16px 26px}
-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;font-family:var(--fm);font-size:11px;letter-spacing:.2em;color:var(--m);border-bottom:1px solid rgba(155,231,255,.12);padding-bottom:10px}
-header .brand{font-family:var(--fd);color:var(--t);font-weight:700;font-size:15px;letter-spacing:.42em}
-header .brand::first-letter{color:var(--g)}
-header .st{display:flex;gap:24px;align-items:center}
-#clock{color:var(--c);font-size:15px;letter-spacing:.12em}
-.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--grn);box-shadow:0 0 10px var(--grn);margin-right:8px;animation:bl 2s infinite}
-@keyframes bl{50%{opacity:.3}}
-.col{display:flex;flex-direction:column;gap:16px;min-height:0;justify-content:center}
-.pn{position:relative;padding:15px 18px 14px;background:linear-gradient(135deg,rgba(155,231,255,.07),rgba(155,231,255,.015) 45%,rgba(0,0,0,.25));border:1px solid rgba(155,231,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));transition:.5s cubic-bezier(.2,.8,.2,1);opacity:0;transform:translateX(-12px)}
-.col:last-child .pn{transform:translateX(12px)}
-.pn.on{opacity:1;transform:none!important}
-.pn::before{content:"";position:absolute;left:0;top:0;height:100%;width:2px;background:linear-gradient(180deg,var(--c),transparent);opacity:.8}
-.pn::after{content:"";position:absolute;right:0;top:0;width:26px;height:26px;background:linear-gradient(225deg,var(--c) 0 2px,transparent 2px);opacity:.6}
-.pn.focus{border-color:rgba(155,231,255,.55);background:linear-gradient(135deg,rgba(155,231,255,.16),rgba(155,231,255,.04) 50%,rgba(0,0,0,.2));box-shadow:inset 0 0 50px rgba(155,231,255,.08)}
-.pn h3{font-family:var(--fm);font-size:10px;letter-spacing:.24em;color:var(--c2);font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;text-transform:uppercase}
-.big{font-family:var(--fd);font-size:34px;font-weight:500;color:#fff;letter-spacing:.01em;line-height:1.05;text-shadow:0 0 22px rgba(155,231,255,.35)}
-.sub{color:var(--m);font-size:14px;margin-top:6px;line-height:1.4;font-weight:300}
-.sub b{color:var(--t);font-weight:500}
-.up{color:var(--grn);font-weight:500}.dn{color:var(--red);font-weight:500}
-.row{display:flex;justify-content:space-between;gap:10px;font-size:15px;padding:5px 0 3px;font-weight:300}
+html,body{height:100%;background:var(--ink);color:var(--ivory);font-family:var(--fs);font-size:15px;overflow:hidden;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+#app{height:100%;display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,1.3fr) minmax(260px,1fr);grid-template-rows:auto 1fr;column-gap:48px;padding:26px 44px 22px}
+header{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line)}
+header .brand{font-family:var(--fd);font-weight:600;font-size:26px;letter-spacing:.18em;color:var(--ivory)}
+header .brand span{color:var(--gilt);font-style:italic;font-weight:500;letter-spacing:0;font-size:20px;margin-left:12px}
+header .st{display:flex;gap:28px;align-items:baseline;color:var(--smoke);font-size:13px}
+#clock{font-variant-numeric:lining-nums;font-family:var(--fd);font-size:24px;color:var(--ivory);font-weight:500}
+.col{display:flex;flex-direction:column;justify-content:center;min-height:0}
+.pn{padding:22px 0;border-bottom:1px solid var(--line);transition:opacity .4s}
+.pn:last-child{border-bottom:0}
+.col.dim .pn:not(.focus){opacity:.35}
+.pn h3{font-weight:500;font-size:13px;color:var(--smoke);margin-bottom:6px;display:flex;justify-content:space-between;gap:12px}
+.pn h3 span:last-child{font-weight:400}
+.pn.focus h3{color:var(--gilt)}
+.big{font-variant-numeric:lining-nums tabular-nums;font-family:var(--fd);font-weight:500;font-size:46px;line-height:1;color:var(--ivory);letter-spacing:-.01em}
+.sub{color:var(--smoke);font-size:13.5px;margin-top:8px;line-height:1.45}
+.sub b{color:var(--ivory);font-weight:500}
+.up{color:var(--moss)}.dn{color:var(--red)}
+.row{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(236,229,213,.06)}
+.row:last-child{border-bottom:0}
+.row .i{font-family:var(--fd);font-style:italic;color:var(--gilt);font-size:17px}
 .row .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .v{font-family:var(--fm);font-size:12px;color:var(--c);white-space:nowrap}
-.bar{height:2px;background:rgba(155,231,255,.1);margin-top:10px;position:relative;overflow:hidden}
-.bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--c2),var(--c));box-shadow:0 0 12px var(--c);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
-svg.ch{width:100%;height:100px;display:block}
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:0;overflow:hidden}
-#reactor{position:relative;flex:none;width:min(33vh,340px);margin-top:14px;aspect-ratio:1;cursor:pointer;user-select:none}
-#reactor svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.r1{animation:rot 30s linear infinite;transform-origin:50% 50%}
-.r2{animation:rot 16s linear infinite reverse;transform-origin:50% 50%}
-.r3{animation:rot 9s linear infinite;transform-origin:50% 50%}
-.r4{animation:rot 70s linear infinite reverse;transform-origin:50% 50%}
-.sweep{animation:rot 4s linear infinite;transform-origin:50% 50%}
-@keyframes rot{to{transform:rotate(360deg)}}
-#core{transform-origin:50% 50%;transition:transform .12s}
-#reactor.listen .r3{animation-duration:1.5s}
-#reactor.listen #corec{fill:#fff}
-#reactor.listen .ring{stroke:#fff}
-#reactor.speak .r2{animation-duration:4s}
-#planArc{transition:stroke-dasharray 2s cubic-bezier(.2,.8,.2,1)}
-#ctext{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-#ctext .t{font-family:var(--fd);font-size:clamp(18px,3vh,28px);font-weight:700;letter-spacing:.34em;color:#fff;text-shadow:0 0 18px var(--c);padding-left:.34em}
-#ctext .s{font-family:var(--fm);font-size:10px;letter-spacing:.3em;color:var(--c);margin-top:6px}
-#ctext .pl{font-family:var(--fm);font-size:10px;letter-spacing:.2em;color:var(--g);margin-top:10px}
-#heard{min-height:20px;font-size:14px;color:var(--c);text-align:center;max-width:90%;font-family:var(--fm)}
-#said{min-height:52px;max-height:24vh;overflow-y:auto;flex:none;font-size:18px;line-height:1.5;text-align:center;max-width:94%;color:var(--t);font-weight:300}
-#said b{color:#fff;font-weight:500}
-#said .kz{margin-top:8px;font-size:15px;color:var(--g);font-style:italic}
-.ctl{display:flex;gap:6px;flex-wrap:wrap;flex:none;justify-content:center}
-.btn{font-family:var(--fm);font-size:10.5px;letter-spacing:.14em;color:var(--c);background:rgba(155,231,255,.03);border:1px solid rgba(155,231,255,.22);padding:8px 12px;cursor:pointer;transition:.2s;text-transform:uppercase;text-decoration:none}
-.btn:hover,.btn.on{background:var(--cd);border-color:var(--c);box-shadow:0 0 16px rgba(155,231,255,.25);color:#fff}
-#ask{display:flex;width:min(540px,94%);border:1px solid rgba(155,231,255,.2);background:rgba(0,10,16,.5);backdrop-filter:blur(8px)}
-#ask input{flex:1;background:transparent;border:0;color:var(--t);font:300 15px var(--fd);padding:12px 14px;outline:0}
-#ask input::placeholder{color:#5d7480}
-#ask button{border:0;border-left:1px solid rgba(155,231,255,.2)}
-footer{grid-column:1/-1;overflow:hidden;border-top:1px solid rgba(155,231,255,.12);height:36px;position:relative;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-#tick{position:absolute;white-space:nowrap;top:0;line-height:36px;font-size:14px;color:var(--m);animation:tk 80s linear infinite;padding-left:100%}
-#tick span{margin-right:64px}#tick b{color:#fff;font-weight:500}
-@keyframes tk{to{transform:translateX(-100%)}}
-.hint{font-size:13px;color:var(--m);text-align:center;max-width:470px;line-height:1.45}.hint b{color:var(--g);font-weight:500}
-#boot{position:fixed;inset:0;z-index:20;background:radial-gradient(circle at 50% 45%,#06141d,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;cursor:pointer}
-#boot .l{font-family:var(--fd);font-size:clamp(28px,5vw,60px);font-weight:700;letter-spacing:.4em;padding-left:.4em;color:#fff;text-shadow:0 0 40px var(--c)}
-#boot .p{font-family:var(--fm);font-size:11px;letter-spacing:.35em;color:var(--c);animation:bl 1.6s infinite}
-#boot input{background:rgba(155,231,255,.03);border:1px solid rgba(155,231,255,.25);color:var(--t);font:300 16px var(--fd);padding:12px 14px;width:280px;outline:0;display:block;margin:0 auto 10px}
-#boot .err{color:var(--red);min-height:20px;text-align:center}
-.log{font-family:var(--fm);font-size:11px;letter-spacing:.12em;color:var(--c2);height:90px;overflow:hidden;text-align:left;width:320px;line-height:1.7}
-@media (max-width:900px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto}.center{order:-1}#reactor{width:min(72vw,320px)}footer{grid-column:1}}
+.row .v{color:var(--smoke);font-size:13px;white-space:nowrap}
+.row.plain{grid-template-columns:1fr auto}
+.bar{height:2px;background:rgba(236,229,213,.08);margin-top:12px;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--gilt);transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+svg.ch{width:100%;height:70px;display:block;margin-top:12px}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:0;overflow:hidden;padding-top:6px}
+#reactor{position:relative;flex:none;width:min(37vh,350px);aspect-ratio:1;cursor:pointer;user-select:none}
+#reactor svg{width:100%;height:100%;display:block;font-variant-numeric:lining-nums}
+#reactor:focus-visible{outline:1px solid var(--gilt);outline-offset:6px;border-radius:50%}
+.hand{transition:transform 2.2s cubic-bezier(.3,1.25,.4,1);transform-origin:200px 200px}
+#handSec{transform-origin:200px 200px;opacity:0;transition:opacity .3s}
+#reactor.speak #handSec{opacity:1;animation:sweep 6s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+#bezel{transition:stroke .3s,stroke-width .3s}
+#reactor.listen #bezel{stroke:var(--gilt);stroke-width:3}
+#core{transform-origin:200px 200px;transition:transform .12s}
+#ctext{display:none}
+#cstate{font-size:13px;color:var(--smoke);min-height:18px;text-align:center}
+#reactor.listen~#cstate{color:var(--gilt)}
+#plTxt{display:none}
+#heard{min-height:20px;font-size:14px;color:var(--gilt);text-align:center;max-width:90%;font-style:italic;font-family:var(--fd);font-size:18px}
+#said{min-height:48px;max-height:20vh;overflow-y:auto;flex:none;font-size:17px;line-height:1.55;text-align:center;max-width:560px;color:var(--ivory)}
+#said b{font-weight:500}
+#said .kz{margin-top:8px;font-family:var(--fd);font-style:italic;font-size:19px;color:var(--gilt)}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;flex:none}
+.btn{font:500 12.5px var(--fs);color:var(--ivory);background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:border-color .2s,background .2s}
+.btn:hover{border-color:var(--smoke)}
+.btn.on{border-color:var(--gilt);color:var(--gilt)}
+.btn:focus-visible,#ask input:focus-visible{outline:1px solid var(--gilt);outline-offset:2px}
+#ask{display:flex;width:min(520px,100%);border-bottom:1px solid var(--line)}
+#ask input{flex:1;background:transparent;border:0;color:var(--ivory);font:400 15px var(--fs);padding:10px 2px;outline:0}
+#ask input::placeholder{color:#5f5a51}
+#ask button{border:0;color:var(--gilt)}
+#tick{max-width:520px;color:var(--smoke);font-size:13.5px;line-height:1.5;text-align:center;flex:none}
+#tick span{display:none}#tick span.on{display:block}
+#tick b{color:var(--ivory);font-weight:500}
+.hint{font-size:12.5px;color:var(--smoke);text-align:center;max-width:440px;line-height:1.45}.hint b{color:var(--gilt);font-weight:500}
+#boot{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;cursor:pointer}
+#boot .l{font-family:var(--fd);font-size:clamp(34px,5vw,64px);font-weight:500;letter-spacing:.2em;color:var(--ivory)}
+#boot .l i{color:var(--gilt)}
+#boot .p{font-size:14px;color:var(--smoke)}
+#boot input{background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ivory);font:400 16px var(--fs);padding:10px 2px;width:280px;outline:0;display:block;margin:0 auto 14px}
+#boot input:focus{border-color:var(--gilt)}
+#boot .err{color:var(--red);min-height:20px;text-align:center;font-size:13px}
+.log{font-size:13px;color:var(--smoke);height:80px;overflow:hidden;text-align:left;width:280px;line-height:1.8}
+@media (max-width:980px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto;padding:18px 20px}.center{order:-1;padding:20px 0}#reactor{width:min(80vw,340px)}}
+@media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<canvas id="bgc"></canvas><div class="scan"></div><div class="vign"></div>
-
 <div id="boot">
-  <div class="l">J.A.R.V.I.S.</div>
-  <div id="bootBody"><div class="p">НАЖМИТЕ, ЧТОБЫ АКТИВИРОВАТЬ</div></div>
+  <div class="l">ACTUAL <i>Jarvis</i></div>
+  <div id="bootBody"><div class="p">Нажмите, чтобы начать</div></div>
 </div>
 
 <div id="app">
-  <header><div class="brand">ACTUAL · J.A.R.V.I.S.</div><div class="st"><span><span class="dot"></span><span id="sync">ПОДКЛЮЧЕНИЕ…</span></span><span id="clock">--:--</span></div></header>
+  <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><span id="sync">подключаюсь к Паломе</span><span id="clock">--:--</span></div></header>
 
-  <div class="col">
-    <div class="pn" id="p-today"><h3><span>ВЫРУЧКА · СЕГОДНЯ</span><span id="todayN"></span></h3><div class="big" id="today">—</div><div class="sub" id="todaySub">&nbsp;</div></div>
-    <div class="pn" id="p-days"><h3><span>14 ДНЕЙ</span><span id="wkS"></span></h3><svg class="ch" id="ch14" viewBox="0 0 280 96" preserveAspectRatio="none"></svg><div class="sub" id="wkSub">&nbsp;</div></div>
-    <div class="pn" id="p-month"><h3><span>МЕСЯЦ</span><span id="mName"></span></h3><div class="big" id="month">—</div><div class="sub" id="monthSub">&nbsp;</div><div class="bar"><i id="mBar" style="width:0"></i></div><div class="sub" id="fcSub" style="margin-top:6px">&nbsp;</div></div>
+  <div class="col" id="colL">
+    <div class="pn" id="p-today"><h3><span>Сегодня</span><span id="todayN"></span></h3><div class="big" id="today">—</div><div class="sub" id="todaySub">&nbsp;</div></div>
+    <div class="pn" id="p-days"><h3><span>Последние 14 дней</span><span id="wkS"></span></h3><svg class="ch" id="ch14" viewBox="0 0 280 70" preserveAspectRatio="none"></svg><div class="sub" id="wkSub">&nbsp;</div></div>
+    <div class="pn" id="p-month"><h3><span id="mName">Месяц</span><span></span></h3><div class="big" id="month">—</div><div class="sub" id="monthSub">&nbsp;</div><div class="bar"><i id="mBar" style="width:0"></i></div><div class="sub" id="fcSub">&nbsp;</div></div>
   </div>
 
   <div class="center">
-    <div id="reactor" title="Нажмите и говорите">
-      <svg viewBox="0 0 400 400">
-        <defs><radialGradient id="cg"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#c9f3ff"/><stop offset="1" stop-color="#4fb6d9" stop-opacity="0"/></radialGradient>
-        <linearGradient id="sw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9be7ff" stop-opacity="0"/><stop offset="1" stop-color="#9be7ff" stop-opacity=".9"/></linearGradient><filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-        <g filter="url(#gl)" fill="none" stroke="#9be7ff">
-          <defs><path id="tp" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs><g class="r4"><text font-family="JetBrains Mono" font-size="9" letter-spacing="5" fill="#9be7ff" fill-opacity=".5" stroke="none"><textPath href="#tp">ACTUAL · RIVIERA PARK · ALMATY · J.A.R.V.I.S. · ACTUAL · RIVIERA PARK · ALMATY · J.A.R.V.I.S. ·</textPath></text><circle class="ring" cx="200" cy="200" r="192" stroke-opacity=".25" stroke-dasharray="2 6"/></g>
-          <g class="r1"><circle class="ring" cx="200" cy="200" r="168" stroke-width="6" stroke-opacity=".7" stroke-dasharray="70 18 8 18"/></g>
-          <g class="r2"><circle class="ring" cx="200" cy="200" r="146" stroke-width="2" stroke-opacity=".8" stroke-dasharray="180 30 40 30"/><circle class="ring" cx="200" cy="200" r="136" stroke-width="10" stroke-opacity=".18" stroke-dasharray="4 8"/></g>
-          <g class="r3"><circle class="ring" cx="200" cy="200" r="116" stroke-width="3" stroke-dasharray="20 10"/></g>
-          <circle class="ring" cx="200" cy="200" r="96" stroke-width="1" stroke-opacity=".6"/>
-        </g>
-        <circle cx="200" cy="200" r="199" fill="none" stroke="#f0cd7d" stroke-opacity=".12" stroke-width="3"/><circle id="planArc" cx="200" cy="200" r="199" fill="none" stroke="#f0cd7d" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 1251" transform="rotate(-90 200 200)" style="filter:drop-shadow(0 0 6px #f0cd7d)"/><g class="sweep"><path d="M200 200 L200 104 A96 96 0 0 1 283 152 Z" fill="url(#sw)" opacity=".35"/></g><g id="core"><circle cx="200" cy="200" r="88" fill="url(#cg)" opacity=".35"/><circle id="corec" cx="200" cy="200" r="60" fill="#9be7ff" opacity=".14"/></g>
+    <div id="reactor" tabindex="0" role="button" aria-label="Нажмите и задайте вопрос голосом">
+      <svg viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="196" fill="#141311"/>
+        <circle id="bezel" cx="200" cy="200" r="196" fill="none" stroke="#3a362f" stroke-width="1.5"/>
+        <g id="ticks"></g>
+        <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(236,229,213,.08)"/>
+        <circle cx="200" cy="200" r="150" fill="none" stroke="#3b2f1a" stroke-width="5"/>
+        <circle id="planArc" cx="200" cy="200" r="150" fill="none" stroke="#c9a55c" stroke-width="5" stroke-dasharray="0 943" transform="rotate(-90 200 200)" style="transition:stroke-dasharray 2.2s cubic-bezier(.2,.8,.2,1)"/>
+        <g id="subL"><circle cx="138" cy="232" r="38" fill="none" stroke="rgba(236,229,213,.14)"/><g id="subLt"></g><line id="needleL" class="hand" x1="138" y1="232" x2="138" y2="200" stroke="#ece5d5" stroke-width="1.6" style="transform-origin:138px 232px"/><circle cx="138" cy="232" r="2.5" fill="#ece5d5"/><text x="138" y="288" text-anchor="middle" fill="#8a8478" font-family="Golos Text" font-size="10">к прошлой неделе</text><text id="subLv" x="138" y="252" text-anchor="middle" fill="#ece5d5" font-family="Cormorant" font-size="15"></text></g>
+        <g id="subR"><circle cx="262" cy="232" r="38" fill="none" stroke="rgba(236,229,213,.14)"/><g id="subRt"></g><line id="needleR" class="hand" x1="262" y1="232" x2="262" y2="200" stroke="#ece5d5" stroke-width="1.6" style="transform-origin:262px 232px"/><circle cx="262" cy="232" r="2.5" fill="#ece5d5"/><text x="262" y="288" text-anchor="middle" fill="#8a8478" font-family="Golos Text" font-size="10">сегодня к пятнице</text><text id="subRv" x="262" y="252" text-anchor="middle" fill="#ece5d5" font-family="Cormorant" font-size="15"></text></g>
+        <text x="200" y="118" text-anchor="middle" fill="#ece5d5" font-family="Cormorant" font-weight="600" font-size="22" letter-spacing="5">ACTUAL</text>
+        <text id="dialPct" x="200" y="160" text-anchor="middle" fill="#c9a55c" font-family="Cormorant" font-style="italic" font-size="30"></text>
+        <text id="dialLbl" x="200" y="178" text-anchor="middle" fill="#8a8478" font-family="Golos Text" font-size="10.5"></text>
+        <line id="handTime" class="hand" x1="200" y1="214" x2="200" y2="58" stroke="#8a8478" stroke-width="2"/>
+        <g id="handFact" class="hand"><path d="M200 222 L196 200 L200 48 L204 200 Z" fill="#c9a55c"/></g>
+        <line id="handSec" x1="200" y1="226" x2="200" y2="40" stroke="#c4472f" stroke-width="1"/>
+        <g id="core"><circle cx="200" cy="200" r="7" fill="#c9a55c"/><circle id="corec" cx="200" cy="200" r="2.5" fill="#141311"/></g>
       </svg>
-      <div id="ctext"><div class="t">ACTUAL</div><div class="s" id="cstate">ГОТОВ</div><div class="pl" id="plTxt"></div></div>
+      <div id="ctext"><div class="t"></div><div class="pl" id="plTxt"></div></div>
     </div>
-    <div id="vHint" class="hint" style="display:none">Мужской голос «Дмитрий» и казахский «Даулет» — откройте страницу в <b>Microsoft Edge</b></div><div id="heard"></div>
-    <div id="said">Скажите «Джарвис», и вопрос. Или нажмите на реактор.</div>
-    <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Спросите текстом: выручка за неделю, остаток MS-25043…" autocomplete="off"><button class="btn">ОК</button></form>
-    <div class="ctl"><button class="btn" id="bWake">«ДЖАРВИС» ВКЛ</button><button class="btn" onclick="handle('доклад')">ДОКЛАД</button><button class="btn" id="bMute">ЗВУК ВКЛ</button><button class="btn" id="bVoice" onclick="nextVoice()">ГОЛОС</button></div>
+    <div id="cstate" aria-live="polite">готов</div>
+    <div id="heard"></div>
+    <div id="said" aria-live="polite">Скажите «Джарвис» и вопрос или нажмите на циферблат.</div>
+    <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Или напишите: выручка за неделю, остаток 25043" autocomplete="off" aria-label="Вопрос Джарвису"><button class="btn">Спросить</button></form>
+    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button></div>
+    <div id="vHint" class="hint" style="display:none">Мужской голос «Дмитрий» и казахский «Даулет» есть только в <b>Microsoft Edge</b>.</div>
+    <div id="tick"></div>
   </div>
 
-  <div class="col">
-    <div class="pn" id="p-top"><h3><span>ТОП ПРОДАЖ · 30 ДНЕЙ</span><span id="topN"></span></h3><div id="top"></div></div>
-    <div class="pn" id="p-stock"><h3><span>СКЛАД</span><span id="stN"></span></h3><div class="big" id="stock">—</div><div class="sub" id="stockSub">&nbsp;</div><div class="bar"><i id="deadBar" style="width:0;background:linear-gradient(90deg,#5a1c16,var(--red))"></i></div><div class="sub" id="deadSub" style="margin-top:6px">&nbsp;</div></div>
-    <div class="pn" id="p-cash"><h3><span>ДЕНЬГИ · КАССА И СЧЕТА</span></h3><div class="big" id="cash">—</div><div id="cashRows" style="margin-top:6px"></div></div>
+  <div class="col" id="colR">
+    <div class="pn" id="p-top"><h3><span>Лучше всего продаётся, 30 дней</span><span id="topN"></span></h3><div id="top"></div></div>
+    <div class="pn" id="p-stock"><h3><span>Склад</span><span id="stN"></span></h3><div class="big" id="stock">—</div><div class="sub" id="stockSub">&nbsp;</div><div class="bar"><i id="deadBar" style="width:0;background:var(--red)"></i></div><div class="sub" id="deadSub">&nbsp;</div></div>
+    <div class="pn" id="p-cash"><h3><span>Деньги на кассах и счетах</span></h3><div class="big" id="cash">—</div><div id="cashRows" style="margin-top:10px"></div></div>
   </div>
-
-  <footer><div id="tick"><span>Системы ACTUAL загружаются…</span></div></footer>
 </div>
 
 <script>
@@ -394,11 +431,8 @@ const MON=["январь","февраль","март","апрель","май","�
 const DOW=["воскресенье","понедельник","вторник","среду","четверг","пятницу","субботу"];
 const DOWs=["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"];
 
-/* ---------- фон ---------- */
-(function(){const c=$("bgc"),x=c.getContext("2d");let W,H,P=[];function rs(){W=c.width=innerWidth;H=c.height=innerHeight;P=Array.from({length:Math.min(90,W/14)},()=>({x:Math.random()*W,y:Math.random()*H,v:.15+Math.random()*.4,r:Math.random()*1.6}))}rs();addEventListener("resize",rs);
-let t=0;(function f(){t+=.004;x.clearRect(0,0,W,H);x.strokeStyle="rgba(155,231,255,.045)";x.lineWidth=1;const g=48;for(let i=0;i<W;i+=g){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}for(let j=(t*40)%g;j<H;j+=g){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
-P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=H;p.x=Math.random()*W}x.fillStyle="rgba(155,231,255,"+(.2+p.r/4)+")";x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});requestAnimationFrame(f)})()})();
-setInterval(()=>{const d=new Date();$("clock").textContent=pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())},1000);
+const DOWn=["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],MONg=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+setInterval(()=>{const d=new Date();$("clock").textContent=pad(d.getHours())+":"+pad(d.getMinutes())},1000);
 
 /* ---------- голос ---------- */
 let muted=false,voice=null,speaking=false;
@@ -410,7 +444,7 @@ function pickVoice(){const all=speechSynthesis.getVoices();ruVoices=all.filter(v
   if(!voice)for(const r of RU_PREF){voice=ruVoices.find(v=>r.test(v.name));if(voice)break}
   if(!voice)voice=ruVoices[0]||null;
   kkVoice=all.filter(v=>/^kk/i.test(v.lang)).sort((a,b)=>(/daulet/i.test(b.name)-/daulet/i.test(a.name))||(/natural/i.test(b.name)-/natural/i.test(a.name)))[0]||null;
-  const bv=$("bVoice");if(bv)bv.textContent="ГОЛОС: "+(voice?voice.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim().toUpperCase():"НЕТ РУССКОГО");
+  const bv=$("bVoice");if(bv)bv.textContent="Голос: "+(voice?voice.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim():"нет русского");
   const good=voice&&/dmitry.*natural/i.test(voice.name);const h=$("vHint");if(h)h.style.display=good?"none":"block"}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 let pulseT=null;
@@ -418,12 +452,12 @@ function utter(t,lang,v){return new Promise(res=>{const u=new SpeechSynthesisUtt
 async function speak(txt,html,kz){
   $("said").innerHTML=(html||txt)+(kz?`<div class="kz">${kz}</div>`:"");
   if(muted||!("speechSynthesis" in window))return;
-  speechSynthesis.cancel();speaking=true;$("reactor").classList.add("speak");$("cstate").textContent="ГОВОРЮ";clearInterval(pulseT);pulseT=setInterval(()=>{$("core").style.transform="scale("+(1+Math.random()*.18)+")"},90);
+  speechSynthesis.cancel();speaking=true;$("reactor").classList.add("speak");$("cstate").textContent="говорю";clearInterval(pulseT);pulseT=setInterval(()=>{$("core").style.transform="scale("+(1+Math.random()*.18)+")"},90);
   const clean=String(txt).replace(/₸/g,"тенге").replace(/<[^>]+>/g,"");
   const parts=clean.match(/[^.!?]+[.!?]*/g)||[clean];
   for(const p of parts){if(p.trim())await utter(p.trim(),"ru-RU",voice)}
   if(kz&&kkVoice)await utter(kz,"kk-KZ",kkVoice);
-  speaking=false;$("reactor").classList.remove("speak");clearInterval(pulseT);$("core").style.transform="";$("cstate").textContent=wake?"СЛУШАЮ «ДЖАРВИС»":"ГОТОВ"}
+  speaking=false;$("reactor").classList.remove("speak");clearInterval(pulseT);$("core").style.transform="";$("cstate").textContent=wake?"жду слово «Джарвис»":"готов"}
 function nextVoice(){if(!ruVoices.length){speak("На этом компьютере нет русских голосов.");return}const i=(ruVoices.indexOf(voice)+1)%ruVoices.length;voice=ruVoices[i];try{localStorage.setItem("jv_voice",voice.name)}catch(e){}pickVoice();speak("Так звучит мой голос. Нравится?")}
 const KZ={up:["Жарайсың, Жанерке! Сауда керемет жүріп жатыр.","Міне, бұл нағыз бизнес! Тамаша!","Осылай жалғастыра берейік, бастық!"],
  down:["Ойбай, бүгін сауда баяу ғой. Бір рилс түсіріп жіберейік!","Уайымдама, кешке қарай клиенттер келеді.","Сабыр түбі сары алтын, бастық."],
@@ -431,7 +465,7 @@ const KZ={up:["Жарайсың, Жанерке! Сауда керемет жү�
  hi:["Сәлем, бастық! Бәрі бақылауда.","Қош келдің, Жанерке! Жүйе дайын."],
  thx:["Оқасы жоқ! Бұл менің жұмысым.","Рахмет айтпа, сыйлық әпер!"]};
 const kz=(k,force)=>(force||Math.random()<.4)?KZ[k][Math.floor(Math.random()*KZ[k].length)]:null;
-$("bMute").onclick=function(){muted=!muted;this.textContent=muted?"ЗВУК ВЫКЛ":"ЗВУК ВКЛ";if(muted)speechSynthesis.cancel()};
+$("bMute").onclick=function(){muted=!muted;this.textContent=muted?"Без звука":"Звук включён";if(muted)speechSynthesis.cancel()};
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec=null,wake=false,oneShot=false,armed=false;
@@ -439,7 +473,7 @@ function startRec(){if(!SR){speak("Этот браузер не умеет сл�
   if(rec)try{rec.abort()}catch(e){}
   rec=new SR();rec.lang="ru-RU";rec.continuous=wake;rec.interimResults=true;
   rec.onresult=e=>{let fin="",int="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else int+=t}
-    const show=(fin||int).trim();if(oneShot||armed||/д[жз]арвис|jarvis/i.test(show))$("heard").textContent="› "+show;
+    const show=(fin||int).trim();if(oneShot||armed||/д[жз]арвис|jarvis/i.test(show))$("heard").textContent="«"+show+"»";
     if(!fin)return;let t=fin.trim();
     if(oneShot){oneShot=false;stopListenUI();handle(t);return}
     const m=t.match(/(?:д[жз]арвис|jarvis)[,!. ]*(.*)$/i);
@@ -448,11 +482,12 @@ function startRec(){if(!SR){speak("Этот браузер не умеет сл�
   rec.onend=()=>{if(wake&&!oneShot)setTimeout(()=>{try{rec.start()}catch(e){}},250);else stopListenUI()};
   rec.onerror=e=>{if(e.error==="not-allowed"){wake=false;$("bWake").classList.remove("on");speak("Нужен доступ к микрофону. Разрешите его в адресной строке браузера.")}};
   try{rec.start()}catch(e){}}
-function listenUI(){$("reactor").classList.add("listen");$("cstate").textContent="СЛУШАЮ"}
-function stopListenUI(){$("reactor").classList.remove("listen");$("cstate").textContent=wake?"СЛУШАЮ «ДЖАРВИС»":"ГОТОВ"}
+function listenUI(){$("reactor").classList.add("listen");$("cstate").textContent="слушаю"}
+function stopListenUI(){$("reactor").classList.remove("listen");$("cstate").textContent=wake?"жду слово «Джарвис»":"готов"}
+$("reactor").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("reactor").click()}};
 $("reactor").onclick=()=>{speechSynthesis.cancel();oneShot=true;listenUI();$("heard").textContent="";if(wake&&rec){try{rec.abort()}catch(e){}}wakeSave=wake;wake=false;startRec();setTimeout(()=>{wake=wakeSave;if(wake&&!oneShot)startRec()},9000)};
 let wakeSave=false;
-$("bWake").onclick=function(){wake=!wake;this.classList.toggle("on",wake);this.textContent=wake?"«ДЖАРВИС» СЛУШАЕТ":"«ДЖАРВИС» ВКЛ";if(wake){startRec();$("cstate").textContent="СЛУШАЮ «ДЖАРВИС»"}else{try{rec&&rec.abort()}catch(e){}$("cstate").textContent="ГОТОВ"}};
+$("bWake").onclick=function(){wake=!wake;this.classList.toggle("on",wake);this.textContent=wake?"Слушаю «Джарвис»":"Слушать «Джарвис»";if(wake){startRec();$("cstate").textContent="жду слово «Джарвис»"}else{try{rec&&rec.abort()}catch(e){}$("cstate").textContent="готов"}};
 
 /* ---------- данные Paloma ---------- */
 function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
@@ -506,25 +541,41 @@ function calc(){
 let A={};
 
 /* ---------- отрисовка ---------- */
+(function(){let g="";for(let i=0;i<100;i++){const a=i*3.6*Math.PI/180,big=i%10===0,r1=big?172:180,r2=190,x1=200+r1*Math.sin(a),y1=200-r1*Math.cos(a),x2=200+r2*Math.sin(a),y2=200-r2*Math.cos(a);g+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${big?"#ece5d5":"#4a453c"}" stroke-width="${big?1.6:.8}"/>`;if(big&&i){const xr=200+160*Math.sin(a),yr=200-160*Math.cos(a)+4;g+=`<text x="${xr}" y="${yr}" text-anchor="middle" fill="#8a8478" font-family="Cormorant" font-size="12">${i}</text>`}}
+ document.getElementById("ticks").innerHTML=g;
+ const sub=(cx,id)=>{let h="";for(let k=-5;k<=5;k++){const a=k*24*Math.PI/180,r1=k%5===0?28:32,x1=cx+r1*Math.sin(a),y1=232-r1*Math.cos(a),x2=cx+36*Math.sin(a),y2=232-36*Math.cos(a);h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${k===0?"#c9a55c":"#4a453c"}" stroke-width="1"/>`}document.getElementById(id).innerHTML=h};sub(138,"subLt");sub(262,"subRt")})();
+function dial(t){
+  const dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate(),timeFr=(t.getDate()-1+t.getHours()/24)/dim;
+  const fr=A.plan&&A.month!=null?A.month/A.plan:(A.fc?A.month/A.fc*timeFr:0);
+  $("planArc").setAttribute("stroke-dasharray",(942.5*Math.min(1,fr))+" 943");
+  $("handFact").style.transform=`rotate(${Math.min(1,fr)*360}deg)`;$("handTime").style.transform=`rotate(${timeFr*360}deg)`;
+  $("dialPct").textContent=A.plan?Math.round(fr*100)+"%":"";
+  $("dialLbl").textContent=A.plan?(fr>=timeFr?"плана, идём с опережением":"плана, отстаём от графика"):"";
+  const cl=v=>Math.max(-50,Math.min(50,v||0));const w=pct(A.w,A.pw),d=pct(A.today,A.lw);
+  $("needleL").style.transform=`rotate(${cl(w)*2.4}deg)`;$("needleR").style.transform=`rotate(${cl(d)*2.4}deg)`;
+  $("subLv").textContent=w==null?"":(w>=0?"+":"−")+Math.abs(w)+"%";$("subRv").textContent=d==null?"":(d>=0?"+":"−")+Math.abs(d)+"%";
+  const sr=document.querySelector("#subR text");if(sr)sr.textContent="сегодня к "+DOW[t.getDay()].replace(/у$/,"е").replace(/ье$/,"ью");
+}
+
 const pct=(a,b)=>b?Math.round((a-b)/b*100):null;
-const arrow=p=>p==null?"":p>=0?`<span class="up">▲ ${p}%</span>`:`<span class="dn">▼ ${Math.abs(p)}%</span>`;
+const arrow=p=>p==null?"":p>=0?`<span class="up">+${p}%</span>`:`<span class="dn">−${Math.abs(p)}%</span>`;
 function countUp(el,to,f){if(to==null){el.textContent="—";return}const from=num(el.dataset.v);el.dataset.v=to;const t0=performance.now();(function s(n){const k=Math.min(1,(n-t0)/1200),e=1-Math.pow(1-k,3);el.textContent=f(from+(to-from)*e);if(k<1)requestAnimationFrame(s)})(t0)}
 function render(){
   A=calc();const t=new Date();
-  countUp($("today"),A.today,fmt);$("todayN").textContent=A.todayQ?A.todayQ+" ШТ":"";
-  $("todaySub").innerHTML=A.lw!=null?`прошлая ${DOW[t.getDay()]}: ${fmt(A.lw)} ${arrow(pct(A.today,A.lw))}`:"&nbsp;";
-  const mx=Math.max(1,...A.days.map(x=>num(x.v)));let s="";A.days.forEach((x,i)=>{const h=num(x.v)/mx*78,w=280/14;s+=`<rect x="${i*w+3}" y="${84-h}" width="${w-6}" height="${Math.max(1,h)}" fill="${i===13?"#fff":"#9be7ff"}" opacity="${i===13?1:.3+.04*i}"><title>${x.d.getDate()}.${pad(x.d.getMonth()+1)}: ${fmt(num(x.v))}</title></rect><text x="${i*w+w/2}" y="95" fill="#5d7480" font-size="7" text-anchor="middle" font-family="JetBrains Mono">${DOWs[x.d.getDay()]}</text>`});$("ch14").innerHTML=s;
-  $("wkS").innerHTML=arrow(pct(A.w,A.pw));$("wkSub").innerHTML=`7 дней: <b style="color:#fff">${fmt(A.w)}</b> · до этого ${fmt(A.pw)}`;
-  $("mName").textContent=MON[t.getMonth()].toUpperCase();countUp($("month"),A.month,fmt);
-  $("monthSub").innerHTML=(A.profit!=null?`валовая прибыль ${fmt(A.profit)} · `:"")+(A.prevM!=null?`к прошлому месяцу ${arrow(pct(A.month,A.prevM))}`:"");
-  {const fr=A.plan&&A.month!=null?Math.min(1,A.month/A.plan):0;$("planArc").setAttribute("stroke-dasharray",(1250.4*fr)+" 1251");$("plTxt").textContent=A.plan?"ПЛАН · "+Math.round(fr*100)+"%":""}
-  if(A.plan){$("mBar").style.width=Math.min(100,A.month/A.plan*100)+"%";$("fcSub").innerHTML=`план ${fmtS(A.plan)} · выполнено ${Math.round(A.month/A.plan*100)}% · прогноз ${fmtS(A.fc)} (${Math.round(A.fc/A.plan*100)}%)`}
-  else{$("mBar").style.width=Math.min(100,t.getDate()/new Date(t.getFullYear(),t.getMonth()+1,0).getDate()*100)+"%";$("fcSub").innerHTML=A.fc?`прогноз на конец месяца: <b>${fmtS(A.fc)}</b>`:"&nbsp;"}
-  const tm=Math.max(1,...A.top.slice(0,6).map(x=>x.s));$("top").innerHTML=A.top.slice(0,6).map(x=>`<div class="row"><span class="n">${x.name}</span><span class="v">${x.q} шт · ${fmtS(x.s)}</span></div><div class="bar" style="margin:0 0 4px;height:2px"><i style="width:${x.s/tm*100}%"></i></div>`).join("")||'<div class="sub">нет данных</div>';$("topN").textContent=A.sum30?fmtS(A.sum30):"";
-  if(A.stQ!=null){countUp($("stock"),A.stQ,v=>Math.round(v).toLocaleString("ru-RU")+" шт");$("stN").textContent=A.stN+" ПОЗ";$("stockSub").textContent="по закупке "+fmt(A.stV);$("deadBar").style.width=(A.stV?A.deadV/A.stV*100:0)+"%";$("deadSub").innerHTML=`<span class="dn">не продавалось 30 дней:</span> ${A.deadQ} шт · ${fmtS(A.deadV)} (${A.stV?Math.round(A.deadV/A.stV*100):0}%)`}
-  if(A.cash!=null){countUp($("cash"),A.cash,fmt);$("cashRows").innerHTML=A.cashRows.map(x=>`<div class="row"><span class="n">${x.n}</span><span class="v">${fmt(x.v)}</span></div>`).join("")}
-  $("sync").textContent="PALOMA · "+pad(D.at.getHours())+":"+pad(D.at.getMinutes());
-  ticker();document.querySelectorAll(".pn").forEach((p,i)=>setTimeout(()=>p.classList.add("on"),i*120));
+  countUp($("today"),A.today,fmt);$("todayN").textContent=A.todayQ?A.todayQ+" "+plural(A.todayQ,"вещь","вещи","вещей"):"";
+  $("todaySub").innerHTML=A.lw!=null?`${arrow(pct(A.today,A.lw))} к прошлой ${DOW[t.getDay()].replace(/у$/,"е").replace(/ье$/,"ью")}, тогда было ${fmt(A.lw)}`:"&nbsp;";
+  const mx=Math.max(1,...A.days.map(x=>num(x.v)));let s="";A.days.forEach((x,i)=>{const h=num(x.v)/mx*60,w=280/14;s+=`<rect x="${i*w+5}" y="${66-h}" width="${w-10}" height="${Math.max(1,h)}" fill="${i===13?"#ece5d5":x.d.getDay()===t.getDay()?"#c9a55c":"#4a453c"}"><title>${x.d.getDate()}.${pad(x.d.getMonth()+1)}: ${fmt(num(x.v))}</title></rect>`});$("ch14").innerHTML=s;
+  $("wkS").innerHTML=arrow(pct(A.w,A.pw));$("wkSub").innerHTML=`За 7 дней <b>${fmt(A.w)}</b>, неделей раньше ${fmt(A.pw)}. Золотом отмечены ${DOW[t.getDay()].replace(/у$/,"ы").replace(/ье$/,"ья")}.`;
+  $("mName").textContent=MON[t.getMonth()][0].toUpperCase()+MON[t.getMonth()].slice(1);countUp($("month"),A.month,fmt);
+  $("monthSub").innerHTML=(A.profit!=null?`Валовая прибыль ${fmt(A.profit)}. `:"")+(A.prevM!=null?`К тем же дням прошлого месяца ${arrow(pct(A.month,A.prevM))}`:"");
+  dial(t);
+  if(A.plan){$("mBar").style.width=Math.min(100,A.month/A.plan*100)+"%";$("fcSub").innerHTML=`План ${fmtS(A.plan)}, выполнено ${Math.round(A.month/A.plan*100)}%. При этом темпе месяц закроется на ${fmtS(A.fc)}.`}
+  else{$("mBar").style.width=Math.min(100,t.getDate()/new Date(t.getFullYear(),t.getMonth()+1,0).getDate()*100)+"%";$("fcSub").innerHTML=A.fc?`При этом темпе месяц закроется на <b>${fmtS(A.fc)}</b>.`:"&nbsp;"}
+  $("top").innerHTML=A.top.slice(0,6).map((x,i)=>`<div class="row"><span class="i">${i+1}</span><span class="n">${x.name}</span><span class="v">${x.q} шт, ${fmtS(x.s)}</span></div>`).join("")||'<div class="sub">нет данных</div>';$("topN").textContent=A.sum30?fmtS(A.sum30):"";
+  if(A.stQ!=null){countUp($("stock"),A.stQ,v=>Math.round(v).toLocaleString("ru-RU").replace(/,/g," ")+" шт");$("stN").textContent=A.stN+" позиций";$("stockSub").textContent="На "+fmt(A.stV)+" по закупке";$("deadBar").style.width=(A.stV?A.deadV/A.stV*100:0)+"%";$("deadSub").innerHTML=`${A.deadQ} шт на ${fmtS(A.deadV)} не продавались месяц, это ${A.stV?Math.round(A.deadV/A.stV*100):0}% склада`}
+  if(A.cash!=null){countUp($("cash"),A.cash,fmt);$("cashRows").innerHTML=A.cashRows.map(x=>`<div class="row plain"><span class="n">${x.n}</span><span class="v">${fmt(x.v)}</span></div>`).join("")}
+  $("sync").textContent=DOWn[t.getDay()]+", "+t.getDate()+" "+MONg[t.getMonth()]+", Палома обновлена в "+pad(D.at.getHours())+":"+pad(D.at.getMinutes());
+  ticker();
 }
 function insights(){const t=new Date(),L=[];
   if(A.today!=null&&A.lw)L.push(`Сегодня <b>${fmt(A.today)}</b>, в прошлую ${DOW[t.getDay()]} было ${fmt(A.lw)} (${pct(A.today,A.lw)>=0?"+":""}${pct(A.today,A.lw)}%)`);
@@ -532,13 +583,13 @@ function insights(){const t=new Date(),L=[];
   if(A.fc)L.push(`Прогноз месяца <b>${fmt(A.fc)}</b>`+(A.plan?` — это ${Math.round(A.fc/A.plan*100)}% плана`:""));
   if(A.top[0])L.push(`Хит месяца: <b>${A.top[0].name}</b> — ${A.top[0].q} шт на ${fmt(A.top[0].s)}`);
   if(A.cat[0])L.push(`Главная категория за 30 дней: <b>${A.cat[0][0]}</b> — ${A.sum30?Math.round(A.cat[0][1]/A.sum30*100):0}% выручки`);
-  if(A.deadTop&&A.deadTop[0])L.push(`Залежалось дольше всего по деньгам: <b>${A.deadTop[0].name}</b> — ${A.deadTop[0].q} шт на ${fmt(A.deadTop[0].v)}. Кандидат на акцию или Reels`);
-  const best=A.days.slice(7).reduce((a,x)=>num(x.v)>num(a.v)?x:a,A.days[7]);if(best&&best.v)L.push(`Лучший день недели: <b>${DOW[best.d.getDay()].replace(/у$/,"а")}</b>, ${fmt(best.v)}`);
+  if(A.deadTop&&A.deadTop[0])L.push(`Залежалось дольше всего по деньгам: <b>${A.deadTop[0].name}</b> — ${A.deadTop[0].q} шт на ${fmt(A.deadTop[0].v)}. Стоит сделать на них акцию или рилс`);
+  const best=A.days.slice(7).reduce((a,x)=>num(x.v)>num(a.v)?x:a,A.days[7]);if(best&&best.v)L.push(`Лучший день недели — <b>${DOW[best.d.getDay()].replace(/у$/,"а")}</b>, ${fmt(best.v)}`);
   return L}
-function ticker(){const L=insights();if(L.length)$("tick").innerHTML=L.map(x=>`<span>◆ ${x}</span>`).join("")}
+let tkI=0,tkT=null;function ticker(){const L=insights();if(!L.length)return;$("tick").innerHTML=L.map((x,i)=>`<span class="${i===0?"on":""}">${x}</span>`).join("");clearInterval(tkT);tkI=0;tkT=setInterval(()=>{const S=$("tick").children;if(!S.length)return;S[tkI%S.length].classList.remove("on");tkI++;S[tkI%S.length].classList.add("on")},9000)}
 
 /* ---------- мозг: команды ---------- */
-function focus(...ids){document.querySelectorAll(".pn").forEach(p=>p.classList.toggle("focus",ids.includes(p.id)));clearTimeout(focus.t);focus.t=setTimeout(()=>document.querySelectorAll(".pn.focus").forEach(p=>p.classList.remove("focus")),12000)}
+function focus(...ids){document.querySelectorAll(".pn").forEach(p=>p.classList.toggle("focus",ids.includes(p.id)));document.querySelectorAll(".col").forEach(c=>c.classList.toggle("dim",!!c.querySelector(".focus")));clearTimeout(focus.t);focus.t=setTimeout(()=>{document.querySelectorAll(".pn.focus").forEach(p=>p.classList.remove("focus"));document.querySelectorAll(".col.dim").forEach(c=>c.classList.remove("dim"))},12000)}
 const hello=()=>{const h=new Date().getHours();return h<5?"Доброй ночи":h<12?"Доброе утро":h<18?"Добрый день":"Добрый вечер"};
 function briefing(){const t=new Date(),p=[];p.push(`${hello()}, Жанерке.`);
   if(A.today!=null)p.push(`Сегодня продано на ${say$(A.today)}`+(A.lw?`, это ${A.today>=A.lw?"больше":"меньше"}, чем в прошлую ${DOW[t.getDay()]}, на ${prc(Math.abs(pct(A.today,A.lw)))}.`:"."));
@@ -548,7 +599,7 @@ function briefing(){const t=new Date(),p=[];p.push(`${hello()}, Жанерке.`
   return p.join(" ")}
 const RU={"ноль":0,"один":1,"два":2,"три":3,"четыре":4,"пять":5,"шесть":6,"семь":7,"восемь":8,"девять":9};
 async function handle(q){
-  $("heard").textContent="› "+q;const s=q.toLowerCase().replace(/ё/g,"е");$("cstate").textContent="АНАЛИЗ";
+  $("heard").textContent="«"+q+"»";const s=q.toLowerCase().replace(/ё/g,"е");$("cstate").textContent="считаю";
   if(!A.days){await speak("Ещё загружаю данные из Паломы, секунду.");return}
   const t=new Date();let m;
   const dig=s.replace(/(\d)\s+(?=\d)/g,"$1").match(/\d{3,6}/);
@@ -568,33 +619,33 @@ async function handle(q){
   if(/недел/.test(s)){focus("p-days");await speak(`За последние семь дней ${say$(A.w)}. Это ${A.w>=A.pw?"больше":"меньше"} предыдущей недели на ${prc(Math.abs(pct(A.w,A.pw)))}.`);return}
   if(/месяц/.test(s)){focus("p-month");await speak(`С начала месяца продано на ${say$(A.month)}`+(A.prevM?`, в прошлом месяце за те же дни было ${say$(A.prevM)}.`:"."));return}
   if(/(сегодня|выручк|продал|продаж|касса дня)/.test(s)){focus("p-today");const tt=A.todayTop.slice(0,3).map(x=>x.group_name.split(" ")[0]).join(", ");await speak(`Сегодня ${A.todayQ} ${plural(A.todayQ,"продажа","продажи","продаж")} на ${say$(A.today)}.`+(tt?` Купили: ${tt}.`:""),null,kz(A.lw&&A.today<A.lw?"down":"up"));return}
-  if(/(привет|здравств|салам|сәлем|ты тут|проснись)/.test(s)){await speak(`${hello()}, Жанерке. Все системы ACTUAL в норме. Чем помочь?`,null,kz("hi",true));return}
+  if(/(привет|здравств|салам|сәлем|ты тут|проснись)/.test(s)){await speak(`${hello()}, Жанерке. Данные Паломы на экране. Что посмотреть?`,null,kz("hi",true));return}
   if(/(спасибо|рахмет|рақмет|молодец|жарайсың)/.test(s)){await speak("Всегда пожалуйста.",null,kz("thx",true));return}
   if(/(обнови|перезагр)/.test(s)){await speak("Обновляю данные.");await refresh();await speak("Готово.");return}
   // всё остальное — в Claude
   const url="https://claude.ai/new?q="+encodeURIComponent(q);
-  await speak("Это задача для меня в Claude. Открываю.",`Это сделаю в Claude: <a href="${url}" target="_blank" style="color:var(--g)">открыть →</a>`);
+  await speak("Это задача для меня в Claude. Открываю.",`Это сделаю в Claude: <a href="${url}" target="_blank" style="color:var(--gilt)">открыть чат</a>`);
   window.open(url,"_blank");
 }
 
 /* ---------- запуск ---------- */
-async function refresh(){try{await loadFast();render()}catch(e){$("sync").textContent="НЕТ СВЯЗИ"}}
+async function refresh(){try{await loadFast();render()}catch(e){$("sync").textContent="нет связи с Паломой"}}
 async function boot(){
   const log=$("bootBody");log.innerHTML='<div class="log" id="lg"></div>';const L=$("lg"),add=x=>{L.innerHTML+=x+"<br>";L.scrollTop=1e9};
   if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(" ");speechSynthesis.speak(u)}
-  add("› ИНИЦИАЛИЗАЦИЯ ЯДРА…");await new Promise(r=>setTimeout(r,350));add("› ПОДКЛЮЧЕНИЕ К PALOMA365…");
-  try{await Promise.all([loadFast(),loadGoals()])}catch(e){add("› ОШИБКА СВЯЗИ");}
-  add("› ПРОДАЖИ: OK");add("› СКЛАД: ЗАГРУЗКА…");$("boot").style.transition="opacity .8s";$("boot").style.opacity=0;setTimeout(()=>$("boot").remove(),800);
+  add("Подключаюсь к Паломе…");
+  try{await Promise.all([loadFast(),loadGoals()])}catch(e){add("Палома не отвечает, попробую ещё раз через 3 минуты");}
+  add("Продажи загружены, склад догружается");$("boot").style.transition="opacity .8s";$("boot").style.opacity=0;setTimeout(()=>$("boot").remove(),800);
   render();speak(briefing(),null,kz(A.lw&&A.today<A.lw?"down":"up",true));
   loadStock().then(render).catch(()=>{});
   setInterval(refresh,180000);setInterval(()=>loadStock().then(render).catch(()=>{}),900000);
 }
-function loginUI(){const b=$("bootBody");b.innerHTML='<input id="lL" placeholder="Логин руководителя" autocapitalize="none"><input id="lP" type="password" placeholder="Пароль"><div class="err" id="lE"></div><div style="text-align:center"><button class="btn" id="lB">ВОЙТИ</button></div>';
-  const go=async()=>{const l=$("lL").value.trim().toLowerCase(),p=$("lP").value;$("lE").textContent="";$("lB").textContent="ПРОВЕРКА…";
+function loginUI(){const b=$("bootBody");b.innerHTML='<input id="lL" placeholder="Логин руководителя" aria-label="Логин" autocapitalize="none"><input id="lP" type="password" placeholder="Пароль" aria-label="Пароль"><div class="err" id="lE"></div><div style="text-align:center"><button class="btn" id="lB">Войти</button></div>';
+  const go=async()=>{const l=$("lL").value.trim().toLowerCase(),p=$("lP").value;$("lE").textContent="";$("lB").textContent="Проверяю…";
     try{const users=await fetch("../team/d/users.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());const salt=users[l];const key=await scryptKey(p,salt||"x",16384,8,1,32);if(!salt)throw 0;
       const box=await fetch("../team/d/"+l+".json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());let m;try{m=await aesOpen(key,box)}catch(x){throw 0}
       if(!m.body||!m.body.me||m.body.me.role!=="admin")throw 1;tok=JSON.stringify({l:l,k:hex(key)});try{localStorage.setItem(TK,tok)}catch(x){}boot()}
-    catch(x){$("lE").textContent=x===1?"Только для руководителя":"Неверный логин или пароль";$("lB").textContent="ВОЙТИ"}};
+    catch(x){$("lE").textContent=x===1?"Этот вход только для руководителя":"Неверный логин или пароль";$("lB").textContent="Войти"}};
   $("lB").onclick=go;$("lP").onkeydown=e=>{if(e.key==="Enter")go()};$("lL").focus()}
 $("boot").addEventListener("click",function f(e){if(e.target.tagName==="INPUT"||e.target.tagName==="BUTTON")return;if(this.dataset.s)return;this.dataset.s=1;if(tok)boot();else loginUI()});
 </script>
