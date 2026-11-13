@@ -338,8 +338,8 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
     <div id="heard"></div>
     <div id="said" aria-live="polite">Скажите «Джарвис» и вопрос или нажмите на циферблат.</div>
     <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Или напишите: выручка за неделю, остаток 25043" autocomplete="off" aria-label="Вопрос Джарвису"><button class="btn">Спросить</button></form>
-    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button></div>
-    <div id="vHint" class="hint" style="display:none">Мужской голос «Дмитрий» и казахский «Даулет» есть только в <b>Microsoft Edge</b>.</div>
+    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button><button class="btn" onclick="selfTest()">Проверка</button></div>
+    <div id="vHint" class="hint" style="display:none">Живой мужской голос «Дмитрий» есть только в <b>Microsoft Edge</b>.</div>
     <div id="tick"></div>
   </div>
 
@@ -446,9 +446,9 @@ function pickVoice(){const all=speechSynthesis.getVoices();ruVoices=all.filter(v
   kkVoice=all.filter(v=>/^kk/i.test(v.lang)).sort((a,b)=>(/daulet/i.test(b.name)-/daulet/i.test(a.name))||(/natural/i.test(b.name)-/natural/i.test(a.name)))[0]||null;
   const bv=$("bVoice");if(bv)bv.textContent="Голос: "+(voice?voice.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim():"нет русского");
   const good=voice&&/dmitry.*natural/i.test(voice.name);const h=$("vHint");if(h)h.style.display=good?"none":"block"}
-if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;[500,1500,4000].forEach(t=>setTimeout(pickVoice,t))}
 let pulseT=null;
-function utter(t,lang,v){return new Promise(res=>{const u=new SpeechSynthesisUtterance(t);u.lang=lang;if(v)u.voice=v;const nat=v&&/natural/i.test(v.name);u.rate=nat?1.05:1;u.pitch=nat?1:.95;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
+function utter(t,lang,v){return new Promise(res0=>{let done=false;const res=()=>{if(!done){done=true;res0()}};setTimeout(res,2500+t.length*110);const u=new SpeechSynthesisUtterance(t);u.lang=lang;if(v)u.voice=v;const nat=v&&/natural/i.test(v.name);u.rate=nat?1.05:1;u.pitch=nat?1:.95;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
 async function speak(txt,html,kz){
   $("said").innerHTML=(html||txt)+(kz?`<div class="kz">${kz}</div>`:"");
   if(muted||!("speechSynthesis" in window))return;
@@ -469,26 +469,44 @@ $("bMute").onclick=function(){muted=!muted;this.textContent=muted?"Без зву
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec=null,wake=false,oneShot=false,armed=false;
-function startRec(){if(!SR){speak("Этот браузер не умеет слушать. Откройте страницу в Google Chrome.");return}
+function startRec(){if(!SR){speak("Этот браузер не умеет слушать. Откройте страницу в Edge.");return}
   if(rec)try{rec.abort()}catch(e){}
   rec=new SR();rec.lang="ru-RU";rec.continuous=wake;rec.interimResults=true;
   rec.onresult=e=>{let fin="",int="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else int+=t}
-    const show=(fin||int).trim();if(oneShot||armed||/д[жз]арвис|jarvis/i.test(show))$("heard").textContent="«"+show+"»";
+    const show=(fin||int).trim();if(show)$("heard").textContent="слышу: «"+show+"»";
     if(!fin)return;let t=fin.trim();
     if(oneShot){oneShot=false;stopListenUI();handle(t);return}
-    const m=t.match(/(?:д[жз]арвис|jarvis)[,!. ]*(.*)$/i);
+    const m=t.match(/(?:д[жзш]?[аеэ]р[вф][иые][сзц]|ж[аеэ]рвис|джервис|дарвин|jarvis|jervis)[,!.?\s]*(.*)$/i);
     if(m){const q=m[1].trim();if(q.length>2)handle(q);else{armed=true;listenUI();speak("Слушаю.")}return}
     if(armed){armed=false;stopListenUI();handle(t)}};
   rec.onend=()=>{if(wake&&!oneShot)setTimeout(()=>{try{rec.start()}catch(e){}},250);else stopListenUI()};
-  rec.onerror=e=>{if(e.error==="not-allowed"){wake=false;$("bWake").classList.remove("on");speak("Нужен доступ к микрофону. Разрешите его в адресной строке браузера.")}};
+  rec.onerror=e=>{const M={"not-allowed":"микрофон запрещён в браузере","service-not-allowed":"распознавание речи запрещено в браузере","audio-capture":"микрофон не найден или занят другой программой","network":"нет связи с сервисом распознавания речи","no-speech":"ничего не услышал"};$("cstate").textContent=M[e.error]||("ошибка микрофона: "+e.error);if(e.error==="not-allowed"||e.error==="service-not-allowed"||e.error==="audio-capture"){wake=false;$("bWake").classList.remove("on");$("bWake").textContent="Слушать «Джарвис»"}};
+  rec.onstart=()=>{if(!oneShot)$("cstate").textContent="жду слово «Джарвис»"};
   try{rec.start()}catch(e){}}
 function listenUI(){$("reactor").classList.add("listen");$("cstate").textContent="слушаю"}
 function stopListenUI(){$("reactor").classList.remove("listen");$("cstate").textContent=wake?"жду слово «Джарвис»":"готов"}
 $("reactor").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("reactor").click()}};
 $("reactor").onclick=()=>{speechSynthesis.cancel();oneShot=true;listenUI();$("heard").textContent="";if(wake&&rec){try{rec.abort()}catch(e){}}wakeSave=wake;wake=false;startRec();setTimeout(()=>{wake=wakeSave;if(wake&&!oneShot)startRec()},9000)};
 let wakeSave=false;
-$("bWake").onclick=function(){wake=!wake;this.classList.toggle("on",wake);this.textContent=wake?"Слушаю «Джарвис»":"Слушать «Джарвис»";if(wake){startRec();$("cstate").textContent="жду слово «Джарвис»"}else{try{rec&&rec.abort()}catch(e){}$("cstate").textContent="готов"}};
+$("bWake").onclick=function(){wake=!wake;this.classList.toggle("on",wake);this.textContent=wake?"Слушаю «Джарвис»":"Слушать «Джарвис»";if(wake&&!SR){wake=false;this.classList.remove("on");this.textContent="Слушать «Джарвис»";$("cstate").textContent="этот браузер не умеет слушать, откройте в Edge или Chrome";return}if(wake){startRec();$("cstate").textContent="жду слово «Джарвис»"}else{try{rec&&rec.abort()}catch(e){}$("cstate").textContent="готов"}};
 
+
+async function selfTest(){
+  const ua=navigator.userAgent,br=/Edg\//.test(ua)?"Edge":/Chrome\//.test(ua)?"Chrome":/Firefox/.test(ua)?"Firefox":"другой браузер";
+  const all=speechSynthesis.getVoices(),ru=all.filter(v=>/^ru/i.test(v.lang)),kk=all.filter(v=>/^kk/i.test(v.lang));
+  let mic="не знаю";try{const q=await navigator.permissions.query({name:"microphone"});mic={granted:"разрешён",denied:"ЗАПРЕЩЁН",prompt:"ещё не спрашивал"}[q.state]||q.state}catch(e){}
+  let dev="";try{const st=await navigator.mediaDevices.getUserMedia({audio:true});dev="микрофон работает";st.getTracks().forEach(t=>t.stop());mic="разрешён"}catch(e){dev="микрофон недоступен: "+(e.name==="NotAllowedError"?"доступ запрещён":e.name==="NotFoundError"?"микрофон не найден":e.name)}
+  const lines=[`Браузер: <b>${br}</b>`,`Распознавание речи: <b>${SR?"есть":"НЕТ"}</b>`,`Доступ к микрофону: <b>${mic}</b>, ${dev}`,
+   `Русские голоса: <b>${ru.map(v=>v.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim()).join(", ")||"нет"}</b>`,
+   `Казахские голоса: <b>${kk.map(v=>v.name.replace(/Microsoft |Online |\(Natural\)| - .*$/g,"").trim()).join(", ")||"нет"}</b>`,
+   `Сейчас говорит: <b>${voice?voice.name:"—"}</b>`];
+  $("said").innerHTML=lines.join("<br>");
+  if(kkVoice)await utter("Сәлем! Мен Даулетпін.","kk-KZ",kkVoice);
+  await utter("Проверка связи. Скажите что-нибудь.","ru-RU",voice);
+  $("said").innerHTML=lines.join("<br>");
+  if(SR){$("reactor").click()}
+}
+window.selfTest=selfTest;
 /* ---------- данные Paloma ---------- */
 function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
 async function pal(calls){const out={};for(let i=0;i<calls.length;i+=25){const b=calls.slice(i,i+25);const j=await post("paloma",{calls:b.map(c=>({tool:c.tool,args:c.args,ttl:c.ttl||0}))});
