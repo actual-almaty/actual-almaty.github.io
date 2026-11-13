@@ -323,6 +323,33 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 .m-list .row .v{font-family:var(--fd);font-size:17px;color:var(--gilt)}
 .m-close{position:fixed;top:24px;right:44px;z-index:16}
 @media (max-width:980px){#morning{grid-template-columns:1fr;padding:18px 20px}.m-grid{grid-template-columns:repeat(3,1fr)}.m-top3{grid-template-columns:1fr}.m-big{font-size:60px}}
+
+#hub{position:fixed;inset:0;z-index:15;background:#000;display:none;flex-direction:column;padding:26px 44px 26px;overflow:auto}
+#hub.on{display:flex;animation:mIn .4s ease}
+#hub .tabs{display:flex;gap:8px;margin:18px 0 6px;flex-wrap:wrap}
+#hub .tabs .btn.on{border-color:var(--gilt);color:var(--gilt)}
+.h-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0 40px}
+.h-sec{padding:20px 0;border-bottom:1px solid var(--line)}
+.h-sec h3{font-weight:500;font-size:13px;color:var(--smoke);margin-bottom:6px}
+.h-num{font-family:var(--fd);font-variant-numeric:lining-nums;font-weight:500;font-size:40px;line-height:1.05}
+.h-wide{grid-column:span 2}.h-full{grid-column:1/-1}
+.h-tbl{width:100%;border-collapse:collapse;font-size:14px}
+.h-tbl th{text-align:left;font-weight:500;color:var(--smoke);font-size:12.5px;padding:6px 6px 6px 0;border-bottom:1px solid var(--line)}
+.h-tbl td{padding:8px 6px 8px 0;border-bottom:1px solid rgba(236,229,213,.06);vertical-align:top}
+.h-tbl .n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.h-note{color:var(--smoke);font-size:13px;line-height:1.5;margin-top:8px;max-width:760px}
+.h-task{border-top:1px solid var(--line);padding:16px 0}
+.h-task h4{font-weight:500;font-size:15px;margin-bottom:4px}
+.h-task .meta{color:var(--smoke);font-size:12.5px;margin-bottom:10px}
+.h-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.h-cols div b{display:block;font-weight:500;font-size:12.5px;color:var(--gilt);margin-bottom:4px}
+.h-cols div p{font-size:13px;line-height:1.5;color:var(--ivory);white-space:pre-line;max-height:220px;overflow:auto}
+.h-ag{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.h-ag div{border:1px solid var(--line);padding:12px}
+.h-ag b{display:block;font-weight:500}.h-ag span{font-size:12.5px;color:var(--smoke)}
+.h-ag .w{border-color:var(--gilt)}
+.st-new{color:var(--gilt)}.st-bought{color:var(--moss)}.st-lost{color:var(--red)}
+@media (max-width:980px){#hub{padding:18px 20px}.h-grid{grid-template-columns:1fr 1fr}.h-cols,.h-ag{grid-template-columns:1fr 1fr}}
 @media (max-width:980px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto;padding:18px 20px}.center{order:-1;padding:20px 0}#reactor{width:min(80vw,340px)}}
 @media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
@@ -367,7 +394,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
     <div id="heard"></div>
     <div id="said" aria-live="polite">Скажите «Джарвис» и вопрос или нажмите на циферблат.</div>
     <form id="ask" onsubmit="event.preventDefault();var v=this.q.value.trim();if(v){this.q.value='';handle(v)}"><input name="q" placeholder="Или напишите: выручка за неделю, остаток 25043" autocomplete="off" aria-label="Вопрос Джарвису"><button class="btn">Спросить</button></form>
-    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" onclick="showMorning(true)">Утро</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button><button class="btn" onclick="selfTest()">Проверка</button></div>
+    <div class="ctl"><button class="btn" id="bWake">Слушать «Джарвис»</button><button class="btn" onclick="handle('доклад')">Доклад</button><button class="btn" onclick="showMorning(true)">Утро</button><button class="btn" onclick="showHub('ch')">Центр</button><button class="btn" id="bVoice" onclick="nextVoice()">Голос</button><button class="btn" id="bMute">Звук включён</button><button class="btn" onclick="selfTest()">Проверка</button></div>
     <div id="vHint" class="hint" style="display:none">Живой мужской голос «Дмитрий» есть только в <b>Microsoft Edge</b>.</div>
     <div id="tick"></div>
   </div>
@@ -393,6 +420,12 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
     <div class="m-top3" id="mTop3"></div>
     <div class="m-list" id="mList"></div>
   </div>
+</div>
+
+<div id="hub">
+  <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><span id="hubAt"></span><button class="btn" onclick="closeHub()">Закрыть</button></div></header>
+  <div class="tabs" id="hubTabs"><button class="btn" data-t="ch">Каналы и лиды</button><button class="btn" data-t="ct">Контент и креативы</button><button class="btn" data-t="tm">Команда</button></div>
+  <div id="hubBody"></div>
 </div>
 <script>
 async function scryptKey(pass, salt, N, r, p, dkLen) {
@@ -582,7 +615,66 @@ async function showMorning(speakIt){
   if(speakIt){const top=L[0];await speak(`${t.getHours()<13?"Доброе утро":hello()}, Жанерке. ${t.getHours()<13?"Пока вы спали, я посчитал вчерашний день":"Вот итоги вчерашнего дня"}. Продано ${q} ${plural(q,"вещь","вещи","вещей")} на ${say$(gross)}.`+(top?` Лучше всего ушла ${top.name.replace(/-/g," ")}.`:"")+(M.length?` Я подготовил ${M.length} ${plural(M.length,"ход","хода","ходов")} на сегодня. Три главных справа на экране. Первый: ${M[0].title.replace(/-/g," ")}.`:""),null,kz(gross>=avg7?"up":"down"))}
 }
 function closeMorning(){$("morning").classList.remove("on")}
+
 window.showMorning=showMorning;window.closeMorning=closeMorning;
+
+/* ---------- центр: каналы, контент, команда ---------- */
+const HOOK="https://actual.app.n8n.cloud/webhook/";
+let HUB=null,KV=null,hubTab="ch";
+async function loadHub(force){
+  if(HUB&&!force&&Date.now()-HUB._at<600000)return HUB;
+  const f=new URLSearchParams();f.append("t",tok||"");
+  const [d,kv]=await Promise.all([fetch(HOOK+"jarvis-data",{method:"POST",body:f}).then(r=>r.json()).catch(()=>({ok:false,error:"net"})),post("kvGet",{prefix:""}).catch(()=>null)]);
+  HUB=d;HUB._at=Date.now();
+  KV={};if(kv&&kv.ok)(kv.docs||[]).forEach(x=>{try{KV[x[0]]=JSON.parse(x[1])}catch(e){}});
+  return HUB}
+const col=n=>Object.entries(KV||{}).filter(([k])=>k.startsWith(n+"/")).map(([k,v])=>({id:k.slice(n.length+1),...v}));
+const esc2=x=>String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stName={new:"ждёт ответа",bought:"купил",lost:"не купил"};
+function hubCh(){
+  const d=HUB||{},S=d.site||{},w=d.whatsapp||{},t=new Date(),mk=ymd(t).slice(0,7);
+  const P=(x,k)=>x&&x[k]!=null?x[k]:"—";
+  let h=`<div class="h-grid">`;
+  if(d.ok){
+    const m=S.d30||{},wk=S.d7||{};
+    h+=`<div class="h-sec"><h3>Сайт: посетители, 7 дней</h3><div class="h-num">${P(wk,"visitors")}</div><div class="sub">за 30 дней ${P(m,"visitors")}, сегодня ${P(S.today,"visitors")}</div></div>
+    <div class="h-sec"><h3>Лиды с сайта (нажали «Заказать в WhatsApp»)</h3><div class="h-num">${P(wk,"leads")}</div><div class="sub">за 30 дней ${P(m,"leads")}, ждут ответа ${P(m,"waiting")}</div></div>
+    <div class="h-sec"><h3>Купили после сайта, 30 дней</h3><div class="h-num">${P(m,"bought")}</div><div class="sub">${m.leads?Math.round(m.bought/m.leads*100)+"% от лидов, ":""}на ${fmt(m.revenue||0)}</div></div>
+    <div class="h-sec"><h3>WhatsApp-бот: диалоги, 7 дней</h3><div class="h-num">${P(w.d7,"chats")}</div><div class="sub">за 30 дней ${P(w.d30,"chats")}, передано менеджеру ${P(w.d30,"handoffs")}</div></div>`;
+    h+=`<div class="h-sec h-wide"><h3>Откуда приходят на сайт, 30 дней</h3><table class="h-tbl"><tr><th>Источник</th><th class="n">Люди</th><th class="n">Лиды</th><th class="n">Купили</th></tr>${(m.sources||[]).map(x=>`<tr><td>${esc2(x.k)}</td><td class="n">${x.v}</td><td class="n">${x.l}</td><td class="n">${x.b}</td></tr>`).join("")||'<tr><td colspan="4">пока нет данных</td></tr>'}</table></div>`;
+    h+=`<div class="h-sec h-wide"><h3>Последние лиды с сайта</h3><table class="h-tbl"><tr><th>Код</th><th>Товар</th><th class="n">Цена</th><th class="n">Статус</th></tr>${(S.recent||[]).map(x=>`<tr><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td class="n">${x.p?fmt(x.p):""}</td><td class="n st-${x.st}">${stName[x.st]||x.st}</td></tr>`).join("")||'<tr><td colspan="4">лидов пока нет</td></tr>'}</table></div>`;
+  }else h+=`<div class="h-sec h-full"><h3>Сайт и WhatsApp</h3><div class="sub">${d.error==="auth"?"Вход устарел: выйдите и войдите заново.":"n8n не ответил. Данные сайта и бота появятся, когда он снова будет на связи."}</div></div>`;
+  // ручные данные каналов из приложения руководителя
+  const CH=["Бутик","Instagram","WhatsApp","TikTok","Kaspi"];const rows=col("channels").filter(x=>String(x.date||"").slice(0,7)===mk);
+  const ag=CH.map(c=>{const r=rows.filter(x=>x.channel===c);return{c,l:r.reduce((a,x)=>a+num(x.leads),0),o:r.reduce((a,x)=>a+num(x.orders),0),rv:r.reduce((a,x)=>a+num(x.revenue),0),ad:r.reduce((a,x)=>a+num(x.ads),0),n:r.length}});
+  h+=`<div class="h-sec h-full"><h3>Все каналы за ${MON[t.getMonth()]}: Kaspi, Instagram, WhatsApp, TikTok, бутик</h3><table class="h-tbl"><tr><th>Канал</th><th class="n">Обращения</th><th class="n">Продажи</th><th class="n">Конверсия</th><th class="n">Выручка</th><th class="n">Реклама</th><th class="n">Выручка на 1 ₸ рекламы</th></tr>${ag.map(x=>`<tr><td>${x.c}</td><td class="n">${x.n?x.l:"—"}</td><td class="n">${x.n?x.o:"—"}</td><td class="n">${x.l?Math.round(x.o/x.l*100)+"%":"—"}</td><td class="n">${x.n?fmt(x.rv):"—"}</td><td class="n">${x.ad?fmt(x.ad):"—"}</td><td class="n">${x.ad?(x.rv/x.ad).toFixed(1):"—"}</td></tr>`).join("")}</table>
+  <div class="h-note">Эти строки берутся из раздела «Каналы» в приложении руководителя: туда раз в неделю вносятся обращения, продажи и расходы на рекламу по каждому каналу. Kaspi в Паломе приходит общими продажами, отдельной строки у него там нет, поэтому заказы Kaspi пока тоже вносятся вручную. Если подключить токен Kaspi Магазина, буду считать их сам.</div></div>`;
+  return h+`</div>`}
+function hubCt(){
+  const d=HUB||{},ai=d.ai||{},M=(MOVES&&MOVES.moves||[]).slice().sort((a,b)=>b.score-a.score);
+  const AG={strategist:"Стратег",creative:"Креатив",copywriter:"Копирайтер",director:"Режиссёр",editor:"Монтажёр",consultant:"Консультант"};
+  let h=`<div class="h-sec"><h3>Стратегия на сегодня: главные ходы</h3><table class="h-tbl"><tr><th>Ход</th><th>Почему</th><th>Что сделать</th><th class="n">Важность</th></tr>${M.slice(0,10).map(x=>`<tr><td>${esc2(x.title)}</td><td>${esc2(x.why)}</td><td>${esc2(x.do)}</td><td class="n">${x.score}</td></tr>`).join("")||'<tr><td colspan="4">ходы ещё не готовы</td></tr>'}</table></div>`;
+  h+=`<div class="h-sec"><h3>AI-команда сейчас</h3><div class="h-ag">${Object.keys(AG).map(k=>{const a=(ai.status||[]).find(x=>x.agent===k)||{};const wk=a.status==="working";return `<div class="${wk?"w":""}"><b>${AG[k]}</b><span>${wk?"работает: "+esc2(a.task||""):"свободен"}</span></div>`}).join("")}</div></div>`;
+  const T=ai.tasks||[];
+  h+=`<div class="h-sec"><h3>Последние работы команды: стратегия, креатив, текст, сценарий</h3>${T.length?T.map(x=>`<div class="h-task"><h4>${esc2(x.task)}</h4><div class="meta">${x.at?new Date(x.at).toLocaleString("ru-RU",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"}):""}${x.state?", "+esc2(x.state):""}</div><div class="h-cols">${[["Стратегия",x.strategy],["Креатив",x.concept],["Текст",x.copy],["Сценарий",x.script||x.answer]].filter(y=>y[1]).map(y=>`<div><b>${y[0]}</b><p>${esc2(y[1])}</p></div>`).join("")}</div></div>`).join(""):'<div class="sub">Команде ещё не давали задач. Задачу можно дать во вкладке «Офис» в приложении руководителя.</div>'}</div>`;
+  return h}
+function hubTm(){
+  const t=new Date(),k=ymd(t).slice(0,7),td=ymd(t),from=k+"-01";
+  const emps=col("employees").filter(e=>e.active!=="Не работает"&&e.name);
+  const pl=col("plans").find(x=>x.id===k)||null;const es=col("empSales");
+  const R=emps.map(e=>{const daily=es.filter(x=>x.day&&x.employeeId===e.id&&x.day>=from&&x.day<=td);let s=daily.reduce((a,x)=>a+num(x.sales),0);const last=daily.map(x=>x.day).sort().pop();if(!daily.length){const m=es.find(x=>!x.day&&x.employeeId===e.id&&x.month===k);if(m)s=num(m.sales)}
+    let pto=0,pall=0;if(pl)for(const [ds,dd] of Object.entries(pl.days||{})){const v=num(dd.emp&&dd.emp[e.id]);pall+=v;if(ds<=(last||td))pto+=v}
+    return{n:e.name,r:e.role||"",s,pto,pall,last}}).sort((a,b)=>b.s-a.s);
+  let h=`<div class="h-sec"><h3>Продавцы за ${MON[t.getMonth()]}</h3><table class="h-tbl"><tr><th>Сотрудник</th><th>Должность</th><th class="n">Продажи</th><th class="n">План на дату</th><th class="n">Выполнение</th><th class="n">План месяца</th></tr>${R.map(x=>`<tr><td>${esc2(x.n)}</td><td>${esc2(x.r)}</td><td class="n">${fmt(x.s)}</td><td class="n">${x.pto?fmt(x.pto):"—"}</td><td class="n ${x.pto?(x.s>=x.pto?"up":"dn"):""}">${x.pto?Math.round(x.s/x.pto*100)+"%":"—"}</td><td class="n">${x.pall?fmt(x.pall):"—"}</td></tr>`).join("")||'<tr><td colspan="6">сотрудников нет</td></tr>'}</table><div class="h-note">${R[0]&&R[0].last?"Продажи по сотрудникам загружены по "+new Date(R[0].last).toLocaleDateString("ru-RU",{day:"numeric",month:"long"})+".":"Продажи по сотрудникам ещё не загружены за этот месяц."} Их выгружают из Паломы в приложении руководителя.</div></div>`;
+  const ai=(HUB&&HUB.ai&&HUB.ai.status)||[];const AG={strategist:"Контент-стратег",creative:"Креативный директор",copywriter:"Копирайтер",director:"Режиссёр",editor:"Монтажёр-редактор",consultant:"Консультант по сообщениям"};
+  h+=`<div class="h-sec"><h3>AI-сотрудники</h3><table class="h-tbl"><tr><th>Сотрудник</th><th>Сейчас</th><th class="n">Обновлено</th></tr>${Object.keys(AG).map(k=>{const a=ai.find(x=>x.agent===k)||{};return `<tr><td>${AG[k]}</td><td>${a.status==="working"?"работает: "+esc2(a.task||""):"свободен"}</td><td class="n">${a.updated?new Date(a.updated).toLocaleString("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—"}</td></tr>`}).join("")}</table></div>`;
+  return h}
+function drawHub(){document.querySelectorAll("#hubTabs .btn").forEach(b=>b.classList.toggle("on",b.dataset.t===hubTab));$("hubBody").innerHTML=hubTab==="ch"?hubCh():hubTab==="ct"?hubCt():hubTm();if(HUB&&HUB.at)$("hubAt").textContent="данные на "+new Date(HUB.at).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}
+async function showHub(tab){hubTab=tab||hubTab;$("hub").classList.add("on");$("hubBody").innerHTML='<div class="sub" style="padding:20px 0">Собираю данные…</div>';if(!MOVES)MOVES=await fetch("moves.json?t="+Date.now()).then(r=>r.json()).catch(()=>null);await loadHub();drawHub()}
+function closeHub(){$("hub").classList.remove("on")}
+document.querySelectorAll("#hubTabs .btn").forEach(b=>b.onclick=()=>{hubTab=b.dataset.t;drawHub()});
+window.showHub=showHub;window.closeHub=closeHub;
+function hubSay(){const d=HUB||{},S=d.site||{},w=d.whatsapp||{};if(!d.ok)return "Данные сайта сейчас недоступны.";const m=S.d7||{};return `За неделю на сайт зашли ${m.visitors||0} ${plural(m.visitors||0,"человек","человека","человек")}, написали в WhatsApp ${m.leads||0}, купили ${m.bought||0}. Бот провёл ${(w.d7||{}).chats||0} ${plural((w.d7||{}).chats||0,"диалог","диалога","диалогов")}. Ждут ответа ${(S.d30||{}).waiting||0} ${plural((S.d30||{}).waiting||0,"лид","лида","лидов")}.`}
 /* ---------- данные Paloma ---------- */
 function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
 async function pal(calls){const out={};for(let i=0;i<calls.length;i+=25){const b=calls.slice(i,i+25);const j=await post("paloma",{calls:b.map(c=>({tool:c.tool,args:c.args,ttl:c.ttl||0}))});
@@ -715,8 +807,11 @@ async function handle(q){
     if(!rows.length){await speak(`Артикула ${code.split("").join(" ")} на складе нет.`,`Артикул <b>${code}</b>: на складе нет`);return}
     const q=rows.reduce((a,x)=>a+num(x.quantity),0),sz=rows.map(x=>String(x.item).split(" ").slice(-1)[0]+(x.quantity>1?" ×"+x.quantity:""));
     await speak(`По артикулу ${code} осталось ${q} ${plural(q,"штука","штуки","штук")}. Размеры: ${sz.join(", ").replace(/×/g,"по ")}.`,`<b>${code}</b> · ${q} шт<br>${rows.map(x=>x.item+" — "+x.quantity).join("<br>")}`);return}
+  if(/(лид|сайт|воронк|канал|каспи|kaspi|ватсап|whatsapp|инстаграм|заявк)/.test(s)){await showHub("ch");await speak(hubSay());return}
+  if(/(контент|креатив|стратеги|ai.?команд|агент)/.test(s)){await showHub("ct");await speak("Открыл контент: стратегия на сегодня и последние работы AI-команды.");return}
+  if(/(сотрудник|продавц|команд|нуралы|алихан)/.test(s)){await showHub("tm");await speak("Открыл команду: продажи продавцов и выполнение плана.");return}
   if(/(доброе утро|утро|пока я спал|что нового|следующий ход|что делать сегодня|план на сегодня|идеи|сценари)/.test(s)){await showMorning(true);return}
-  if(/(закрой|назад|главн)/.test(s)){closeMorning();await speak("Хорошо.");return}
+  if(/(закрой|назад|главн)/.test(s)){closeMorning();closeHub();await speak("Хорошо.");return}
   if(/(доклад|брифинг|отчет|как дела|как мы|обстановк|сводк|статус)/.test(s)){focus("p-today","p-month","p-top","p-stock");await speak(briefing(),null,kz(A.lw&&A.today<A.lw?"down":"up"));return}
   if(/прибыл|маржа|заработал/.test(s)){focus("p-month");await speak(A.profit!=null?`Валовая прибыль с начала месяца — ${say$(A.profit)}. Это без аренды и зарплат.`:"Прибыль сейчас недоступна.");return}
   if(/прогноз|план/.test(s)){focus("p-month");await speak(A.plan?`План месяца ${say$(A.plan)}. Сделано ${prc(Math.round(A.month/A.plan*100))}. Если темп сохранится, выйдем на ${say$(A.fc)}, это ${prc(Math.round(A.fc/A.plan*100))} плана.`:`При текущем темпе месяц закроется на ${say$(A.fc)}.`);return}
