@@ -2,9 +2,15 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Jarvis">
 <title>ACTUAL Jarvis</title>
 <style>
 /* golos-text-cyrillic-ext-400-normal */
@@ -327,6 +333,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 #hub{position:fixed;inset:0;z-index:15;background:#000;display:none;flex-direction:column;padding:26px 44px 26px;overflow:auto}
 #hub.on{display:flex;animation:mIn .4s ease}
 #hub .tabs{display:flex;gap:8px;margin:18px 0 6px;flex-wrap:wrap}
+#hub>*{flex-shrink:0}
 #hub .tabs .btn.on{border-color:var(--gilt);color:var(--gilt)}
 .h-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0 40px}
 .h-sec{padding:20px 0;border-bottom:1px solid var(--line)}
@@ -351,6 +358,34 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 .st-new{color:var(--gilt)}.st-bought{color:var(--moss)}.st-lost{color:var(--red)}
 @media (max-width:980px){#hub{padding:18px 20px}.h-grid{grid-template-columns:1fr 1fr}.h-cols,.h-ag{grid-template-columns:1fr 1fr}}
 @media (max-width:980px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto;padding:18px 20px}.center{order:-1;padding:20px 0}#reactor{width:min(80vw,340px)}}
+.h-bars{display:flex;align-items:flex-end;gap:4px;height:96px;margin-top:10px}
+.h-bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;min-width:0}
+.h-bars i{display:block;width:100%;background:var(--gilt);opacity:.8;min-height:1px;border-radius:2px 2px 0 0}
+.h-bars span{font-size:10.5px;color:var(--smoke);margin-top:4px}
+.h-list{padding-left:20px;line-height:1.55;font-size:14.5px}.h-list li{margin:6px 0}
+.h-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.h-sec a{color:var(--gilt)}a.btn{text-decoration:none;display:inline-block;margin:4px 4px 4px 0;color:var(--ivory)}
+.h-f{display:block;font-size:12.5px;color:var(--smoke);margin:8px 0 12px}
+.h-f input,.h-f select{display:block;width:100%;max-width:360px;margin-top:4px;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ivory);font:16px var(--fs);padding:6px 0}
+.h-f select option{background:#141311}
+#hub header{position:sticky;top:-26px;background:#000;z-index:2;padding-top:4px}
+@media (max-width:640px){
+#hub{padding:max(12px,env(safe-area-inset-top)) 16px 28px}
+#hub header{top:calc(-1*max(12px,env(safe-area-inset-top)))}
+#hub .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px -16px 4px;padding:0 16px 6px;scrollbar-width:none}
+#hub .tabs::-webkit-scrollbar{display:none}
+#hub .tabs .btn{flex:0 0 auto;padding:9px 14px;font-size:13.5px}
+.h-grid{grid-template-columns:1fr 1fr;gap:0 16px}
+.h-wide,.h-full{grid-column:1/-1}
+.h-num{font-size:32px}.h-sec{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.h-sec{padding:16px 0}
+.h-tbl{font-size:13.5px}.h-tbl td,.h-tbl th{padding-right:8px}.h-tbl td{word-break:break-word}
+#hub header .brand{font-size:22px}#hub header{align-items:center}#hub header .st{gap:10px;font-size:11.5px;align-items:center}#hubAt{max-width:72px;line-height:1.2;text-align:right}
+.h-cols,.h-ag{grid-template-columns:1fr}
+#app .ctl{flex-wrap:wrap;justify-content:center}
+#app .ctl .btn{padding:9px 14px}
+#ask input{font-size:16px}
+}
 @media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -424,7 +459,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 
 <div id="hub">
   <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><span id="hubAt"></span><button class="btn" onclick="closeHub()">Закрыть</button></div></header>
-  <div class="tabs" id="hubTabs"><button class="btn" data-t="ch">Каналы и лиды</button><button class="btn" data-t="ct">Контент и креативы</button><button class="btn" data-t="tm">Команда</button></div>
+  <div class="tabs" id="hubTabs"><button class="btn" data-t="ch">Каналы и лиды</button><button class="btn" data-t="ig">Instagram</button><button class="btn" data-t="wa">WhatsApp</button><button class="btn" data-t="ct">Контент и креативы</button><button class="btn" data-t="tm">Команда</button><button class="btn" data-t="set">Настройки</button></div>
   <div id="hubBody"></div>
 </div>
 <script>
@@ -669,7 +704,103 @@ function hubTm(){
   const ai=(HUB&&HUB.ai&&HUB.ai.status)||[];const AG={strategist:"Контент-стратег",creative:"Креативный директор",copywriter:"Копирайтер",director:"Режиссёр",editor:"Монтажёр-редактор",consultant:"Консультант по сообщениям"};
   h+=`<div class="h-sec"><h3>AI-сотрудники</h3><table class="h-tbl"><tr><th>Сотрудник</th><th>Сейчас</th><th class="n">Обновлено</th></tr>${Object.keys(AG).map(k=>{const a=ai.find(x=>x.agent===k)||{};return `<tr><td>${AG[k]}</td><td>${a.status==="working"?"работает: "+esc2(a.task||""):"свободен"}</td><td class="n">${a.updated?new Date(a.updated).toLocaleString("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—"}</td></tr>`}).join("")}</table></div>`;
   return h}
-function drawHub(){document.querySelectorAll("#hubTabs .btn").forEach(b=>b.classList.toggle("on",b.dataset.t===hubTab));$("hubBody").innerHTML=hubTab==="ch"?hubCh():hubTab==="ct"?hubCt():hubTm();if(HUB&&HUB.at)$("hubAt").textContent="данные на "+new Date(HUB.at).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}
+/* ---------- центр: Instagram, WhatsApp, настройки ---------- */
+const dayS=t=>new Date(t).toLocaleDateString("ru-RU",{day:"numeric",month:"short"});
+const ago=t=>{const m=Math.round((Date.now()-t)/6e4);if(m<60)return m+" мин назад";const h=Math.round(m/60);if(h<24)return h+" ч назад";const d=Math.round(h/24);return d+" "+plural(d,"день","дня","дней")+" назад"};
+const sgn=n=>n==null?"—":(n>0?"+":n<0?"−":"")+Math.abs(n).toLocaleString("ru-RU");
+function bars(arr,val,lbl,sub){const mx=Math.max(1,...arr.map(val));return `<div class="h-bars">${arr.map(x=>{const v=val(x);return `<div title="${dayS(x.d)}: ${v}${sub?" "+sub(x):""}"><i style="height:${Math.round(v/mx*100)}%"></i><span>${new Date(x.d).getDate()}</span></div>`}).join("")}</div><div class="h-note">${lbl}</div>`}
+function igTips(g){const T=[],k=g.byKind||[],tm=g.byTime||[],p=g.posts||{},c=g.comments||{},top=(g.top||[])[0];
+  if(k.length>1&&k[0].likes>k[k.length-1].likes*1.3)T.push(`${k[0].k}: в среднем ${k[0].likes} ${plural(k[0].likes,"лайк","лайка","лайков")} на публикацию, ${k[k.length-1].k.toLowerCase()} — ${k[k.length-1].likes}. Делать больше формата «${k[0].k}».`);
+  if(tm.length>1&&tm[0].likes>tm[tm.length-1].likes*1.15)T.push(`Сильнее всего заходят публикации, выложенные ${tm[0].k}: в среднем ${tm[0].likes} ${plural(tm[0].likes,"лайк","лайка","лайков")}. Слабее всего — ${tm[tm.length-1].k}, ${tm[tm.length-1].likes}.`);
+  if(top)T.push(`Лучшая публикация месяца — ${top.kind.toLowerCase()} от ${dayS(top.t)}: ${top.likes} ${plural(top.likes,"лайк","лайка","лайков")}, ${top.comm} ${plural(top.comm,"комментарий","комментария","комментариев")}. Снять ещё одну в той же подаче.`);
+  if(p.prev7&&p.likesPrev7&&p.likes7<p.likesPrev7*0.8)T.push(`На этой неделе на публикацию приходится ${p.likes7} ${plural(p.likes7,"лайк","лайка","лайков")}, неделей раньше было ${p.likesPrev7}. Добавить людей в кадре, примерку и цену на экране.`);
+  if(p.d7>21)T.push(`За неделю вышло ${p.d7} ${plural(p.d7,"публикация","публикации","публикаций")}, это больше трёх в день. Лайков на пост меньше, когда лента забита: лучше 2 сильных поста и 1 Reels в день.`);
+  else if(p.d7<5)T.push(`За неделю вышло ${p.d7} ${plural(p.d7,"публикация","публикации","публикаций")}. Чтобы держать охват, нужна хотя бы одна в день.`);
+  const uq=(c.unans||[]).filter(x=>x.q).length;if(uq)T.push(`${uq} ${plural(uq,"вопрос","вопроса","вопросов")} о цене или размере под постами без ответа. Ответить и позвать в Direct или WhatsApp.`);
+  return T}
+function hubIg(){
+  const g=(HUB||{}).instagram;
+  if(!HUB||!HUB.ok)return `<div class="h-sec"><h3>Instagram</h3><div class="sub">n8n не ответил, данных нет.</div></div>`;
+  if(!g)return `<div class="h-sec"><h3>Instagram</h3><div class="sub">Сервер ещё не отдаёт данные Instagram. Обновите страницу через минуту.</div></div>`;
+  if(!g.ok)return `<div class="h-sec"><h3>Instagram</h3><div class="sub">Instagram не ответил (${g.err==="profile"?"профиль":"публикации"}). Скорее всего, истёк токен в n8n.</div></div>`;
+  const p=g.posts||{},c=g.comments||{},gr=g.growth||{};
+  const grTxt=gr.d1==null&&gr.d7==null?`прирост начну считать с ${gr.since?new Date(gr.since).toLocaleDateString("ru-RU",{day:"numeric",month:"long"}):"сегодня"}`:`за день ${sgn(gr.d1)}, за неделю ${sgn(gr.d7)}${gr.d30!=null?", за месяц "+sgn(gr.d30):""}`;
+  let h=`<div class="h-grid">
+  <div class="h-sec"><h3>Подписчики @${esc2(g.username)}</h3><div class="h-num">${(g.followers||0).toLocaleString("ru-RU")}</div><div class="sub">${grTxt}</div></div>
+  <div class="h-sec"><h3>Публикаций за 7 дней</h3><div class="h-num">${p.d7||0}</div><div class="sub">неделей раньше ${p.prev7||0}, за 30 дней ${p.d30||0}</div></div>
+  <div class="h-sec"><h3>Лайков на публикацию, 7 дней</h3><div class="h-num">${p.likes7||0}</div><div class="sub">неделей раньше ${p.likesPrev7||0}</div></div>
+  <div class="h-sec"><h3>Комментарии, 7 дней</h3><div class="h-num">${c.d7||0}</div><div class="sub">за 30 дней ${c.d30||0}, с ответом ${c.answered30||0}, вопросов о цене ${c.questions30||0}</div></div>`;
+  const T=igTips(g);
+  h+=`<div class="h-sec h-full"><h3>Что делать дальше</h3>${T.length?`<ol class="h-list">${T.map(x=>`<li>${esc2(x)}</li>`).join("")}</ol>`:'<div class="sub">Пока мало данных для выводов.</div>'}</div>`;
+  h+=`<div class="h-sec h-wide"><h3>Лайки по дням, 14 дней</h3>${bars(g.perDay||[],x=>x.likes,"Сумма лайков на публикациях, вышедших в этот день.",x=>"лайков, публикаций "+x.n)}</div>`;
+  h+=`<div class="h-sec h-wide"><h3>Комментарии по дням, 14 дней</h3>${bars(c.days||[],x=>x.n,"Комментарии клиентов. Наши ответы не считаются.",x=>"комментариев, с ответом "+x.a)}</div>`;
+  h+=`<div class="h-sec h-wide"><h3>Какой формат заходит, 30 дней</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Формат</th><th class="n">Публикаций</th><th class="n">Лайков в среднем</th><th class="n">Комментариев</th></tr>${(g.byKind||[]).map(x=>`<tr><td>${x.k}</td><td class="n">${x.n}</td><td class="n">${x.likes}</td><td class="n">${x.comm}</td></tr>`).join("")||'<tr><td colspan="4">нет публикаций</td></tr>'}</table></div></div>`;
+  h+=`<div class="h-sec h-wide"><h3>Когда выкладывать, 30 дней</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Время выхода</th><th class="n">Публикаций</th><th class="n">Лайков в среднем</th></tr>${(g.byTime||[]).map(x=>`<tr><td>${x.k}</td><td class="n">${x.n}</td><td class="n">${x.likes}</td></tr>`).join("")}</table></div></div>`;
+  h+=`<div class="h-sec h-full"><h3>Лучшие публикации месяца</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Дата</th><th>Формат</th><th>Подпись</th><th class="n">Лайки</th><th class="n">Комм.</th><th></th></tr>${(g.top||[]).map(x=>`<tr><td>${dayS(x.t)}</td><td>${x.kind}</td><td>${esc2(x.cap)}</td><td class="n">${x.likes}</td><td class="n">${x.comm}</td><td class="n"><a href="${esc2(x.link)}" target="_blank" rel="noopener">открыть</a></td></tr>`).join("")}</table></div>
+  ${(g.weak||[]).length?`<div class="h-note">Слабее всего: ${(g.weak||[]).map(x=>`<a href="${esc2(x.link)}" target="_blank" rel="noopener">${x.kind.toLowerCase()} от ${dayS(x.t)}</a> (${x.likes})`).join(", ")}.</div>`:""}</div>`;
+  h+=`<div class="h-sec h-full"><h3>Комментарии без ответа, 30 дней</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Кто</th><th>Текст</th><th></th></tr>${(c.unans||[]).map(x=>`<tr><td>${ago(x.t)}</td><td>@${esc2(x.u)}</td><td>${x.q?'<b class="st-new">вопрос</b> ':""}${esc2(x.x)}</td><td class="n"><a href="${esc2(x.link)}" target="_blank" rel="noopener">к посту</a></td></tr>`).join("")||'<tr><td colspan="4">все комментарии с ответом</td></tr>'}</table></div><div class="h-note">Бот в n8n сам отвечает на вопросы о цене каждый час с 10 до 22. Здесь остальное: то, что бот не распознал, и свежие вопросы до его следующего прохода.</div></div>`;
+  h+=`<div class="h-sec h-wide"><h3>Охваты и просмотры</h3><div class="sub">Закрыты. Токену Instagram в n8n не выдано право <b>instagram_manage_insights</b>, без него Meta не отдаёт охват, просмотры Reels и сохранения.</div><div class="h-note">Как открыть: Meta Business Suite → Настройки компании → Пользователи → Системные пользователи → «Employee» → Сгенерировать токен → отметить instagram_manage_insights → вставить новый токен в n8n, учётная запись «Query Auth account». После этого здесь появятся охват по дням и просмотры каждого Reels.</div></div>`;
+  h+=`<div class="h-sec h-wide"><h3>Direct</h3><div class="sub">Закрыт. Meta отвечает: владелец аккаунта выключил доступ к сообщениям для внешних сервисов.</div><div class="h-note">Как открыть: приложение Instagram → профиль @actual.almaty → Настройки → Сообщения и ответы на истории → Инструменты для сообщений → «Разрешить доступ к сообщениям» включить. После этого покажу, сколько диалогов в Direct и сколько ждут ответа.</div></div>`;
+  return h+`</div>`}
+function hubWa(){
+  if(!HUB||!HUB.ok)return `<div class="h-sec"><h3>WhatsApp</h3><div class="sub">n8n не ответил, данных нет.</div></div>`;
+  const w=HUB.whatsapp||{},L=w.leads||{},S=HUB.site||{},m7=S.d7||{},m30=S.d30||{};
+  let h=`<div class="h-grid">
+  <div class="h-sec"><h3>Заявок за 7 дней</h3><div class="h-num">${m7.leads||0}</div><div class="sub">за 30 дней ${L.total!=null?L.total:(m30.leads||0)}, сегодня ${(S.today||{}).leads||0}</div></div>
+  <div class="h-sec"><h3>Ждут ответа</h3><div class="h-num${(L.waiting||[]).length?" st-new":""}">${(L.waiting||[]).length}</div><div class="sub">заявки без отметки «купил» или «не купил»</div></div>
+  <div class="h-sec"><h3>Купили после чата, 30 дней</h3><div class="h-num">${L.bought||0}</div><div class="sub">${L.total?Math.round((L.bought||0)/L.total*100)+"% заявок, ":""}на ${fmt(L.revenue||0)}</div></div>
+  <div class="h-sec"><h3>Бот-консультант</h3><div class="h-num">${(w.d30||{}).chats||0}</div><div class="sub">${plural((w.d30||{}).chats||0,"диалог","диалога","диалогов")} за 30 дней${w.botLast?", последний "+dayS(w.botLast):""}</div></div>`;
+  h+=`<div class="h-sec h-full"><h3>Заявки по дням, 14 дней</h3>${bars(L.days||S.days||[],x=>x.l,"Нажатия «Заказать в WhatsApp» на сайте с кодом заказа.",x=>"заявок, купили "+(x.b||0))}</div>`;
+  h+=`<div class="h-sec h-full"><h3>Ждут ответа</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Код</th><th>Товар</th><th>Размер, цвет</th><th class="n">Цена</th></tr>${(L.waiting||[]).map(x=>`<tr><td>${ago(x.t)}</td><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td>${esc2([x.sz,x.col].filter(Boolean).join(", "))||"—"}</td><td class="n">${x.p?fmt(x.p):"—"}</td></tr>`).join("")||'<tr><td colspan="5">все заявки разобраны</td></tr>'}</table></div><div class="h-note">Код заказа клиент присылает в WhatsApp первым сообщением: по нему видно, какую вещь он смотрел. Отметить «купил» или «не купил» можно в приложении руководителя, тогда заявка уйдёт из этого списка.</div></div>`;
+  h+=`<div class="h-sec h-full"><h3>Что спрашивают, 30 дней</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Товар</th><th class="n">Заявок</th><th>Размеры</th><th class="n">Купили</th></tr>${(L.asked||[]).map(x=>`<tr><td>${esc2(x.n)}</td><td class="n">${x.l}</td><td>${esc2((x.sizes||[]).join(", "))||"—"}</td><td class="n">${x.b}</td></tr>`).join("")||'<tr><td colspan="4">заявок пока нет</td></tr>'}</table></div></div>`;
+  if((w.handoffs||[]).length)h+=`<div class="h-sec h-full"><h3>Бот передал продавцу</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Клиент</th><th>Что написал</th></tr>${w.handoffs.map(x=>`<tr><td>${ago(x.t)}</td><td>${esc2(x.name||"…"+x.phone)}</td><td>${esc2(x.sum||x.msg)}</td></tr>`).join("")}</table></div></div>`;
+  const stale=!w.botLast||Date.now()-w.botLast>3*864e5;
+  if(stale)h+=`<div class="h-sec h-full"><h3>Бот в WhatsApp молчит</h3><div class="sub">В базе бота ${w.total||0} ${plural(w.total||0,"диалог","диалога","диалогов")}${w.botLast?", последний "+new Date(w.botLast).toLocaleDateString("ru-RU",{day:"numeric",month:"long"}):""}. Переписка с клиентами в WhatsApp +7 777 611 1082 сюда не попадает.</div><div class="h-note">Значит, бот сейчас не получает сообщения с этого номера: либо номер работает в обычном приложении WhatsApp Business, либо бот подключён к другому номеру. Проверить можно в WhatsApp Manager (Meta Business) и в сценарии «WhatsApp бот-консультант» в n8n. Перевод номера на бота меняет то, как продавцы отвечают клиентам, поэтому решение за вами.</div></div>`;
+  return h+`</div>`}
+let instEv=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();instEv=e});
+function hubSet(){
+  const k=ymd(new Date()).slice(0,7),G=(KV&&KV["settings/goals"])||{},cur=(G.months&&G.months[k])||{};
+  const ig=(HUB||{}).instagram||{},w=(HUB||{}).whatsapp||{};
+  const st=(ok,t)=>`<span class="${ok?"st-bought":"st-lost"}">${ok?"работает":"нет"}</span>${t?" · "+t:""}`;
+  const voices=(typeof ruVoices!=="undefined"?ruVoices:[]);
+  let h=`<div class="h-grid">
+  <div class="h-sec h-wide"><h3>План на ${MON[new Date().getMonth()]}</h3>
+   <label class="h-f">Выручка, ₸<input id="sRev" inputmode="numeric" value="${cur.monthRevenue||""}" placeholder="например 25000000"></label>
+   <label class="h-f">Валовая прибыль, ₸<input id="sPro" inputmode="numeric" value="${cur.monthProfit||""}" placeholder="необязательно"></label>
+   <button class="btn" id="sSave">Сохранить план</button> <span class="sub" id="sMsg"></span>
+   <div class="h-note">Тот же план, что в приложении руководителя: меняется в одном месте, виден в обоих.</div></div>
+  <div class="h-sec h-wide"><h3>Голос и звук</h3>
+   <label class="h-f">Голос Джарвиса<select id="sVoice">${voices.length?voices.map(v=>`<option${typeof voice!=="undefined"&&voice&&voice.name===v.name?" selected":""}>${esc2(v.name)}</option>`).join(""):"<option>на этом устройстве нет русских голосов</option>"}</select></label>
+   <button class="btn" onclick="document.getElementById('bMute').click();setTimeout(drawHub,50)">${(document.getElementById("bMute")||{}).textContent||"Звук"}</button>
+   <button class="btn" onclick="speak('Проверка голоса. Всё работает.')">Проверить голос</button></div>
+  <div class="h-sec h-wide"><h3>Подключения</h3><table class="h-tbl">
+   <tr><td>Палома (продажи, остатки)</td><td class="n">${st(typeof D!=="undefined"&&D.tR!==undefined)}</td></tr>
+   <tr><td>n8n (сайт, бот, AI-команда)</td><td class="n">${st(HUB&&HUB.ok)}</td></tr>
+   <tr><td>Instagram: подписчики, посты, комментарии</td><td class="n">${st(ig.ok)}</td></tr>
+   <tr><td>Instagram: охваты</td><td class="n">${st(false,"нужно право в токене")}</td></tr>
+   <tr><td>Instagram: Direct</td><td class="n">${st(false,"выключен в приложении")}</td></tr>
+   <tr><td>WhatsApp-бот</td><td class="n">${st(w.botLast&&Date.now()-w.botLast<3*864e5,w.botLast?"последний диалог "+dayS(w.botLast):"")}</td></tr>
+   <tr><td>Kaspi</td><td class="n">${st(false,"вносится вручную")}</td></tr></table></div>
+  <div class="h-sec h-wide"><h3>На телефоне</h3>
+   ${instEv?'<button class="btn" id="sInst">Установить Джарвиса на экран</button>':""}
+   <div class="h-note"><b>iPhone:</b> открыть эту страницу в Safari → кнопка «Поделиться» → «На экран Домой». <b>Android:</b> Chrome → меню ⋮ → «Добавить на главный экран». Иконка откроет Джарвиса во весь экран, вход запомнится.</div></div>
+  <div class="h-sec h-wide"><h3>Другие разделы</h3>
+   <a class="btn" href="../boss/">Приложение руководителя</a> <a class="btn" href="../" target="_blank" rel="noopener">Сайт-каталог</a> <a class="btn" href="https://www.instagram.com/actual.almaty/" target="_blank" rel="noopener">Instagram</a>
+   <div class="h-note">В приложении руководителя: сотрудники, смены, каналы, возвраты, задачи AI-команде.</div></div>
+  <div class="h-sec h-wide"><h3>Выход</h3><button class="btn" id="sOut">Выйти из Джарвиса</button><div class="h-note">На чужом телефоне лучше выходить.</div></div>
+  </div>`;
+  return h}
+function bindSet(){
+  const sv=$("sSave");if(sv)sv.onclick=async()=>{const k=ymd(new Date()).slice(0,7),G=JSON.parse(JSON.stringify((KV&&KV["settings/goals"])||{}));G.months=G.months||{};
+    const r=num(String($("sRev").value).replace(/\D/g,"")),p=num(String($("sPro").value).replace(/\D/g,""));
+    G.months[k]=Object.assign({},G.months[k]||{},{monthRevenue:r,monthProfit:p,updatedAt:Date.now()});
+    $("sMsg").textContent="сохраняю…";
+    try{const j=await post("kvSet",{set:[["settings/goals",JSON.stringify(G)]],del:[]});if(!j||!j.ok)throw 0;KV["settings/goals"]=G;D.plan=r;try{render()}catch(e){}$("sMsg").textContent="сохранено"}catch(e){$("sMsg").textContent="не сохранилось, проверьте связь"}};
+  const vs=$("sVoice");if(vs)vs.onchange=()=>{const v=(ruVoices||[]).find(x=>x.name===vs.value);if(v){try{localStorage.setItem("jv_voice",v.name)}catch(e){}pickVoice();speak("Так звучит мой голос.")}};
+  const ib=$("sInst");if(ib)ib.onclick=async()=>{if(instEv){instEv.prompt();instEv=null;drawHub()}};
+  const so=$("sOut");if(so)so.onclick=()=>{try{localStorage.removeItem(TK)}catch(e){}location.reload()}}
+
+function drawHub(){document.querySelectorAll("#hubTabs .btn").forEach(b=>b.classList.toggle("on",b.dataset.t===hubTab));$("hubBody").innerHTML=hubTab==="ch"?hubCh():hubTab==="ig"?hubIg():hubTab==="wa"?hubWa():hubTab==="set"?hubSet():hubTab==="ct"?hubCt():hubTm();if(hubTab==="set")bindSet();try{const ab=document.querySelector("#hubTabs .btn.on");if(ab)ab.scrollIntoView({inline:"center",block:"nearest"})}catch(e){}if(HUB&&HUB.at)$("hubAt").textContent="данные на "+new Date(HUB.at).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}
 async function showHub(tab){hubTab=tab||hubTab;$("hub").classList.add("on");$("hubBody").innerHTML='<div class="sub" style="padding:20px 0">Собираю данные…</div>';if(!MOVES)MOVES=await fetch("moves.json?t="+Date.now()).then(r=>r.json()).catch(()=>null);await loadHub();drawHub()}
 function closeHub(){$("hub").classList.remove("on")}
 document.querySelectorAll("#hubTabs .btn").forEach(b=>b.onclick=()=>{hubTab=b.dataset.t;drawHub()});
@@ -855,7 +986,7 @@ async function boot(){
   loadStock().then(render).catch(()=>{});
   setInterval(refresh,180000);setInterval(()=>loadStock().then(render).catch(()=>{}),900000);
 }
-function loginUI(){const b=$("bootBody");b.innerHTML='<input id="lL" placeholder="Логин руководителя" aria-label="Логин" autocapitalize="none"><input id="lP" type="password" placeholder="Пароль" aria-label="Пароль"><div class="err" id="lE"></div><div style="text-align:center"><button class="btn" id="lB">Войти</button></div>';
+function loginUI(){const b=$("bootBody");b.innerHTML='<input id="lL" placeholder="Логин руководителя" aria-label="Логин" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="username"><input id="lP" type="password" placeholder="Пароль" aria-label="Пароль" autocomplete="current-password"><div class="err" id="lE"></div><div style="text-align:center"><button class="btn" id="lB">Войти</button></div>';
   const go=async()=>{const l=$("lL").value.trim().toLowerCase(),p=$("lP").value;$("lE").textContent="";$("lB").textContent="Проверяю…";
     try{const users=await fetch("../team/d/users.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());const salt=users[l];const key=await scryptKey(p,salt||"x",16384,8,1,32);if(!salt)throw 0;
       const box=await fetch("../team/d/"+l+".json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json());let m;try{m=await aesOpen(key,box)}catch(x){throw 0}
