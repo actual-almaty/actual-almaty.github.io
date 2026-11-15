@@ -1,0 +1,17 @@
+name: reel download
+on:
+  push:
+    branches: [reel-dl]
+    paths: ['.github/workflows/dl.yml']
+permissions:
+  contents: write
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -sfL -o actual-ertegi-ornek.mp4 "https://d2ol7oe51mr4n9.cloudfront.net/user_3Lmng3sxfRbsZTU0nGv1QrxPhdh/758eb8cb-16f7-4f58-a245-b77787a45910.mp4"
+          ls -la
+          git config user.name actual-bot; git config user.email actual-bot@users.noreply.github.com
+          git add actual-ertegi-ornek.mp4 && git commit -qm video && git push
