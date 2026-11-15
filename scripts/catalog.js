@@ -35,7 +35,7 @@ for (const page of $('Загрузить товары Paloma365').all()) {
     const ck = rawColor.replace(/-\d+$/, '').replace(/\s*\/\s*/g, ' ').toLowerCase().trim();
     const color = COLOR_RU[ck] || rawColor.replace(/-\d+$/, '');
     let key = (numCode ? title : (code || title)).toLowerCase().replace(/[^a-z0-9а-я]+/gi, '-').replace(/^-|-$/g, '');
-    { const ty = TYPE_MAP[tok[0]] || tok[0]; if (models[key] && models[key].type !== ty) key = key + '-' + ty.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-'); } // один артикул у разных вещей (Термос TGS-001 и Футболка TGS-001) — разные карточки
+    { const ty = TYPE_MAP[tok[0]] || tok[0]; if (models[key] && models[key].type !== ty) { const base = key; key = key + '-' + ty.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-'); if (!models[key]) models[key] = { key, baseKey: base, title: ttl.trim(), code, type: ty, desc: '', colors: {}, hasImg: false, prices: [], waist: {} }; } } // один артикул у разных вещей (Термос TGS-001 и Футболка TGS-001) — разные карточки
     const ttl = (TYPE_MAP[tok[0]] && TITLE_FIX.has(tok[0])) ? (TYPE_MAP[tok[0]] + ' ' + title.split(' ').slice(tok[0] === 'Полу' && tok[1] === 'замок' ? 2 : 1).join(' ')) : title;
     const m = models[key] || (models[key] = { key, title: ttl.trim(), code, type: TYPE_MAP[tok[0]] || tok[0], desc: '', colors: {}, hasImg: false, prices: [], waist: {} });
     if (m.title === m.code && ttl.trim() !== code && ci > 0) { m.title = ttl.trim(); m.type = TYPE_MAP[tok[0]] || tok[0]; }
@@ -79,5 +79,8 @@ for (const m of Object.values(models)) {
     variants: JSON.stringify({ code: m.code, desc: m.desc, colors: colors.map(({ alias, ...c }) => c) })
   }});
 }
+// если товар-«двойник» с тем же артикулом не попал на сайт, возвращаем короткий адрес (#p=mt-25626)
+const keys = new Set(out.map(o => o.json.model_key));
+for (const o of out) { const m = models[o.json.model_key]; if (m && m.baseKey && !keys.has(m.baseKey)) { keys.delete(o.json.model_key); o.json.model_key = m.baseKey; keys.add(m.baseKey); } }
 if (!out.length) throw new Error('Не нашлось ни одного товара с фото — каталог не трогаем');
 return out;
