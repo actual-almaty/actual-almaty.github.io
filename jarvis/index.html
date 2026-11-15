@@ -234,7 +234,7 @@
 --fs:"Golos Text",system-ui,sans-serif;--fd:"Cormorant",Georgia,serif}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--ink);color:var(--ivory);font-family:var(--fs);font-size:15px;overflow:hidden;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-#app{height:100%;display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,1.3fr) minmax(260px,1fr);grid-template-rows:auto 1fr;column-gap:48px;padding:26px 44px 22px}
+#app{height:100%;display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,1.3fr) minmax(260px,1fr);grid-template-rows:auto auto 1fr;column-gap:48px;padding:26px 44px 22px}
 header{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line)}
 header .brand{font-family:var(--fd);font-weight:600;font-size:26px;letter-spacing:.18em;color:var(--ivory)}
 header .brand span{color:var(--gilt);font-style:italic;font-weight:500;letter-spacing:0;font-size:20px;margin-left:12px}
@@ -386,6 +386,16 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 #app .ctl .btn{padding:9px 14px}
 #ask input{font-size:16px}
 }
+#jnav{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 0 4px}
+#jnav .btn{border-color:rgba(201,165,92,.45);font-size:13px;padding:8px 15px}
+#jnav .ver{margin-left:auto;color:var(--smoke);font-size:11.5px}
+@media (max-width:640px){
+#jnav{position:fixed;left:0;right:0;bottom:0;z-index:12;background:#000;border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+#jnav::-webkit-scrollbar{display:none}
+#jnav .btn{flex:0 0 auto}
+#jnav .ver{display:none}
+#app{padding-bottom:80px}
+}
 @media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -397,6 +407,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 
 <div id="app">
   <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><span id="sync">подключаюсь к Паломе</span><span id="clock">--:--</span></div></header>
+  <nav id="jnav" aria-label="Разделы"><button class="btn" onclick="showHub('ig')">Instagram</button><button class="btn" onclick="showHub('wa')">WhatsApp</button><button class="btn" onclick="showHub('ch')">Каналы и лиды</button><button class="btn" onclick="showHub('ct')">Контент</button><button class="btn" onclick="showHub('tm')">Команда</button><button class="btn" onclick="showHub('set')">Настройки</button><span class="ver">версия от 15 ноября</span></nav>
 
   <div class="col" id="colL">
     <div class="pn" id="p-today"><h3><span>Сегодня</span><span id="todayN"></span></h3><div class="big" id="today">—</div><div class="sub" id="todaySub">&nbsp;</div></div>
