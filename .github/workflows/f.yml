@@ -1,0 +1,12 @@
+name: zfetch
+on: push
+permissions: { contents: write }
+jobs:
+  f:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -sfL -o zombie.mp4 https://d2ol7oe51mr4n9.cloudfront.net/user_3Lmng3sxfRbsZTU0nGv1QrxPhdh/c9df38d7-4ba7-47f9-9b7e-5312a72087d6.mp4
+          git config user.name bot; git config user.email bot@x
+          git add zombie.mp4; git commit -m file; git push
