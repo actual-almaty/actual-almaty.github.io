@@ -396,6 +396,9 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 #jnav .ver{display:none}
 #app{padding-bottom:80px}
 }
+.m-nav{gap:8px!important;flex-wrap:wrap;justify-content:flex-end}
+.m-nav .mg{border-color:rgba(201,165,92,.55);color:var(--gilt)}
+@media (max-width:640px){#morning header{flex-direction:column;align-items:flex-start;gap:10px}.m-nav{justify-content:flex-start}}
 @media (prefers-reduced-motion:reduce){.hand,#handSec{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -407,7 +410,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 
 <div id="app">
   <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><span id="sync">подключаюсь к Паломе</span><span id="clock">--:--</span></div></header>
-  <nav id="jnav" aria-label="Разделы"><button class="btn" onclick="showHub('ig')">Instagram</button><button class="btn" onclick="showHub('wa')">WhatsApp</button><button class="btn" onclick="showHub('ch')">Каналы и лиды</button><button class="btn" onclick="showHub('ct')">Контент</button><button class="btn" onclick="showHub('tm')">Команда</button><button class="btn" onclick="showHub('set')">Настройки</button><span class="ver">версия от 15 ноября</span></nav>
+  <nav id="jnav" aria-label="Разделы"><button class="btn" onclick="showHub('ig')">Instagram</button><button class="btn" onclick="showHub('wa')">WhatsApp</button><button class="btn" onclick="showHub('ch')">Каналы и лиды</button><button class="btn" onclick="showHub('ct')">Контент</button><button class="btn" onclick="showHub('tm')">Команда</button><button class="btn" onclick="showHub('set')">Настройки</button><span class="ver">версия от 15 ноября, 12:50</span></nav>
 
   <div class="col" id="colL">
     <div class="pn" id="p-today"><h3><span>Сегодня</span><span id="todayN"></span></h3><div class="big" id="today">—</div><div class="sub" id="todaySub">&nbsp;</div></div>
@@ -454,7 +457,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 
 
 <div id="morning" aria-live="polite">
-  <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st"><button class="btn" onclick="closeMorning()">Закрыть</button></div></header>
+  <header><div class="brand">ACTUAL<span>Jarvis</span></div><div class="st m-nav"><button class="btn mg" onclick="closeMorning();showHub('ig')">Instagram</button><button class="btn mg" onclick="closeMorning();showHub('wa')">WhatsApp</button><button class="btn mg" onclick="closeMorning();showHub('ch')">Каналы</button><button class="btn mg" onclick="closeMorning();showHub('set')">Настройки</button><button class="btn" onclick="closeMorning()">На главный экран</button></div></header>
   <div class="m-l">
     <h2 id="mT">Пока вы спали</h2><div class="m-k" id="mK"></div>
     <div class="m-big" id="mBig">—</div>
