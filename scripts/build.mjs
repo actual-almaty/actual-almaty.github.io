@@ -186,6 +186,23 @@ try {
     rows = rows.map(r => { const v = JSON.parse(r.variants); for (const c of v.colors) c.images = (c.images || []).filter(u => !dead.has(u)); const first = v.colors.find(c => c.images.length); return { ...r, image_url: dead.has(r.image_url) ? (first ? first.images[0] : '') : r.image_url, variants: JSON.stringify(v) }; });
   }
 } catch (e) { console.log('Проверка фото пропущена:', e.message); }
+// Самообслуживание в бутике: штрихкод на бирке → товар, размер, цена (штрихкоды и так напечатаны на бирках)
+try {
+  const byId = {};
+  for (const r of rows) { const v = JSON.parse(r.variants); for (const c of v.colors) for (const z of (c.sizes || [])) byId[String(z.id)] = [r.title, c.name || '', z.s || '', z.price || r.price, (c.images && c.images[0]) || r.image_url || '', r.model_key]; }
+  const bc = {};
+  for (const p of pages) for (const it of (p.json.data || [])) {
+    if (!it || it.deleted === true || !it.name || !Array.isArray(it.barcodes)) continue;
+    const id = String(it.id), price = Math.round(Number(it.price) || 0); if (!price) continue;
+    const site = byId[id];
+    const row = site ? [site[0], site[1], site[2], price, site[4], site[5]] : [String(it.name).replace(/\\+/g, '/').replace(/\s+/g, ' ').trim(), '', '', price, '', ''];
+    for (const b of it.barcodes) if (b) bc[String(b).trim()] = row;
+  }
+  fs.mkdirSync('scan', { recursive: true });
+  const j = JSON.stringify(bc);
+  let oldj = ''; try { oldj = fs.readFileSync('scan/items.json', 'utf8'); } catch (e) {}
+  if (oldj !== j) { fs.writeFileSync('scan/items.json', j); console.log('Самообслуживание: штрихкодов', Object.keys(bc).length); }
+} catch (e) { console.error('Штрихкоды для самообслуживания не записались:', e.message); }
 const data = JSON.stringify(rows.map(r => ({ model_key: r.model_key, title: r.title, category_id: r.category_id, price: r.price, image_url: r.image_url, variants: r.variants }))).replace(/</g, '\\u003c');
 // Курсы валют Нацбанка РК (тенге за 1 единицу) для цен в рублях, долларах, евро и т.д.
 let RATES = null;
