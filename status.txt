@@ -1,4 +1,4 @@
-Запуск: 2026-11-17 08:47
+Запуск: 2026-11-17 09:52
 Ключ API: есть
 Ключ остатков: есть
 PALOMA_API_KEY: другой формат, 64 символов | PALOMA_MCP_TOKEN: ppik_, 48 символов
@@ -7,7 +7,7 @@ PALOMA_API_KEY: другой формат, 64 символов | PALOMA_MCP_TOKE
 Остатки открылись ключом другой формат, 64 символов
 Сегодняшние продажи не учтены: Не удалось выполнить отчётный запрос.
 Строк остатков: 2880 | продано сегодня позиций: 0 | поправлено с учётом чеков: 0
-Остатки сотрудников обновлены: 7971
+Остатки сотрудников без изменений
 <anonymous_script>:40
     { const ty = TYPE_MAP[tok[0]] || tok[0]; if (models[key] && models[key].type !== ty) { const base = key; key = key + '-' + ty.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-'); if (!models[key]) models[key] = { key, baseKey: base, title: ttl.trim(), code, type: ty, desc: '', colors: {}, hasImg: false, prices: [], waist: {} }; } } // один артикул у разных вещей (Термос TGS-001 и Футболка TGS-001) — разные карточки
                                                                                                                                                                                                                                                ^
