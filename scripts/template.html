@@ -354,6 +354,46 @@ footer{background:#050505;border-top:1px solid var(--line)}
 .hold svg{flex:none;width:22px;height:22px;color:var(--gold)}
 .hold span{font-size:12px;line-height:1.4;color:var(--ink2)}.hold b{display:block;font-size:14px;color:var(--ink);font-weight:700}
 
+
+/* ===== Готовые образы ===== */
+.looks{display:flex;gap:10px;overflow-x:auto;padding:0 14px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}.looks::-webkit-scrollbar{display:none}
+.look{flex:none;width:82vw;max-width:420px;scroll-snap-align:start;border-radius:22px;background:var(--card);padding:10px;border:1px solid var(--line)}
+.look .lg{display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:6px;aspect-ratio:4/5}
+.look .lg a{position:relative;border-radius:14px;overflow:hidden;background:#111}
+.look .lg a:first-child{grid-row:span 3}
+.look .lg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.look .lg a span{position:absolute;left:6px;bottom:6px;padding:3px 7px;border-radius:999px;background:rgba(10,10,10,.65);font-size:10px;font-weight:600;color:#F3EFE7}
+.look h3{margin:12px 4px 2px;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:-.02em}
+.look .ls{margin:0 4px;font-size:12px;color:var(--ink2);line-height:1.45}
+.look .lf{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 4px 4px}
+.look .lf b{font-size:18px;font-weight:800;color:var(--gold)}
+.look .lf a{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;background:var(--gold);color:#0A0A0A;font-size:13px;font-weight:700}
+/* ===== Ранний доступ ===== */
+.early{margin:44px 10px 0;padding:24px 18px;border-radius:24px;background:radial-gradient(120% 140% at 100% 0%,rgba(201,164,106,.22),rgba(201,164,106,0) 60%),#111;border:1px solid rgba(201,164,106,.35)}
+@media(min-width:900px){.early{max-width:1260px;margin:56px auto 0;padding:34px}}
+.early .kicker{color:var(--gold)}
+.early h3{margin:8px 0 8px;font-weight:900;font-size:clamp(28px,8vw,48px);line-height:.95;letter-spacing:-.03em;text-transform:uppercase}
+.early p{margin:0 0 6px;max-width:520px;font-size:14px;line-height:1.55;color:var(--ink2)}
+.early ul{margin:10px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.9;color:var(--ink)}
+.early li:before{content:"✦ ";color:var(--gold)}
+/* ===== Фото покупателей ===== */
+.ugc{margin-top:22px}
+.ugc h4{margin:0 0 10px;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:-.02em}
+.ugc .ur{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}.ugc .ur::-webkit-scrollbar{display:none}
+.ugc figure{flex:none;width:150px;margin:0}
+.ugc figure img{width:150px;aspect-ratio:3/4;object-fit:cover;border-radius:14px;background:#111}
+.ugc figcaption{margin-top:6px;font-size:12px;line-height:1.4;color:var(--ink2)}.ugc figcaption b{color:var(--ink)}
+.ugc .send{display:block;margin-top:10px;font-size:13px;color:var(--gold);font-weight:600}
+/* ===== Эфир ===== */
+.live{position:absolute;top:14px;left:14px;z-index:3;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:#D6334A;color:#fff;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+/* таблица размеров */
+.stab{width:100%;margin-top:14px;border-collapse:collapse;font-size:13px}
+.stab th,.stab td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+.stab th{color:var(--ink2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.stab tr.hit td{color:#0A0A0A;background:var(--gold);font-weight:700}
+.fitp{display:flex;gap:6px;margin:4px 0 12px}.fitp button{flex:1;height:42px;border-radius:12px;border:1.5px solid var(--line);background:none;font-size:13px;font-weight:600;cursor:pointer}.fitp button.on{border-color:var(--gold);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -454,6 +494,35 @@ const PRODUCTS = DATA.map(r => { let v = {}; try { v = JSON.parse(r.variants || 
 if (SALE_ON) PRODUCTS.forEach(p => { p.old = p.price; p.price = saleP(p.price); p.colors.forEach(c => (c.sizes||[]).forEach(z => { if (z.price) { z.old = z.price; z.price = saleP(z.price); } })); });
 PRODUCTS.forEach(p => { p.pics = (p.colors.find(c => c.images && c.images.length) || {}).images || []; p.stock = p.colors.reduce((n,c)=>n+c.sizes.reduce((m,s)=>m+(s.qty>0?s.qty:0),0),0); });
 const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b) => PRODUCTS.filter(p=>p.type===b).length - PRODUCTS.filter(p=>p.type===a).length);
+/* ===== Эфир в Instagram: on:true — на сайте появится красная кнопка «Эфир» ===== */
+const LIVE = { on: false, url: "https://instagram.com/actual.almaty", text: "Эфир · новинки" };
+/* ===== Готовые образы: [модель, цвет] — карточка появляется, если в наличии хотя бы 3 вещи ===== */
+const LOOKS = [
+  { t: "Зимний город", s: "Тёплый биопух, водолазка и челси на меху — для морозного Алматы.", items: [["ms-25555","Тёмно-синий"],["mt-35125","Серый"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] },
+  { t: "Классика в пальто", s: "Строгий силуэт: пальто, водолазка, брюки и чёрные кожаные челси.", items: [["mt-11025","Серый"],["mt-35125","Тёмно-синий"],["mt-57726","Чёрный"],["ky001-327","Чёрный"]] },
+  { t: "Тёплый casual", s: "Кофейные оттенки: кардиган, рубашка, чинос и коричневые челси.", items: [["mss-28096","Кофейный"],["m-1081","Белый"],["mss-29900","Кофейный"],["plt2854-2b","Коричневый"]] },
+  { t: "Каждый день", s: "Куртка с орнаментом, базовая кофта, джинсы и ботинки.", items: [["mt-25626","Чёрный"],["m-161-1","Чёрный"],["mt-80026","Джинсовый"],["sdy001-699","Тёмно-синий"]] }
+];
+function lookItems(L){ return L.items.map(([k, cn]) => { const p = PRODUCTS.find(x => x.key === k); if (!p || p.stock <= 0) return null; const c = p.colors.find(x => (x.name||"").toLowerCase() === cn.toLowerCase()) || p.colors.find(x => x.images && x.images.length) || p.colors[0]; const img = (c.images && c.images[0]) || p.pics[0]; if (!img) return null; const pr = (c.sizes.find(z => z.qty > 0) || c.sizes[0] || {}).price || p.price; return { p, c, img, pr }; }).filter(Boolean); }
+function looksHTML(){
+  const ls = LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length >= 3);
+  if (!ls.length) return "";
+  return `<section class="lk"><div class="sh"><h2>Готовые <em>образы</em></h2><small>${ls.length} образа</small></div><div class="looks">${ls.map(({L, it}) => { const sum = it.reduce((n, x) => n + x.pr, 0);
+    const msg = `Здравствуйте! Хочу заказать образ «${L.t}» с сайта:\n` + it.map((x, i) => `${i+1}) ${x.p.title}, цвет ${x.c.name||"—"} — ${fmtT(x.pr)}`).join("\n") + `\nИтого: ${fmtT(sum)}\nРазмеры: подскажите / мой рост и вес: `;
+    return `<div class="look"><div class="lg">${it.map(x => `<a href="#p=${encodeURIComponent(x.p.key)}"><img loading="lazy" src="${esc(x.img)}" alt="${esc(x.p.title)}" onerror="this.remove()"><span>${esc(x.p.type||"")}</span></a>`).join("")}</div><h3>${esc(L.t)}</h3><p class="ls">${esc(L.s)}</p><div class="lf"><b>${fmt(sum)}</b><a target="_blank" rel="noopener" data-look="${esc(L.t)}" href="${wa(msg)}">Заказать образ</a></div></div>`; }).join("")}</div></section>`;
+}
+function earlyHTML(){
+  return `<div class="early"><div class="kicker">Клуб ACTUAL</div><h3>Ранний доступ<br>к новинкам</h3><p>Новые поступления и коллекция The Great Steppe — сначала клиентам из списка, на день раньше всех.</p><ul><li>Фото новинок до публикации</li><li>Бронь размера до выкладки в бутике</li><li>Приглашения на эфиры и закрытые показы</li></ul><a class="cta gold" id="earlyGo" target="_blank" rel="noopener" href="${wa("Здравствуйте! Хочу ранний доступ к новинкам ACTUAL. Добавьте меня в список, пожалуйста.")}">Вступить в WhatsApp</a></div>`;
+}
+/* ===== Фото покупателей: файл /p/reviews.json — [{ "key": "mt-25626", "img": "/p/reviews/1.jpg", "name": "Ерлан", "h": 180, "w": 78, "size": "L", "text": "Сидит отлично" }] ===== */
+let REVIEWS = [];
+fetch("/p/reviews.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : []).then(j => { REVIEWS = Array.isArray(j) ? j : []; if (REVIEWS.length && /^#p=/.test(location.hash)) { const el = document.getElementById("ugc"); if (el) el.outerHTML = ugcHTML(decodeURIComponent(location.hash.slice(3))); } }).catch(() => {});
+function ugcHTML(key){
+  const r = REVIEWS.filter(x => x.key === key && x.img);
+  const send = `<a class="send" target="_blank" rel="noopener" href="${wa("Здравствуйте! Купил у вас вещь, отправляю фото в образе для сайта. Рост/вес/размер: ")}">Купили у нас? Пришлите фото в образе →</a>`;
+  return `<div class="ugc" id="ugc">${r.length?`<h4>Фото покупателей</h4><div class="ur">${r.map(x => `<figure><img loading="lazy" src="${esc(x.img)}" alt=""><figcaption><b>${esc(x.name||"Покупатель")}</b>${x.h?` · ${+x.h} см`:""}${x.w?`, ${+x.w} кг`:""}${x.size?` · взял ${esc(x.size)}`:""}${x.text?`<br>${esc(x.text)}`:""}</figcaption></figure>`).join("")}</div>`:""}${send}</div>`;
+}
+
 let state = { type: "", q: "", color: 0, size: null };
 let heroTimer = null, io = null;
 
@@ -525,15 +594,17 @@ function list(){
   const shopImg = "/p/brand/store-entrance.jpg";
   $("#main").innerHTML = `
   ${SALE_ON?`<a class="salebar" href="#cat" onclick="event.preventDefault();document.getElementById('cat').scrollIntoView({behavior:'smooth'})"><b>11.11</b><span>${SALE_EXT?"По просьбе клиентов продлили на 1 день · ":"Всемирный день шопинга · "}−${SALE.pct}% на всё · только сегодня</span><i id="saleCd"></i></a>`:""}
-  ${SALE_ON ? `<div class="hero hsale" id="hero"><img class="bgb" src="/p/sale/1111.jpg" alt=""><img class="fg" src="/p/sale/1111.jpg" alt="11.11 — Всемирный день шопинга в ACTUAL"><div class="cap"><button class="cta gold" id="toCat">−${SALE.pct}% на всё · в каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>` : `<div class="hero" id="hero">${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}">${h.vid?`<video src="${esc(h.vid)}" poster="${esc((h.p.colors.find(c => c.videos) || h.p.colors[0]).images[0] || "")}" muted loop playsinline autoplay preload="auto"></video>`:`<img src="${esc(h.src)}" alt="${esc(h.p.title)}">`}</a>`).join("")}
+  ${SALE_ON ? `<div class="hero hsale" id="hero"><img class="bgb" src="/p/sale/1111.jpg" alt=""><img class="fg" src="/p/sale/1111.jpg" alt="11.11 — Всемирный день шопинга в ACTUAL"><div class="cap"><button class="cta gold" id="toCat">−${SALE.pct}% на всё · в каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>` : `<div class="hero" id="hero">${LIVE.on?`<a class="live" target="_blank" rel="noopener" href="${esc(LIVE.url)}"><i></i>${esc(LIVE.text)}</a>`:""}${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}">${h.vid?`<video src="${esc(h.vid)}" poster="${esc((h.p.colors.find(c => c.videos) || h.p.colors[0]).images[0] || "")}" muted loop playsinline autoplay preload="auto"></video>`:`<img src="${esc(h.src)}" alt="${esc(h.p.title)}">`}</a>`).join("")}
     <div class="cap">${featVid?`<div class="kicker">Снова в наличии</div><h1>Орнамент<br>от капли<br>воды</h1><p>Куртка ${esc(FEAT.title.replace(/^Куртка\s*/,""))}: под дождём на ней проявляется наш орнамент. ${fmt(FEAT.price)}</p><a class="cta" href="#p=${encodeURIComponent(FEAT.key)}">Смотреть куртку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a> <button class="cta" id="toCat" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(8px)">Каталог</button>`:`<div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br>style</h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}</div>
     <div class="hdots">${heroes.length<2?"":heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`}
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция<b>●</b></span><span>Доставка по Алматы в день заказа<b>●</b></span><span>Примерка в Riviera Park<b>●</b></span><span>Казпочта и СДЭК по Казахстану<b>●</b></span>`).join("")}</div></div>
   <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
+  ${looksHTML()}
   ${gsHTML(false)}
   <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
     <div id="grid">${gridHTML()}</div></section>
+  ${earlyHTML()}
   <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
   <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
   bindList(); startHero(); observe(); count();
@@ -621,6 +692,7 @@ function product(p){
       <a class="hold" id="hold" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg><span><b>Отложить и примерить в бутике</b>Держим размер 24 часа · Riviera Park</span></a>
       ${(() => { const d = duoFor(p); if (!d.length) return ""; const top = TOPS.test(p.type); return `<div class="duo"><h4>Соберите двойку</h4><div class="sub">${top?"К этому верху подойдут штаны":"К этим штанам подойдёт верх"} — продаются отдельно, можно заказать вместе.</div><div class="opts">${d.map((x,i)=>`<button class="opt ${i?"":"on"}" data-k="${esc(x.key)}"><img loading="lazy" src="${esc(x.pics[0]||x.img)}" alt=""><span>${esc(x.title)}</span><b>${fmt(x.price)}</b></button>`).join("")}</div><div class="sum"><span>Комплект</span><b id="duoSum">${fmt(price + d[0].price)}</b></div><a class="btn" id="duoGo" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать двойку</a></div>`; })()}
       ${p.desc?`<div class="desc">${esc(p.desc)}</div>`:""}
+      ${ugcHTML(p.key)}
       <div class="shop">Примерка и покупка в бутике: ТРЦ Riviera Park, 1 этаж, 10:00–22:00.<br>Доставка по Алматы в день заказа, по Казахстану — Казпочта и СДЭК.</div>
     </div>
   </div>
@@ -644,24 +716,37 @@ function product(p){
 function openSheet(html){ $("#sheet").innerHTML = `<button class="close" aria-label="Закрыть" onclick="closeSheet()">×</button>` + html; $("#veil").classList.remove("hidden"); }
 function closeSheet(){ $("#veil").classList.add("hidden"); }
 $("#veil").addEventListener("click", e => { if (e.target.id === "veil") closeSheet(); });
+addEventListener("hashchange", () => { if (!$("#veil").classList.contains("hidden")) closeSheet(); });
 
-function suggest(h, w){
+/* Подбор размера. Верх: по весу (рост поправляет), азиатский стандарт. Низ: размер по талии (29–38). Ориентир: модель 175 см / 70 кг носит M–L. */
+const TOP_TAB = [["M","48","165–176","до 74"],["L","50","170–182","75–85"],["XL","52","175–186","86–95"],["XXL","54","178–190","96–106"],["3XL","56","180–192","107–118"]];
+const PANT_TAB = [["29","44–46","до 62"],["30","46","63–67"],["31","48","68–72"],["32","48","73–77"],["33","50","78–82"],["34","50–52","83–88"],["36","52","89–96"],["38","54","97–105"]];
+function suggest(h, w, pants, loose){
   if (!w) return null;
-  if (w < 74) return { main: "M", text: "Вам подойдёт <b>M</b>." };
-  if (w <= 76) return { main: "M", text: "Вы на границе: <b>M</b> — по фигуре, <b>L</b> — свободнее. Лучше примерить оба в бутике или напишите нам." };
-  if (w <= 85) return { main: "L", text: "Вам подойдёт <b>L</b>." };
-  return { main: "XL", text: "Скорее <b>XL</b>, но лучше уточнить у консультанта в WhatsApp — посадка зависит от модели." };
+  if (pants){ const lim = [62,67,72,77,82,88,96,105], sz = ["29","30","31","32","33","34","36","38"]; let i = lim.findIndex(x => w <= x); if (i < 0) i = sz.length - 1; if (h && h >= 188 && i < sz.length - 1 && w > lim[i] - 2) i++; if (loose && i < sz.length - 1) i++; return { main: sz[i], alt: sz[i+1], text: `Вам подойдёт <b>${sz[i]}</b>${loose?" (свободнее)":""}.` + (w > lim[i] - 2 && sz[i+1] ? ` Вы на границе — если любите посвободнее, берите <b>${sz[i+1]}</b>.` : "") }; }
+  const lim = [74,85,95,106,118], sz = ["M","L","XL","XXL","3XL"]; let i = lim.findIndex(x => w <= x); if (i < 0) i = sz.length - 1;
+  if (h && h >= 186 && i < sz.length - 1) i++;
+  const edge = w > lim[i] - 2 && i < sz.length - 1;
+  if (loose && i < sz.length - 1) i++;
+  return { main: sz[i], text: `Вам подойдёт <b>${sz[i]}</b>${loose?" — свободная посадка":" — по фигуре"}.` + (edge && !loose ? ` Вы на границе: <b>${sz[i+1]}</b> сядет свободнее.` : "") + (i === sz.length - 1 ? " Уточните у консультанта — посадка зависит от модели." : "") };
 }
 function fitSheet(p, c){
-  openSheet(`<h2>Подбор размера</h2><div class="sub">Размеры по азиатскому стандарту, они меньше европейских. Ориентир: модель 175 см / 70 кг носит M или L.</div>
+  const pants = c.sizes.some(s => /^\d{2}(-\d{2})?$/.test(s.s));
+  let loose = false;
+  openSheet(`<h2>Подбор размера</h2><div class="sub">${pants?"Размер брюк — по талии в дюймах (W).":"Размеры по азиатскому стандарту — они меньше европейских."} Ориентир: модель 175 см / 70 кг носит M или L.</div>
   <div class="row"><label class="fld"><span>Рост, см</span><input id="fh" inputmode="numeric" placeholder="175"></label><label class="fld"><span>Вес, кг</span><input id="fw" inputmode="numeric" placeholder="72"></label></div>
-  <button class="btn" id="fgo" style="width:100%">Подобрать</button><div id="fres"></div>`);
+  <div class="fitp"><button class="on" data-l="0">По фигуре</button><button data-l="1">Свободнее</button></div>
+  <button class="btn" id="fgo" style="width:100%">Подобрать</button><div id="fres"></div>
+  <table class="stab" id="stab"><tr>${pants?"<th>Размер (W)</th><th>RU</th><th>Вес, кг</th>":"<th>Размер</th><th>RU</th><th>Рост, см</th><th>Вес, кг</th>"}</tr>${(pants?PANT_TAB:TOP_TAB).map(r => `<tr data-s="${r[0]}">${r.map(x => `<td>${x}</td>`).join("")}</tr>`).join("")}</table>`);
+  document.querySelectorAll(".fitp button").forEach(b => b.onclick = () => { loose = b.dataset.l === "1"; document.querySelectorAll(".fitp button").forEach(x => x.classList.toggle("on", x === b)); if ($("#fw").value) $("#fgo").click(); });
   $("#fgo").onclick = () => {
-    const r = suggest(+$("#fh").value, +$("#fw").value);
+    const r = suggest(+$("#fh").value, +$("#fw").value, pants, loose);
     if (!r){ $("#fres").innerHTML = `<div class="err">Укажите вес.</div>`; return; }
-    const has = c.sizes.find(s => s.s === r.main && s.qty > 0);
-    $("#fres").innerHTML = `<div class="res">${r.text}${has?"":`<br><small>Размера ${r.main} в этом цвете сейчас нет — напишите нам, подберём альтернативу.</small>`}</div>${has?`<button class="btn ghost" id="fpick" style="width:100%">Выбрать ${r.main}</button>`:""}`;
-    if (has) $("#fpick").onclick = () => { state.size = r.main; closeSheet(); product(p); };
+    document.querySelectorAll("#stab tr[data-s]").forEach(tr => tr.classList.toggle("hit", tr.dataset.s === r.main));
+    const has = c.sizes.find(s => (s.s === r.main || s.s.split("-")[0] === r.main) && s.qty > 0);
+    $("#fres").innerHTML = `<div class="res">${r.text}${has?"":`<br><small>Размера ${r.main} в этом цвете сейчас нет — напишите нам, подберём альтернативу.</small>`}</div>${has?`<button class="btn ghost" id="fpick" style="width:100%;margin-top:10px">Выбрать ${has.s}</button>`:""}`;
+    track({ t: "fit", k: p.key, z: r.main });
+    if (has) $("#fpick").onclick = () => { state.size = has.s; closeSheet(); product(p); };
   };
 }
 
