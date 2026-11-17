@@ -498,12 +498,12 @@ const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b)
 const LIVE = { on: false, url: "https://instagram.com/actual.almaty", text: "Эфир · новинки" };
 /* ===== Готовые образы: [модель, цвет] — карточка появляется, если в наличии хотя бы 3 вещи ===== */
 const LOOKS = [
-  { t: "Зимний город", s: "Тёплый биопух, водолазка и челси на меху — для морозного Алматы.", items: [["ms-25555","Тёмно-синий"],["mt-35125","Серый"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] },
+  { t: "Зимний город", s: "Тёплый биопух, водолазка и челси на меху — для морозного Алматы.", items: [["ms-25555","Тёмно-синий"],["mt-35125","Коричневый"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] },
   { t: "Классика в пальто", s: "Строгий силуэт: пальто, водолазка, брюки и чёрные кожаные челси.", items: [["mt-11025","Серый"],["mt-35125","Тёмно-синий"],["mt-57726","Чёрный"],["ky001-327","Чёрный"]] },
   { t: "Тёплый casual", s: "Кофейные оттенки: кардиган, рубашка, чинос и коричневые челси.", items: [["mss-28096","Кофейный"],["m-1081","Белый"],["mss-29900","Кофейный"],["plt2854-2b","Коричневый"]] },
   { t: "Каждый день", s: "Куртка с орнаментом, базовая кофта, джинсы и ботинки.", items: [["mt-25626","Чёрный"],["m-161-1","Чёрный"],["mt-80026","Джинсовый"],["sdy001-699","Тёмно-синий"]] }
 ];
-function lookItems(L){ return L.items.map(([k, cn]) => { const p = PRODUCTS.find(x => x.key === k); if (!p || p.stock <= 0) return null; const c = p.colors.find(x => (x.name||"").toLowerCase() === cn.toLowerCase()) || p.colors.find(x => x.images && x.images.length) || p.colors[0]; const img = (c.images && c.images[0]) || p.pics[0]; if (!img) return null; const pr = (c.sizes.find(z => z.qty > 0) || c.sizes[0] || {}).price || p.price; return { p, c, img, pr }; }).filter(Boolean); }
+function lookItems(L){ return L.items.map(([k, cn]) => { const p = PRODUCTS.find(x => x.key === k); if (!p || p.stock <= 0) return null; let c = p.colors.find(x => (x.name||"").toLowerCase() === cn.toLowerCase() && x.images && x.images.length && x.sizes.some(z => z.qty > 0)) || p.colors.find(x => x.images && x.images.length && x.sizes.some(z => z.qty > 0)) || p.colors.find(x => x.images && x.images.length) || p.colors[0]; const img = (c.images && c.images[0]) || p.pics[0]; if (!img) return null; const pr = (c.sizes.find(z => z.qty > 0) || c.sizes[0] || {}).price || p.price; return { p, c, img, pr }; }).filter(Boolean); }
 function looksHTML(){
   const ls = LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length >= 3);
   if (!ls.length) return "";
