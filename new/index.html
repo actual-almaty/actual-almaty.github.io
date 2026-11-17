@@ -347,6 +347,13 @@ footer{background:#050505;border-top:1px solid var(--line)}
 @keyframes gskb{from{transform:scale(1.12)}to{transform:scale(1.04)}}
 .gs .gbg::after{z-index:2;background:linear-gradient(180deg,rgba(10,10,10,.70) 0%,rgba(10,10,10,.45) 40%,rgba(10,10,10,.92) 100%)}
 .gs .wind,.gs .hills{display:none}
+
+/* отложить в бутике */
+.hold{display:flex;align-items:center;gap:12px;margin-top:12px;padding:13px 16px;border-radius:16px;border:1px solid rgba(201,164,106,.45);color:var(--ink);transition:background .2s}
+.hold:hover{background:rgba(201,164,106,.08)}
+.hold svg{flex:none;width:22px;height:22px;color:var(--gold)}
+.hold span{font-size:12px;line-height:1.4;color:var(--ink2)}.hold b{display:block;font-size:14px;color:var(--ink);font-weight:700}
+
 </style>
 </head>
 <body>
@@ -611,6 +618,7 @@ function product(p){
       <div class="asia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><div>${shoes?"<b>Размеры обуви — европейская сетка (EU).</b> Сомневаетесь в размере — напишите нам, подскажем.":"<b>Азиатский стандарт — маломерит.</b> Если сомневаетесь, нажмите «Подобрать размер» или возьмите на размер больше."}</div></div>`}
       <div class="buy"><span class="bp">${fmt(price)}</span><a class="btn" id="waAsk" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать</a></div>
       <div class="hint">${state.size||one?"Откроется WhatsApp с готовым сообщением":"Выберите размер — он сразу попадёт в сообщение"}</div>
+      <a class="hold" id="hold" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg><span><b>Отложить и примерить в бутике</b>Держим размер 24 часа · Riviera Park</span></a>
       ${(() => { const d = duoFor(p); if (!d.length) return ""; const top = TOPS.test(p.type); return `<div class="duo"><h4>Соберите двойку</h4><div class="sub">${top?"К этому верху подойдут штаны":"К этим штанам подойдёт верх"} — продаются отдельно, можно заказать вместе.</div><div class="opts">${d.map((x,i)=>`<button class="opt ${i?"":"on"}" data-k="${esc(x.key)}"><img loading="lazy" src="${esc(x.pics[0]||x.img)}" alt=""><span>${esc(x.title)}</span><b>${fmt(x.price)}</b></button>`).join("")}</div><div class="sum"><span>Комплект</span><b id="duoSum">${fmt(price + d[0].price)}</b></div><a class="btn" id="duoGo" target="_blank" rel="noopener" href="#">${ICON_WA}Заказать двойку</a></div>`; })()}
       ${p.desc?`<div class="desc">${esc(p.desc)}</div>`:""}
       <div class="shop">Примерка и покупка в бутике: ТРЦ Riviera Park, 1 этаж, 10:00–22:00.<br>Доставка по Алматы в день заказа, по Казахстану — Казпочта и СДЭК.</div>
@@ -619,6 +627,7 @@ function product(p){
   ${similar.length?`<section class="more"><div class="sh"><h2>Вам может <em>понравиться</em></h2></div><div class="rail">${similar.map(x => tile(x)).join("")}</div></section>`:""}`;
   const askText = `Здравствуйте! Хочу заказать с сайта:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nЦена: ${fmtT(price)}${SALE_ON?` (со скидкой 11.11 −${SALE.pct}%)`:""}${fee()?` + ${fmtT(fee())} конвертация = ${fmtT(price + fee())}`:""}${cur!=="KZT"?` (≈ ${fmt(price)})`:""}\n${location.href}`;
   $("#waAsk").href = wa(askText);
+  { const ht = `Здравствуйте! Отложите, пожалуйста, для примерки в бутике:\n${p.title}\nЦвет: ${c.name||"—"}${one?"":`\nРазмер: ${state.size||"подскажите"}`}\nПриду сегодня/завтра.\n${location.href}`; $("#hold").href = wa(ht); $("#hold").onclick = () => { track({ t: "hold", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price }); flush(); }; }
   $("#waAsk").onclick = function(){ const o = rid(4).toUpperCase(); this.href = wa(askText + "\nКод заказа: " + o); track({ t: "wa", k: p.key, n: p.title, c: c.name || "", z: one ? "" : (state.size || ""), p: price, o }); flush(); };
   if ($("#duoGo")) { let pick = duoFor(p)[0];
     const upd = () => { $("#duoSum").textContent = fmtMany(price, pick.price); $("#duoGo").href = wa(`Здравствуйте! Хочу заказать двойку с сайта:\n1) ${p.title}, цвет ${c.name||"—"}, размер ${state.size||"подскажите"} — ${fmtT(price)}\n2) ${pick.title} — ${fmtT(pick.price)} (размер подскажите)\nИтого: ${fmtT(price + pick.price + 2*fee())}${fee()?` (вкл. ${fmtT(2*fee())} конвертация)`:""}${cur!=="KZT"?` ≈ ${fmtMany(price, pick.price)}`:""}`); };
