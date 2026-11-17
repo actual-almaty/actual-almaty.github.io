@@ -355,6 +355,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
 .h-ag div{border:1px solid var(--line);padding:12px}
 .h-ag b{display:block;font-weight:500}.h-ag span{font-size:12.5px;color:var(--smoke)}
 .h-ag .w{border-color:var(--gilt)}
+.lb{font:500 12px var(--fs);background:transparent;color:var(--ivory);border:1px solid var(--line);border-radius:999px;padding:3px 10px;cursor:pointer}.lb.y{border-color:var(--moss);color:var(--moss)}.lb:hover{border-color:var(--smoke)}
 .st-new{color:var(--gilt)}.st-bought{color:var(--moss)}.st-lost{color:var(--red)}
 @media (max-width:980px){#hub{padding:18px 20px}.h-grid{grid-template-columns:1fr 1fr}.h-cols,.h-ag{grid-template-columns:1fr 1fr}}
 @media (max-width:980px){html,body{overflow:auto}#app{grid-template-columns:1fr;height:auto;padding:18px 20px}.center{order:-1;padding:20px 0}#reactor{width:min(80vw,340px)}}
@@ -451,7 +452,7 @@ svg.ch{width:100%;height:70px;display:block;margin-top:12px}
   <div class="col" id="colR">
     <div class="pn" id="p-top"><h3><span>Лучше всего продаётся, 30 дней</span><span id="topN"></span></h3><div id="top"></div></div>
     <div class="pn" id="p-stock"><h3><span>Склад</span><span id="stN"></span></h3><div class="big" id="stock">—</div><div class="sub" id="stockSub">&nbsp;</div><div class="bar"><i id="deadBar" style="width:0;background:var(--red)"></i></div><div class="sub" id="deadSub">&nbsp;</div></div>
-    <div class="pn" id="p-cash"><h3><span>Деньги на кассах и счетах</span></h3><div class="big" id="cash">—</div><div id="cashRows" style="margin-top:10px"></div></div>
+    <div class="pn" id="p-cash"><h3><span>Поступило на кассы и счета, 7 дней</span></h3><div class="big" id="cash">—</div><div id="cashRows" style="margin-top:10px"></div></div>
   </div>
 </div>
 
@@ -686,18 +687,21 @@ function hubCh(){
   let h=`<div class="h-grid">`;
   if(d.ok){
     const m=S.d30||{},wk=S.d7||{};
+    h+=palomaBlock(d);
     h+=`<div class="h-sec"><h3>Сайт: посетители, 7 дней</h3><div class="h-num">${P(wk,"visitors")}</div><div class="sub">за 30 дней ${P(m,"visitors")}, сегодня ${P(S.today,"visitors")}</div></div>
     <div class="h-sec"><h3>Лиды с сайта (нажали «Заказать в WhatsApp»)</h3><div class="h-num">${P(wk,"leads")}</div><div class="sub">за 30 дней ${P(m,"leads")}, ждут ответа ${P(m,"waiting")}</div></div>
     <div class="h-sec"><h3>Купили после сайта, 30 дней</h3><div class="h-num">${P(m,"bought")}</div><div class="sub">${m.leads?Math.round(m.bought/m.leads*100)+"% от лидов, ":""}на ${fmt(m.revenue||0)}</div></div>
     <div class="h-sec"><h3>WhatsApp-бот: диалоги, 7 дней</h3><div class="h-num">${P(w.d7,"chats")}</div><div class="sub">за 30 дней ${P(w.d30,"chats")}, передано менеджеру ${P(w.d30,"handoffs")}</div></div>`;
     h+=`<div class="h-sec h-wide"><h3>Откуда приходят на сайт, 30 дней</h3><table class="h-tbl"><tr><th>Источник</th><th class="n">Люди</th><th class="n">Лиды</th><th class="n">Купили</th></tr>${(m.sources||[]).map(x=>`<tr><td>${esc2(x.k)}</td><td class="n">${x.v}</td><td class="n">${x.l}</td><td class="n">${x.b}</td></tr>`).join("")||'<tr><td colspan="4">пока нет данных</td></tr>'}</table></div>`;
-    h+=`<div class="h-sec h-wide"><h3>Последние лиды с сайта</h3><table class="h-tbl"><tr><th>Код</th><th>Товар</th><th class="n">Цена</th><th class="n">Статус</th></tr>${(S.recent||[]).map(x=>`<tr><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td class="n">${x.p?fmt(x.p):""}</td><td class="n st-${x.st}">${stName[x.st]||x.st}</td></tr>`).join("")||'<tr><td colspan="4">лидов пока нет</td></tr>'}</table></div>`;
+    h+=`<div class="h-sec h-wide"><h3>Последние лиды с сайта</h3><table class="h-tbl"><tr><th>Код</th><th>Товар</th><th class="n">Цена</th><th class="n">Статус</th></tr>${(S.recent||[]).map(x=>`<tr><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td class="n">${x.p?fmt(x.p):""}</td><td class="n st-${x.st}">${leadBtns(x)}</td></tr>`).join("")||'<tr><td colspan="4">лидов пока нет</td></tr>'}</table></div>`;
   }else h+=`<div class="h-sec h-full"><h3>Сайт и WhatsApp</h3><div class="sub">${d.error==="auth"?"Вход устарел: выйдите и войдите заново.":"n8n не ответил. Данные сайта и бота появятся, когда он снова будет на связи."}</div></div>`;
   // ручные данные каналов из приложения руководителя
   const CH=["Бутик","Instagram","WhatsApp","TikTok","Kaspi"];const rows=col("channels").filter(x=>String(x.date||"").slice(0,7)===mk);
   const ag=CH.map(c=>{const r=rows.filter(x=>x.channel===c);return{c,l:r.reduce((a,x)=>a+num(x.leads),0),o:r.reduce((a,x)=>a+num(x.orders),0),rv:r.reduce((a,x)=>a+num(x.revenue),0),ad:r.reduce((a,x)=>a+num(x.ads),0),n:r.length}});
-  h+=`<div class="h-sec h-full"><h3>Все каналы за ${MON[t.getMonth()]}: Kaspi, Instagram, WhatsApp, TikTok, бутик</h3><table class="h-tbl"><tr><th>Канал</th><th class="n">Обращения</th><th class="n">Продажи</th><th class="n">Конверсия</th><th class="n">Выручка</th><th class="n">Реклама</th><th class="n">Выручка на 1 ₸ рекламы</th></tr>${ag.map(x=>`<tr><td>${x.c}</td><td class="n">${x.n?x.l:"—"}</td><td class="n">${x.n?x.o:"—"}</td><td class="n">${x.l?Math.round(x.o/x.l*100)+"%":"—"}</td><td class="n">${x.n?fmt(x.rv):"—"}</td><td class="n">${x.ad?fmt(x.ad):"—"}</td><td class="n">${x.ad?(x.rv/x.ad).toFixed(1):"—"}</td></tr>`).join("")}</table>
-  <div class="h-note">Эти строки берутся из раздела «Каналы» в приложении руководителя: туда раз в неделю вносятся обращения, продажи и расходы на рекламу по каждому каналу. Kaspi в Паломе приходит общими продажами, отдельной строки у него там нет, поэтому заказы Kaspi пока тоже вносятся вручную. Если подключить токен Kaspi Магазина, буду считать их сам.</div></div>`;
+  if(rows.length){h+=`<div class="h-sec h-full"><h3>Все каналы за ${MON[t.getMonth()]}: Kaspi, Instagram, WhatsApp, TikTok, бутик</h3><table class="h-tbl"><tr><th>Канал</th><th class="n">Обращения</th><th class="n">Продажи</th><th class="n">Конверсия</th><th class="n">Выручка</th><th class="n">Реклама</th><th class="n">Выручка на 1 ₸ рекламы</th></tr>${ag.map(x=>`<tr><td>${x.c}</td><td class="n">${x.n?x.l:"—"}</td><td class="n">${x.n?x.o:"—"}</td><td class="n">${x.l?Math.round(x.o/x.l*100)+"%":"—"}</td><td class="n">${x.n?fmt(x.rv):"—"}</td><td class="n">${x.ad?fmt(x.ad):"—"}</td><td class="n">${x.ad?(x.rv/x.ad).toFixed(1):"—"}</td></tr>`).join("")}</table>
+  <div class="h-note">Эти строки берутся из раздела «Каналы» в приложении руководителя: туда раз в неделю вносятся обращения, продажи и расходы на рекламу по каждому каналу. Онлайн-заказы и оплаты Kaspi теперь считаются из Паломы автоматически, вверху этой вкладки.</div></div>`;
+  }
+  else h+=`<div class="h-sec h-full"><div class="h-note">Расходы на рекламу и обращения по Instagram, TikTok и бутику можно раз в неделю вносить в разделе «Каналы» приложения руководителя. Тогда здесь появится окупаемость рекламы по каждому каналу.</div></div>`;
   return h+`</div>`}
 function hubCt(){
   const d=HUB||{},ai=d.ai||{},M=(MOVES&&MOVES.moves||[]).slice().sort((a,b)=>b.score-a.score);
@@ -709,12 +713,14 @@ function hubCt(){
   return h}
 function hubTm(){
   const t=new Date(),k=ymd(t).slice(0,7),td=ymd(t),from=k+"-01";
-  const emps=col("employees").filter(e=>e.active!=="Не работает"&&e.name);
-  const pl=col("plans").find(x=>x.id===k)||null;const es=col("empSales");
-  const R=emps.map(e=>{const daily=es.filter(x=>x.day&&x.employeeId===e.id&&x.day>=from&&x.day<=td);let s=daily.reduce((a,x)=>a+num(x.sales),0);const last=daily.map(x=>x.day).sort().pop();if(!daily.length){const m=es.find(x=>!x.day&&x.employeeId===e.id&&x.month===k);if(m)s=num(m.sales)}
-    let pto=0,pall=0;if(pl)for(const [ds,dd] of Object.entries(pl.days||{})){const v=num(dd.emp&&dd.emp[e.id]);pall+=v;if(ds<=(last||td))pto+=v}
-    return{n:e.name,r:e.role||"",s,pto,pall,last}}).sort((a,b)=>b.s-a.s);
-  let h=`<div class="h-sec"><h3>Продавцы за ${MON[t.getMonth()]}</h3><table class="h-tbl"><tr><th>Сотрудник</th><th>Должность</th><th class="n">Продажи</th><th class="n">План на дату</th><th class="n">Выполнение</th><th class="n">План месяца</th></tr>${R.map(x=>`<tr><td>${esc2(x.n)}</td><td>${esc2(x.r)}</td><td class="n">${fmt(x.s)}</td><td class="n">${x.pto?fmt(x.pto):"—"}</td><td class="n ${x.pto?(x.s>=x.pto?"up":"dn"):""}">${x.pto?Math.round(x.s/x.pto*100)+"%":"—"}</td><td class="n">${x.pall?fmt(x.pall):"—"}</td></tr>`).join("")||'<tr><td colspan="6">сотрудников нет</td></tr>'}</table><div class="h-note">${R[0]&&R[0].last?"Продажи по сотрудникам загружены по "+new Date(R[0].last).toLocaleDateString("ru-RU",{day:"numeric",month:"long"})+".":"Продажи по сотрудникам ещё не загружены за этот месяц."} Их выгружают из Паломы в приложении руководителя.</div></div>`;
+  const emps=col("employees").filter(e=>e.name);const pl=col("plans").find(x=>x.id===k)||null;
+  const live=(HUB&&HUB.staff)||null;const dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();
+  const planOf=name=>{const e=emps.find(x=>String(x.name).trim().toLowerCase()===String(name).trim().toLowerCase());if(!e||!pl)return{pto:0,pall:0,role:e&&e.role||"",off:e&&e.active==="Не работает"};let pto=0,pall=0;for(const [ds,dd] of Object.entries(pl.days||{})){const v=num(dd.emp&&dd.emp[e.id]);pall+=v;if(ds<=td)pto+=v}return{pto,pall,role:e.role||"",off:e.active==="Не работает"}};
+  let R;
+  if(live)R=live.map(x=>{const p=planOf(x.name);return{n:x.name,r:p.role,s:x.month,today:x.today,o:x.orders,avg:x.avg,pto:p.pto,pall:p.pall,off:p.off||x.d7===0}});
+  else{const es=col("empSales");R=emps.filter(e=>e.active!=="Не работает").map(e=>{const daily=es.filter(x=>x.day&&x.employeeId===e.id&&x.day>=from&&x.day<=td);const p=planOf(e.name);return{n:e.name,r:e.role||"",s:daily.reduce((a,x)=>a+num(x.sales),0),pto:p.pto,pall:p.pall}})}
+  R.sort((a,b)=>(a.off-b.off)||(b.s-a.s));
+  let h=`<div class="h-sec"><h3>Продавцы за ${MON[t.getMonth()]}${live?", вживую из Паломы":""}</h3><table class="h-tbl"><tr><th>Сотрудник</th><th class="n">Сегодня</th><th class="n">Чеков</th><th class="n">Средний чек</th><th class="n">Продажи за месяц</th><th class="n">План на сегодня</th><th class="n">Выполнение</th><th class="n">Прогноз месяца</th></tr>${R.map(x=>`<tr${x.off?' style="opacity:.45"':""}><td>${esc2(x.n)}${x.off?" (не работает)":x.r?`<div class="sub" style="margin:0">${esc2(x.r)}</div>`:""}</td><td class="n">${x.today!=null?fmt(x.today):"—"}</td><td class="n">${x.o!=null?x.o:"—"}</td><td class="n">${x.avg?fmt(x.avg):"—"}</td><td class="n">${fmt(x.s)}</td><td class="n">${x.pto?fmt(x.pto):"—"}</td><td class="n ${x.pto?(x.s>=x.pto?"up":"dn"):""}">${x.pto?Math.round(x.s/x.pto*100)+"%":"—"}</td><td class="n">${x.off?"—":fmt(x.s/Math.max(1,t.getDate()-(t.getHours()<10?1:0))*dim)}</td></tr>`).join("")||'<tr><td colspan="8">нет данных</td></tr>'}</table><div class="h-note">${live?"Продажи считаются по чекам Паломы на продавца, без ручной выгрузки. План берётся из приложения руководителя.":"Палома не ответила, показаны выгруженные вручную продажи."}</div></div>`;
   const ai=(HUB&&HUB.ai&&HUB.ai.status)||[];const AG={strategist:"Контент-стратег",creative:"Креативный директор",copywriter:"Копирайтер",director:"Режиссёр",editor:"Монтажёр-редактор",consultant:"Консультант по сообщениям"};
   h+=`<div class="h-sec"><h3>AI-сотрудники</h3><table class="h-tbl"><tr><th>Сотрудник</th><th>Сейчас</th><th class="n">Обновлено</th></tr>${Object.keys(AG).map(k=>{const a=ai.find(x=>x.agent===k)||{};return `<tr><td>${AG[k]}</td><td>${a.status==="working"?"работает: "+esc2(a.task||""):"свободен"}</td><td class="n">${a.updated?new Date(a.updated).toLocaleString("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—"}</td></tr>`}).join("")}</table></div>`;
   return h}
@@ -765,7 +771,7 @@ function hubWa(){
   <div class="h-sec"><h3>Купили после чата, 30 дней</h3><div class="h-num">${L.bought||0}</div><div class="sub">${L.total?Math.round((L.bought||0)/L.total*100)+"% заявок, ":""}на ${fmt(L.revenue||0)}</div></div>
   <div class="h-sec"><h3>Бот-консультант</h3><div class="h-num">${(w.d30||{}).chats||0}</div><div class="sub">${plural((w.d30||{}).chats||0,"диалог","диалога","диалогов")} за 30 дней${w.botLast?", последний "+dayS(w.botLast):""}</div></div>`;
   h+=`<div class="h-sec h-full"><h3>Заявки по дням, 14 дней</h3>${bars(L.days||S.days||[],x=>x.l,"Нажатия «Заказать в WhatsApp» на сайте с кодом заказа.",x=>"заявок, купили "+(x.b||0))}</div>`;
-  h+=`<div class="h-sec h-full"><h3>Ждут ответа</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Код</th><th>Товар</th><th>Размер, цвет</th><th class="n">Цена</th></tr>${(L.waiting||[]).map(x=>`<tr><td>${ago(x.t)}</td><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td>${esc2([x.sz,x.col].filter(Boolean).join(", "))||"—"}</td><td class="n">${x.p?fmt(x.p):"—"}</td></tr>`).join("")||'<tr><td colspan="5">все заявки разобраны</td></tr>'}</table></div><div class="h-note">Код заказа клиент присылает в WhatsApp первым сообщением: по нему видно, какую вещь он смотрел. Отметить «купил» или «не купил» можно в приложении руководителя, тогда заявка уйдёт из этого списка.</div></div>`;
+  h+=`<div class="h-sec h-full"><h3>Ждут ответа</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Код</th><th>Товар</th><th>Размер, цвет</th><th class="n">Цена</th><th class="n">Итог</th></tr>${(L.waiting||[]).map(x=>`<tr><td>${ago(x.t)}</td><td>${esc2(x.c)}</td><td>${esc2(x.n)}</td><td>${esc2([x.sz,x.col].filter(Boolean).join(", "))||"—"}</td><td class="n">${x.p?fmt(x.p):"—"}</td><td class="n">${leadBtns(Object.assign({st:"new"},x))}</td></tr>`).join("")||'<tr><td colspan="6">все заявки разобраны</td></tr>'}</table></div><div class="h-note">Код заказа клиент присылает в WhatsApp первым сообщением: по нему видно, какую вещь он смотрел. Отметить «купил» или «не купил» можно в приложении руководителя, тогда заявка уйдёт из этого списка.</div></div>`;
   h+=`<div class="h-sec h-full"><h3>Что спрашивают, 30 дней</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Товар</th><th class="n">Заявок</th><th>Размеры</th><th class="n">Купили</th></tr>${(L.asked||[]).map(x=>`<tr><td>${esc2(x.n)}</td><td class="n">${x.l}</td><td>${esc2((x.sizes||[]).join(", "))||"—"}</td><td class="n">${x.b}</td></tr>`).join("")||'<tr><td colspan="4">заявок пока нет</td></tr>'}</table></div></div>`;
   if((w.handoffs||[]).length)h+=`<div class="h-sec h-full"><h3>Бот передал продавцу</h3><div class="h-scroll"><table class="h-tbl"><tr><th>Когда</th><th>Клиент</th><th>Что написал</th></tr>${w.handoffs.map(x=>`<tr><td>${ago(x.t)}</td><td>${esc2(x.name||"…"+x.phone)}</td><td>${esc2(x.sum||x.msg)}</td></tr>`).join("")}</table></div></div>`;
   const stale=!w.botLast||Date.now()-w.botLast>3*864e5;
@@ -819,7 +825,23 @@ async function showHub(tab){hubTab=tab||hubTab;$("hub").classList.add("on");$("h
 function closeHub(){$("hub").classList.remove("on")}
 document.querySelectorAll("#hubTabs .btn").forEach(b=>b.onclick=()=>{hubTab=b.dataset.t;drawHub()});
 window.showHub=showHub;window.closeHub=closeHub;
-function hubSay(){const d=HUB||{},S=d.site||{},w=d.whatsapp||{};if(!d.ok)return "Данные сайта сейчас недоступны.";const m=S.d7||{};return `За неделю на сайт зашли ${m.visitors||0} ${plural(m.visitors||0,"человек","человека","человек")}, написали в WhatsApp ${m.leads||0}, купили ${m.bought||0}. Бот провёл ${(w.d7||{}).chats||0} ${plural((w.d7||{}).chats||0,"диалог","диалога","диалогов")}. Ждут ответа ${(S.d30||{}).waiting||0} ${plural((S.d30||{}).waiting||0,"лид","лида","лидов")}.`}
+function hubSay(){const d=HUB||{},S=d.site||{},w=d.whatsapp||{};if(!d.ok)return "Данные сайта сейчас недоступны.";const m=S.d7||{};const on=d.channels&&d.channels.online;return (on?`Онлайн-заказов с начала месяца ${on.month.orders} на ${say$(on.month.net)}, за неделю ${on.d7.orders}. `:"")+`За неделю на сайт зашли ${m.visitors||0} ${plural(m.visitors||0,"человек","человека","человек")}, написали в WhatsApp ${m.leads||0}, купили ${m.bought||0}. Бот провёл ${(w.d7||{}).chats||0} ${plural((w.d7||{}).chats||0,"диалог","диалога","диалогов")}. Ждут ответа ${(S.d30||{}).waiting||0} ${plural((S.d30||{}).waiting||0,"лид","лида","лидов")}.`}
+
+/* ---------- Палома: онлайн/бутик, оплаты, продавцы; отметка лидов ---------- */
+function palomaBlock(d){
+  const c=d.channels,pay=d.payments;if(!c&&!pay)return `<div class="h-sec h-full"><h3>Продажи по каналам из Паломы</h3><div class="sub">Палома не ответила, попробую при следующем обновлении.</div></div>`;
+  let h="";
+  if(c){const on=c.online,sh=c.shop,tm=on.month.net+sh.month.net,sh7=on.d7.net+sh.d7.net;
+    h+=`<div class="h-sec"><h3>Онлайн-заказы (Kaspi Магазин, сайт), ${MON[new Date().getMonth()]}</h3><div class="h-num">${fmtS(on.month.net)}</div><div class="sub">${on.month.orders} ${plural(on.month.orders,"заказ","заказа","заказов")}, ${tm?Math.round(on.month.net/tm*100):0}% выручки · за 7 дней ${fmtS(on.d7.net)}, сегодня ${on.today.orders}</div></div>
+    <div class="h-sec"><h3>Бутик, ${MON[new Date().getMonth()]}</h3><div class="h-num">${fmtS(sh.month.net)}</div><div class="sub">${sh.month.orders} ${plural(sh.month.orders,"чек","чека","чеков")}, средний чек ${sh.month.orders?fmt(sh.month.net/sh.month.orders):"—"} · за 7 дней ${fmtS(sh.d7.net)}</div></div>`;}
+  if(pay&&pay.length){const tot2=pay.reduce((a,x)=>a+x.v,0);
+    h+=`<div class="h-sec h-wide"><h3>Чем платят, ${MON[new Date().getMonth()]}</h3><table class="h-tbl">${pay.map(x=>`<tr><td>${esc2(x.n)}</td><td class="n">${fmt(x.v)}</td><td class="n">${tot2?Math.round(x.v/tot2*100):0}%</td></tr>`).join("")}</table></div>`;}
+  return h}
+function leadBtns(x){if(!x.c)return stName[x.st]||x.st;if(x.st==="bought"||x.st==="lost")return `<span class="st-${x.st}">${stName[x.st]}</span> <button class="lb" onclick="setLead('${esc2(x.c)}','new',this)" title="Вернуть в ожидание">↺</button>`;
+  return `<button class="lb y" onclick="setLead('${esc2(x.c)}','bought',this)">Купил</button> <button class="lb" onclick="setLead('${esc2(x.c)}','lost',this)">Не купил</button>`}
+async function setLead(code,status,btn){btn.disabled=true;try{const f=new URLSearchParams();f.append("t",tok||"");f.append("act","lead");f.append("code",code);f.append("status",status);const j=await fetch(HOOK+"jarvis-data",{method:"POST",body:f}).then(r=>r.json());if(!j.ok)throw 0;
+  const upd=a=>(a||[]).forEach(x=>{if(x.c===code)x.st=status});if(HUB){upd(HUB.site&&HUB.site.recent);const L=HUB.whatsapp&&HUB.whatsapp.leads;if(L&&L.waiting&&status!=="new")L.waiting=L.waiting.filter(x=>x.c!==code)}drawHub()}catch(e){btn.disabled=false;btn.textContent="ошибка, ещё раз"}}
+window.setLead=setLead;
 /* ---------- данные Paloma ---------- */
 function post(a,p){return fetch(API,{method:"POST",body:JSON.stringify({t:tok,a:a,p:p||{}})}).then(r=>r.json())}
 async function pal(calls){const out={};for(let i=0;i<calls.length;i+=25){const b=calls.slice(i,i+25);const j=await post("paloma",{calls:b.map(c=>({tool:c.tool,args:c.args,ttl:c.ttl||0}))});
@@ -867,7 +889,7 @@ function calc(){
   if(D.stock){A.stQ=D.stock.reduce((a,x)=>a+num(x.quantity),0);A.stV=D.stock.reduce((a,x)=>a+num(x.costsum),0);A.stN=D.stock.length;
     const dead=D.stock.filter(x=>!sold[x.item_id]);A.deadQ=dead.reduce((a,x)=>a+num(x.quantity),0);A.deadV=dead.reduce((a,x)=>a+num(x.costsum),0);
     const dk={};dead.forEach(x=>{const a=art(x.item);dk[a]=dk[a]||{a,name:kind(x.item)+" "+a,q:0,v:0};dk[a].q+=num(x.quantity);dk[a].v+=num(x.costsum)});A.deadTop=Object.values(dk).sort((a,b)=>b.v-a.v)}
-  const cr=(D.cash&&D.cash.rows)||null;if(cr){A.cash=cr.reduce((a,x)=>a+num(x.closing_balance),0);A.cashRows=cr.map(x=>({n:x.name||x.account_name||x.account||"Счёт",v:num(x.closing_balance)}))}
+  const cr=(D.cash&&D.cash.rows)||null;if(cr){A.cash=cr.reduce((a,x)=>a+num(x.income),0);A.cashBal=cr.reduce((a,x)=>a+num(x.closing_balance),0);A.cashOut=cr.reduce((a,x)=>a+num(x.outcome),0);A.cashRows=cr.map(x=>({n:x.name||x.account_name||x.account||"Счёт",v:num(x.income)}))}
   return A}
 let A={};
 
@@ -904,7 +926,7 @@ function render(){
   else{$("mBar").style.width=Math.min(100,t.getDate()/new Date(t.getFullYear(),t.getMonth()+1,0).getDate()*100)+"%";$("fcSub").innerHTML=A.fc?`При этом темпе месяц закроется на <b>${fmtS(A.fc)}</b>.`:"&nbsp;"}
   $("top").innerHTML=A.top.slice(0,6).map((x,i)=>`<div class="row"><span class="i">${i+1}</span><span class="n">${x.name}</span><span class="v">${x.q} шт, ${fmtS(x.s)}</span></div>`).join("")||'<div class="sub">нет данных</div>';$("topN").textContent=A.sum30?fmtS(A.sum30):"";
   if(A.stQ!=null){countUp($("stock"),A.stQ,v=>Math.round(v).toLocaleString("ru-RU").replace(/,/g," ")+" шт");$("stN").textContent=A.stN+" позиций";$("stockSub").textContent="На "+fmt(A.stV)+" по закупке";$("deadBar").style.width=(A.stV?A.deadV/A.stV*100:0)+"%";$("deadSub").innerHTML=`${A.deadQ} шт на ${fmtS(A.deadV)} не продавались месяц, это ${A.stV?Math.round(A.deadV/A.stV*100):0}% склада`}
-  if(A.cash!=null){countUp($("cash"),A.cash,fmt);$("cashRows").innerHTML=A.cashRows.map(x=>`<div class="row plain"><span class="n">${x.n}</span><span class="v">${fmt(x.v)}</span></div>`).join("")}
+  if(A.cash!=null){countUp($("cash"),A.cash,fmt);$("cashRows").innerHTML=A.cashRows.map(x=>`<div class="row plain"><span class="n">${x.n}</span><span class="v">${fmt(x.v)}</span></div>`).join("")+(A.cashOut===0&&A.cashBal>0?`<div class="sub">Остаток по Паломе ${fmtS(A.cashBal)}, но выемки и инкассация в ней не проводятся, поэтому это не реальные деньги в кассе.</div>`:"")}
   $("sync").textContent=DOWn[t.getDay()]+", "+t.getDate()+" "+MONg[t.getMonth()]+", Палома обновлена в "+pad(D.at.getHours())+":"+pad(D.at.getMinutes());
   ticker();
 }
@@ -963,7 +985,7 @@ async function handle(q){
   if(/(топ|хит|лучше всего|что продает|что берут|популяр)/.test(s)){focus("p-top");const L=A.top.slice(0,3);await speak(`Топ за тридцать дней: `+L.map((x,i)=>`${i+1}. ${x.name.replace(/-/g," ")}, ${x.q} ${plural(x.q,"штука","штуки","штук")}`).join("; ")+`. Главная категория — ${A.cat[0]?A.cat[0][0]:""}.`);return}
   if(/(залеж|не прода|неходов|мертв|завис)/.test(s)){focus("p-stock");const L=(A.deadTop||[]).slice(0,3);await speak(`За месяц не продавалось ${A.deadQ} ${plural(A.deadQ,"вещь","вещи","вещей")} на ${say$(A.deadV)}. Больше всего денег заморожено в: `+L.map(x=>x.name.replace(/-/g," ")).join(", ")+".",`Не продавалось 30 дней: <b>${A.deadQ} шт · ${fmt(A.deadV)}</b><br>`+L.map(x=>`${x.name} — ${x.q} шт · ${fmt(x.v)}`).join("<br>"),kz("dead"));return}
   if(/(склад|остатки|товара|сколько вещей)/.test(s)){focus("p-stock");await speak(`На складе ${A.stQ} ${plural(A.stQ,"вещь","вещи","вещей")} на ${say$(A.stV)} по закупке.`);return}
-  if(/(касс|счет|деньг|банк|налич)/.test(s)){focus("p-cash");await speak(A.cash!=null?`На кассах и счетах ${say$(A.cash)}.`:"Данные по кассе сейчас недоступны.");return}
+  if(/(касс|счет|деньг|банк|налич)/.test(s)){focus("p-cash");await speak(A.cash!=null?`За неделю на кассы и счета поступило ${say$(A.cash)}.`:"Данные по кассе сейчас недоступны.");return}
   if(/вчера/.test(s)){focus("p-days");await speak(`Вчера продано на ${say$(num(A.y))}.`);return}
   if(/недел/.test(s)){focus("p-days");await speak(`За последние семь дней ${say$(A.w)}. Это ${A.w>=A.pw?"больше":"меньше"} предыдущей недели на ${prc(Math.abs(pct(A.w,A.pw)))}.`);return}
   if(/месяц/.test(s)){focus("p-month");await speak(`С начала месяца продано на ${say$(A.month)}`+(A.prevM?`, в прошлом месяце за те же дни было ${say$(A.prevM)}.`:"."));return}
