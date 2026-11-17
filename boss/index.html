@@ -788,6 +788,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden&&loc
 /* ========== базовое ========== */
 const SRV = "Paloma";
 const ICONS = {
+  kaspi:'<svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.5a2 2 0 0 1-2 1.5H7.4a2 2 0 0 1-2-1.5z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg>',
   office:'<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="3" rx="1"/><path d="M5 14v6M19 14v6"/><circle cx="12" cy="5.5" r="2.5"/><path d="M8 11c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5"/></svg>',
   home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
   sales:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
@@ -800,7 +801,7 @@ const ICONS = {
 };
 const VIEWS = [
   ["home","Главная"],["plan","План"],["sales","Продажи"],["stock","Склад"],["team","Команда"],
-  ["money","Финансы"],["channels","Каналы"],["office","Офис"]
+  ["money","Финансы"],["channels","Каналы"],["kaspi","Kaspi"],["office","Офис"]
 ];
 const TASKS_LINK = `<a href="../team/#tasks" onclick="try{sessionStorage.setItem('from_boss','1')}catch(e){}"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg><span>Задачи</span></a>`;
 const $ = s => document.querySelector(s);
@@ -1199,7 +1200,7 @@ function render(){
   if (S.view === "office" && window.officeView) {
     if (document.getElementById("office")) window.officePaint();
     else { $("#view").innerHTML = window.officeView(); window.officeMount(); }
-  } else $("#view").innerHTML = ({plan: vPlan, home: vHome, sales: vSales, stock: vStock, team: vTeam, money: vMoney, channels: vChannels, ai: vAI}[S.view] || vHome)();
+  } else $("#view").innerHTML = ({plan: vPlan, home: vHome, sales: vSales, stock: vStock, team: vTeam, money: vMoney, channels: vChannels, kaspi: vKaspi, ai: vAI}[S.view] || vHome)();
   if (keepId && document.getElementById(keepId)){ const el = document.getElementById(keepId); el.focus(); try{ el.setSelectionRange(sel, sel); }catch(e){} }
 }
 function header(title, extra){
@@ -1462,6 +1463,62 @@ function vMoney(){
   <div class="card mt"><h3>Журнал расходов</h3><div class="tbl"><table><thead><tr><th>Дата</th><th>Статья</th><th>Комментарий</th><th class="n">Сумма</th><th></th></tr></thead><tbody>
     ${ex.map(x=>`<tr><td>${fmtDate(x.date)}</td><td>${esc(x.category)}</td><td class="muted">${esc(x.note||"")}</td><td class="n">${money(x.amount)}</td><td class="n"><button class="icon-btn" data-act="form" data-col="expenses" data-id="${x.id}">Изменить</button></td></tr>`).join("") || '<tr><td colspan="5" class="empty">Внесите аренду, рекламу, налоги и другие расходы — посчитаю чистую прибыль.</td></tr>'}
   </tbody></table></div></div>`;
+}
+
+
+/* ========== Kaspi: списания по заказам из Паломы, ссылки в кабинет Kaspi ========== */
+S.kaspi = {data:null, loading:false, err:"", at:0};
+const KASPI_MC = "https://kaspi.kz/mc/#";
+async function loadKaspi(force){
+  const K = S.kaspi;
+  if (K.loading || (!force && K.data && Date.now() - K.at < 5*60e3)) return;
+  K.loading = true; K.err = ""; scheduleRender();
+  try {
+    const tk = localStorage.getItem("boss_tok") || "";
+    const r = await fetch("https://actual.app.n8n.cloud/webhook/kaspi-panel", {method:"POST", body:new URLSearchParams({t: tk})});
+    const j = await r.json().catch(()=>({ok:false}));
+    if (!j.ok) throw new Error(j.error === "auth" ? "Нужно заново войти в кабинет руководителя" : "Палома не ответила");
+    K.data = j; K.at = Date.now();
+  } catch(e){ K.err = e.message || "Не удалось загрузить"; }
+  K.loading = false; scheduleRender();
+}
+function vKaspi(){
+  const K = S.kaspi, d = K.data;
+  const links = [
+    ["Новые и упаковка", "/orders?status=KASPI_DELIVERY_CARGO_ASSEMBLY"],
+    ["Переданы на доставку", "/orders?status=KASPI_DELIVERY_TRANSMITTED"],
+    ["Архив заказов", "/orders?status=ARCHIVED"],
+    ["Товары, цены и остатки", "/products"]
+  ].map(([l,u]) => `<a class="btn ghost sm" href="${KASPI_MC}${u}" target="_blank" rel="noopener">${l} ↗</a>`).join(" ");
+  const refresh = `<button class="btn ghost sm" data-act="kaspiReload">${K.loading ? "Обновляю…" : "Обновить"}</button>`;
+  let body;
+  if (!d) body = K.err ? `<div class="err">${esc(K.err)}</div>` : `<div class="card"><div class="empty">Загружаю списания из Паломы…</div></div>`;
+  else {
+    const t = d.totals || {}, docs = d.docs || [];
+    const last = docs.find(x => x.kind === "writeoff");
+    const lastT = last ? new Date(last.dt.replace(" ","T")+"+05:00") : null;
+    const ago = lastT ? Math.round((Date.now() - lastT)/36e5) : null;
+    const wait = docs.filter(x => !x.conducted);
+    const pal = x => `https://dashboard.paloma365.com/warehouse/documents/${x.kind === "return" ? "posting" : "cancellation"}/${x.id}`;
+    body = `
+    <div class="grid k4">
+      ${kpi("Списано с остатков", (t.items||0) + " шт", (t.writeoffs||0) + " документов за 45 дней")}
+      ${kpi("Заказов Kaspi", docs.filter(x=>x.kind==="writeoff").reduce((a,x)=>a+x.orders.length,0), "списаны в Паломе")}
+      ${kpi("Возвраты на остаток", t.returns||0, "вернули товар после отмены")}
+      ${kpi("Ждут проведения", wait.length, wait.length ? "проведите в Паломе" : "всё проведено", wait.length ? "dark" : "")}
+    </div>
+    <div class="note">Автосписание: каждый час с 10:00 до 23:00 Claude проверяет принятые и переданные заказы Kaspi и списывает их в Паломе. ${lastT ? `Последнее списание — ${lastT.toLocaleString("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}${ago != null && ago > 26 ? " (давно — проверьте, что Chrome на ноутбуке открыт и вход в Kaspi и Палому не слетел)" : ""}.` : ""}</div>
+    <div class="card mt"><h3>Списания и возвраты <span class="fresh">${d.at ? "обновлено " + new Date(d.at).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}) : ""}</span></h3><div class="list">
+      ${docs.length ? docs.map(x => `<div class="row" style="align-items:flex-start"><div class="nm wrap">
+          <div><b>${x.kind === "return" ? "Возврат на остаток" : "Списание"} №${esc(x.number)}</b> · <span class="muted small">${esc(x.dt.slice(0,16))}</span>
+            ${x.conducted ? `<span class="pill green">проведён</span>` : `<span class="pill red">не проведён</span>`}</div>
+          <div class="small" style="margin-top:4px">${x.lines.map(l => esc(l.name) + (l.qty > 1 ? ` × ${l.qty}` : "")).join("<br>")}</div>
+          ${x.orders.length ? `<div class="small muted" style="margin-top:4px">Заказы: ${x.orders.map(o => `<a href="${KASPI_MC}/orders/${o}" target="_blank" rel="noopener">${o}</a>`).join(", ")}</div>` : ""}
+        </div><div class="rt"><a class="btn ghost sm" href="${pal(x)}" target="_blank" rel="noopener">Палома ↗</a></div></div>`).join("")
+        : `<div class="empty">За 45 дней списаний по Kaspi нет</div>`}
+    </div></div>`;
+  }
+  return header("Kaspi", refresh) + `<div class="card"><h3>Кабинет Kaspi</h3><div class="toolbar">${links}</div><div class="note">Цены, остатки и карточки меняются в кабинете Kaspi — кнопки открывают нужный раздел.</div></div>` + `<div class="mt">${body}</div>`;
 }
 
 function vChannels(){
@@ -1878,6 +1935,7 @@ document.addEventListener("click", async ev => {
   const el = ev.target.closest("[data-act]"); if (!el) return;
   const a = el.dataset.act;
   if (a === "period"){ S.period = el.dataset.p; setupWatches(); render(); }
+  if (a === "kaspiReload"){ loadKaspi(true); return; }
   else if (a === "form"){ ev.preventDefault(); openForm(el.dataset.col, el.dataset.id); }
   else if (a === "close") closeModal();
   else if (a === "del"){
@@ -1920,7 +1978,7 @@ document.addEventListener("submit", ev => {
 });
 $("#empFile").addEventListener("change", ev => { const f = ev.target.files && ev.target.files[0]; if (f) importEmpReport(f); });
 $("#modalBg").addEventListener("click", ev => { if (ev.target.id === "modalBg") closeModal(); });
-function route(){ const h = location.hash.replace("#",""); S.view = VIEWS.some(v=>v[0]===h) ? h : "home"; render(); window.scrollTo(0,0); }
+function route(){ const h = location.hash.replace("#",""); S.view = VIEWS.some(v=>v[0]===h) ? h : "home"; if (S.view === "kaspi") loadKaspi(); render(); window.scrollTo(0,0); }
 window.addEventListener("hashchange", route);
 
 /* ========== запуск ========== */
