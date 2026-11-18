@@ -177,7 +177,7 @@ try {
       const m = String(it.name).trim().match(/\s(XXXL|3XL|XXL|XL-2XL|XL|M-L|L|M|М|S)$/);
       if (m) { const z = m[1] === 'М' ? 'M' : m[1]; sizes[z] = (sizes[z] || 0) + n; }
     }
-    items[k] = { q, price: Math.round(Number(cards[0].price) || 0), sizes };
+    items[k] = { q, price: Number(v.price) || Math.round(Number(cards[0].price) || 0), sizes };
   }
   BOXSTOCK = { ok: !!stock, date: new Date(Date.now() + 5 * 3600e3).toISOString().slice(0, 16).replace('T', ' '), items };
   fs.mkdirSync('p/boxes', { recursive: true });
