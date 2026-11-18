@@ -163,7 +163,7 @@ try { writeTeamStock(pages, stock); } catch (e) { console.error('Остатки 
 // Подарочные боксы: отладочный список кандидатов (временно)
 try {
   const qty = {}; for (const x of (stock || [])) qty[x.json.item_id] = (qty[x.json.item_id] || 0) + Number(x.json.quantity || 0);
-  const rx = /перчат|сумк|кепк|шапк|носк|галст|MT-35125|MS-25036|DS2|MS-3008|MT-33525|MS-6254|MS-6136|MSS-2808|MF-28025|M-1081|MS-240914/i;
+  const rx = /перчат|сумк|кепк|шапк|носк|галст|loro|gucci|lacoste|tommy|polo|moncler|brunello|passo|0055|109649|10012|02503|MT-35125|MS-25036|DS2|MS-3008|MT-33525|MS-6254|MS-6136|MSS-2808|MF-28025|M-1081|MS-240914/i;
   const out = [];
   for (const p of pages) for (const it of (p.json.data || [])) { if (!it || it.deleted === true || !it.name || !rx.test(it.name)) continue; out.push([it.id, String(it.name).replace(/\s+/g,' ').trim(), Math.round(Number(it.price)||0), qty[String(it.id)] || 0]); }
   fs.mkdirSync('p/boxes', { recursive: true }); fs.writeFileSync('p/boxes/debug.json', JSON.stringify(out));
