@@ -450,6 +450,11 @@ footer{background:#050505;border-top:1px solid var(--line)}
 .gbd .tot b{font-size:30px;font-weight:900;color:var(--gold);letter-spacing:-.02em}
 .gbd .fx2{margin-top:4px;font-size:12px;color:rgba(255,255,255,.55);text-align:right}
 .st.gbs .ring{background:conic-gradient(from 200deg,var(--gold),#e8cf9f,var(--gold))}
+.bx .so{position:absolute;left:8px;bottom:8px;padding:4px 8px;border-radius:99px;background:rgba(10,10,10,.75);font-size:10px;font-weight:700;color:#fff}
+.bx.out .im img{filter:grayscale(.7) brightness(.7)}.bx.out .pr{color:rgba(255,255,255,.5)}
+.gbd .avl{margin-top:14px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:600}
+.gbd .avl.ok{background:rgba(70,160,90,.15);color:#9fe0ae}.gbd .avl.no{background:rgba(214,51,74,.15);color:#ff9aa8}.gbd .avl.q{background:rgba(179,144,98,.15);color:var(--gold)}
+.gbd li.none{opacity:.55}
 </style>
 </head>
 <body>
@@ -616,17 +621,18 @@ function gsHTML(page){
 function gsPage(){ document.body.classList.remove("pdp"); clearInterval(heroTimer); $("#main").innerHTML = gsHTML(true) + `<section><div class="sh"><h2>Весь <em>каталог</em></h2></div><div class="rail">${PRODUCTS.filter(p=>p.pics.length&&p.stock>0).slice(0,10).map(p=>tile(p)).join("")}</div></section>`; observe(); }
 
 /* ПОДАРОЧНЫЕ БОКСЫ: составы и цены из каталога бутика (этикетки + Paloma, 18.11.2026). Оформление 2 000 ₸, при сумме товаров от 45 000 ₸ — в подарок. */
+const BOXSTOCK = (() => { try { return {"ok":true,"date":"2026-11-18 21:53","items":{"hatN":{"q":6,"price":6990,"sizes":{}},"scarf":{"q":2,"price":9990,"sizes":{}},"socks":{"q":null},"jmpG":{"q":7,"price":19990,"sizes":{"M":2,"L":2,"XL":2,"XXL":1}},"poloB":{"q":4,"price":14990,"sizes":{"M":1,"L":1,"XL":2}},"glov":{"q":6,"price":8990,"sizes":{"M":2,"M-L":1,"XL-2XL":3}},"poloO":{"q":9,"price":15990,"sizes":{"M":2,"L":2,"XL":3,"XXL":2}},"capN":{"q":4,"price":8990,"sizes":{}},"capBr":{"q":4,"price":8990,"sizes":{}},"capO":{"q":4,"price":8990,"sizes":{}},"shirt":{"q":4,"price":12990,"sizes":{"M":2,"L":0,"XL":0,"XXL":2}},"bagS":{"q":10,"price":10990,"sizes":{}},"hatB":{"q":2,"price":9990,"sizes":{}},"turtle":{"q":6,"price":16990,"sizes":{"M":3,"L":1,"XL":2}},"card":{"q":8,"price":17990,"sizes":{"M":1,"L":4,"XL":2,"XXL":1}},"hatG":{"q":5,"price":6990,"sizes":{}},"poloZ":{"q":3,"price":19990,"sizes":{"M":1,"L":1,"XL":1,"XXL":0}},"bagF":{"q":1,"price":25990,"sizes":{}},"jmpZ":{"q":6,"price":20990,"sizes":{"M":0,"L":4,"XL":2}},"jkt":{"q":11,"price":49990,"sizes":{"M":3,"L":2,"XL":3,"XXL":3}},"bagT":{"q":6,"price":15990,"sizes":{}},"bagT2":{"q":2,"price":11990,"sizes":{}},"tieR":{"q":33,"price":5990,"sizes":{}},"tieG":{"q":33,"price":5990,"sizes":{}}}}; } catch (e) { return { ok: false }; } })();
 const GB_FEE = 2000, GB_FREE = 45000;
 const GB_TIERS = { B: "До 27 000 ₸", M: "Средние", P: "Премиум", O: "В офис", V: "VIP қазақ" };
 const GB_IT = {
-  hatN: ["Шапка, тёмно-синяя", "", 6990], scarf: ["Шарф, серый", "MS-240914", 9990], socks: ["Носки, 3 пары", "", 2990, "1 комплект"],
-  jmpG: ["Джемпер, серый", "MSS-28089", 19990], poloB: ["Поло на пуговицах, чёрное", "MT-33525", 14990], glov: ["Перчатки кожаные, чёрные", "MS-3008", 8990, "1 пара"],
-  poloO: ["Поло с открытым воротом, коричневое", "MS-6254", 15990], capN: ["Кепка, тёмно-синяя", "", 8990], shirt: ["Рубашка, голубая", "M-1081", 12990],
-  bagS: ["Сумка через плечо, тёмно-синяя", "", 10990], hatB: ["Шапка, чёрная", "", 9990], turtle: ["Водолазка, коричневая", "MT-35125", 16990],
-  card: ["Кардиган на молнии, коричневый", "MS-6136", 17990], hatG: ["Шапка, серая", "", 6990], poloZ: ["Поло на молнии, коричневое", "MSS-28084", 19990],
-  bagF: ["Сумка с клапаном, чёрная", "", 25990], jmpZ: ["Джемпер с молнией, фиолетовый", "MF-28025", 20990], jkt: ["Куртка, тёмно-синяя", "MS-25036", 49990],
+  hatN: ["Шапка, тёмно-синяя", "0055", 6990], scarf: ["Шарф, серый", "MS-240914", 9990], socks: ["Носки, 3 пары", "", 2990, "1 комплект"],
+  jmpG: ["Джемпер, серый", "MSS-28089", 19990], poloB: ["Поло на пуговицах, чёрное", "MT-33525", 14990], glov: ["Перчатки кожаные, чёрные", "MS-29008", 8990, "1 пара"],
+  poloO: ["Поло с открытым воротом, коричневое", "MS-6254", 15990], capN: ["Кепка, тёмно-синяя", "006", 8990], shirt: ["Рубашка, голубая", "M-1081", 12990],
+  bagS: ["Сумка через плечо, тёмно-синяя", "", 10990], hatB: ["Шапка, чёрная", "109649", 9990], turtle: ["Водолазка, коричневая", "MT-35125", 16990],
+  card: ["Кардиган на молнии, коричневый", "MS-6136", 17990], hatG: ["Шапка, серая", "10012", 6990], poloZ: ["Поло на молнии, коричневое", "MSS-28084", 19990],
+  bagF: ["Сумка с клапаном, чёрная", "02503-2", 25990], jmpZ: ["Джемпер с молнией, фиолетовый", "MF-28025", 20990], jkt: ["Куртка, тёмно-синяя", "MS-25036", 49990],
   bagT: ["Сумка через плечо, чёрная", "", 15990], bagT2: ["Сумка через плечо, тёмно-синяя", "", 11990], tieR: ["Галстук, бордово-синяя полоска", "", 5990],
-  tieG: ["Галстук, зелёный с рисунком", "", 5990], capBr: ["Кепка, коричневая", "", 8990], capO: ["Кепка, рыже-коричневая", "", 8990]
+  tieG: ["Галстук, зелёный с рисунком", "", 5990], capBr: ["Кепка, коричневая", "006", 8990], capO: ["Кепка, рыже-коричневая", "006", 8990]
 };
 const BOXES = [
   ["B01","Знак внимания","hatN scarf socks"],["B02","Серый, который согревает","jmpG socks"],["B03","Чёрный характер","poloB glov"],
@@ -641,13 +647,17 @@ const BOXES = [
   ["V01","Шоколад","card capBr glov","Самый цельный вариант в одной гамме: шоколадный кардиган, коричневая кепка и чёрные перчатки."],
   ["V02","Тёмный акцент","jmpZ capN bagF","Трикотаж с короткой молнией и светлым воротником, тёмно-синяя кепка и чёрная сумка. Контраст держится на фактурах."],
   ["V03","Тёплый выходной","poloZ capO scarf bagS"]
-].map(([code, name, its, note]) => { const items = its.split(" ").map(k => GB_IT[k]); const goods = items.reduce((n, i) => n + i[2], 0); const free = goods >= GB_FREE;
-  return { code, name, note: note || "", tier: code[0], items, goods, free, total: goods + (free ? 0 : GB_FEE), img: `/p/boxes/${code.toLowerCase()}.jpg`, sm: `/p/boxes/${code.toLowerCase()}-s.jpg` }; });
+].map(([code, name, its, note]) => {
+  const items = its.split(" ").map(k => { const d = GB_IT[k], st = (BOXSTOCK.items || {})[k]; return [d[0], d[1], st && st.price ? st.price : d[2], d[3], st ? st.q : null, st && st.sizes || {}]; });
+  const goods = items.reduce((n, i) => n + i[2], 0); const free = goods >= GB_FREE;
+  const qs = items.map(i => i[4]); const avail = !BOXSTOCK.ok || qs.some(q => q === null) ? null : Math.min(...qs);
+  return { code, name, note: note || "", tier: code[0], items, goods, free, avail, total: goods + (free ? 0 : GB_FEE), img: `/p/boxes/${code.toLowerCase()}.jpg`, sm: `/p/boxes/${code.toLowerCase()}-s.jpg` }; })
+  .sort((a, b) => (b.avail === 0 ? 0 : 1) - (a.avail === 0 ? 0 : 1));
 const GB_GIFT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S9 8 12 8zm0 0c2-4 6-4 6-1.5S15 8 12 8z"/></svg>`;
 let gbTier = "";
 const gbName = b => (b.tier === "V" ? "VIP қазақ · " : "") + b.name;
 function bxTile(b){
-  return `<a class="bx reveal" href="#b=${b.code}"><div class="im"><img loading="lazy" src="${b.sm}" alt="Подарочный бокс ${esc(gbName(b))}"><span class="cd">${b.code}</span>${b.free?`<span class="fr">Оформление в подарок</span>`:""}</div><div class="tx"><div class="tl">${esc(GB_TIERS[b.tier])}</div><div class="nm">${esc(gbName(b))}</div><div class="ct">${b.items.map(i => esc(i[0].split(",")[0])).join(" · ")}</div><div class="pr">${fmt(b.total)}</div></div></a>`;
+  return `<a class="bx reveal ${b.avail===0?"out":""}" href="#b=${b.code}"><div class="im"><img loading="lazy" src="${b.sm}" alt="Подарочный бокс ${esc(gbName(b))}"><span class="cd">${b.code}</span>${b.free?`<span class="fr">Оформление в подарок</span>`:""}${b.avail===0?`<span class="so">Нет в наличии</span>`:""}</div><div class="tx"><div class="tl">${esc(GB_TIERS[b.tier])}</div><div class="nm">${esc(gbName(b))}</div><div class="ct">${b.items.map(i => esc(i[0].split(",")[0])).join(" · ")}</div><div class="pr">${fmt(b.total)}</div></div></a>`;
 }
 const gbHead = page => `<div class="lights"></div><div class="gin"><div class="tri"><span>Сыйлық</span><i>·</i><span>Syılyq</span><i>·</i><span>Подарок</span></div>
   <h2>Подарочные<span>боксы</span></h2>
@@ -655,7 +665,7 @@ const gbHead = page => `<div class="lights"></div><div class="gin"><div class="t
   <div class="wrap">${GB_GIFT}<div>Оформление <b>${fmtT(GB_FEE)}</b>: бокс, тишью, упаковка и пакет. При сумме товаров от <b>${fmtT(GB_FREE)}</b> оформление в подарок. В цене на фото оно уже учтено.</div></div>`;
 function gbHTML(page){
   const list = BOXES.filter(b => !page || !gbTier || b.tier === gbTier);
-  const pick = page ? list : ["P01","M01","B03","V03","O01","P02","M02","B01"].map(c => BOXES.find(b => b.code === c));
+  const pick = page ? list : ["P","M","B","V","O"].flatMap(t => BOXES.filter(b => b.tier === t && b.avail !== 0).slice(0, 2)).slice(0, 8);
   return `<section class="gb ${page?"page":""}" id="gb">${gbHead(page)}
     ${page?`<div class="tabs" id="gbTabs"><button data-t="" class="${gbTier?"":"on"}">Все ${BOXES.length}</button>${Object.entries(GB_TIERS).map(([k,v]) => `<button data-t="${k}" class="${gbTier===k?"on":""}">${esc(v)}</button>`).join("")}</div><div class="bgrid">${list.map(bxTile).join("")}</div>`:`<div class="rail">${pick.map(bxTile).join("")}</div>`}
     <div class="btns">${page?`<a class="cta" href="#">← В каталог</a>`:`<a class="cta" href="#c=gift-boxes">Все ${BOXES.length} ${plural(BOXES.length,"бокс","бокса","боксов")}</a>`}<a class="cta ln" target="_blank" rel="noopener" href="${wa("Здравствуйте! Хочу собрать свой подарочный бокс ACTUAL. Бюджет: \nДля кого: \nРазмер: ")}">Собрать свой бокс</a></div>
@@ -674,10 +684,11 @@ function gbBox(b){
       <h1 class="nm">${esc(gbName(b))}</h1>
       ${b.note?`<p class="note">${esc(b.note)}</p>`:""}
       <div class="card">Для тебя · Саған · Sağan</div>
-      <ul>${b.items.map(i => `<li><div>${esc(i[0])}<small>${i[1]?"Артикул "+esc(i[1])+" · ":""}${esc(i[3]||"1 шт.")}</small></div><b>${fmt(i[2])}</b></li>`).join("")}</ul>
+      <div class="avl ${b.avail===0?"no":b.avail===null?"q":"ok"}">${b.avail===0?"Сейчас нет в наличии: одной из вещей нет на складе. Напишите — предложим замену.":b.avail===null?"Наличие одной из вещей уточним в WhatsApp.":`В наличии в бутике${b.avail<=2?` · осталось ${b.avail} ${plural(b.avail,"комплект","комплекта","комплектов")}`:""}`}</div>
+      <ul>${b.items.map(i => { const sz = Object.entries(i[5]).filter(([,n]) => n > 0).map(([z]) => z); return `<li class="${i[4]===0?"none":""}"><div>${esc(i[0])}<small>${i[1]?"Арт. "+esc(i[1])+" · ":""}${esc(i[3]||"1 шт.")} · ${i[4]===null?"наличие уточним":i[4]===0?"нет в наличии":sz.length?"размеры: "+sz.join(", "):"в наличии"}</small></div><b>${fmt(i[2])}</b></li>`; }).join("")}</ul>
       <div class="sum"><div><span>Товары</span><span>${fmt(b.goods)}</span></div><div class="${b.free?"free":""}"><span>Оформление: бокс, тишью, упаковка, пакет</span><span>${b.free?"в подарок":fmt(GB_FEE)}</span></div></div>
       <div class="tot"><span>Итого</span><b>${fmt(b.total)}</b></div>${cur!=="KZT"?`<div class="fx2">Оплата в тенге: ${fmtT(b.total)}</div>`:""}
-      <div class="btns"><a class="cta" target="_blank" rel="noopener" data-box="${b.code}" href="${wa(msg)}">${ICON_WA} Заказать бокс</a><a class="cta ln" target="_blank" rel="noopener" href="${wa(`Здравствуйте! Хочу бокс ${b.code}, но поменять вещь или размер: `)}">Изменить состав</a></div>
+      <div class="btns"><a class="cta" target="_blank" rel="noopener" data-box="${b.code}" href="${wa(b.avail===0?`Здравствуйте! Бокс ${b.code} «${gbName(b)}» сейчас нет в наличии. Подберите, пожалуйста, похожий.`:msg)}">${ICON_WA} ${b.avail===0?"Подобрать похожий":"Заказать бокс"}</a><a class="cta ln" target="_blank" rel="noopener" href="${wa(`Здравствуйте! Хочу бокс ${b.code}, но поменять вещь или размер: `)}">Изменить состав</a></div>
       <p class="note" style="font-size:12px;color:rgba(255,255,255,.55)">Размер подберём в WhatsApp. Можно забрать в Riviera Park или заказать доставку по Алматы.</p>
     </div></div>
     ${more.length?`<div class="sh" style="padding:0;margin-top:28px"><h2 style="color:#fff">Ещё <em>боксы</em></h2></div><div class="rail">${more.map(bxTile).join("")}</div>`:""}
