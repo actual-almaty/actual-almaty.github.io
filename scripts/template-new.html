@@ -394,6 +394,62 @@ footer{background:#050505;border-top:1px solid var(--line)}
 .stab th{color:var(--ink2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .stab tr.hit td{color:#0A0A0A;background:var(--gold);font-weight:700}
 .fitp{display:flex;gap:6px;margin:4px 0 12px}.fitp button{flex:1;height:42px;border-radius:12px;border:1.5px solid var(--line);background:none;font-size:13px;font-weight:600;cursor:pointer}.fitp button.on{border-color:var(--gold);color:var(--gold)}
+
+/* Подарочные боксы */
+.gb{position:relative;margin:44px 10px 0;border-radius:24px;overflow:hidden;background:radial-gradient(120% 70% at 85% 0%,#2a2118 0%,#0D0C0B 55%,#0A0A0A 100%);color:#fff;isolation:isolate}
+@media(min-width:900px){.gb{max-width:1260px;margin:56px auto 0}}
+.gb.page{margin:64px 10px 0;min-height:calc(100svh - 80px)}
+.gb .lights{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(3px 3px at 12% 18%,rgba(255,214,150,.9),transparent 60%),radial-gradient(2px 2px at 28% 8%,rgba(255,214,150,.7),transparent 60%),radial-gradient(3px 3px at 64% 14%,rgba(255,214,150,.8),transparent 60%),radial-gradient(2px 2px at 82% 26%,rgba(255,214,150,.7),transparent 60%),radial-gradient(2px 2px at 46% 22%,rgba(255,214,150,.6),transparent 60%),radial-gradient(3px 3px at 92% 9%,rgba(255,214,150,.8),transparent 60%);animation:twk 3.2s ease-in-out infinite alternate}
+@keyframes twk{from{opacity:.45}to{opacity:1}}
+.gb .gin{position:relative;padding:30px 18px 26px}
+.gb .tri{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.gb .tri i{font-style:normal;color:rgba(179,144,98,.5)}
+.gb h2{margin:12px 0 0;font-weight:900;font-size:clamp(40px,12vw,104px);line-height:.88;letter-spacing:-.045em;text-transform:uppercase}
+.gb h2 span{display:block;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
+.gb .lead{max-width:560px;margin:16px 0 0;font-size:14px;line-height:1.6;color:rgba(255,255,255,.82)}
+.gb .wrap{display:flex;gap:12px;align-items:center;margin-top:16px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(179,144,98,.3);font-size:13px;line-height:1.45;color:rgba(255,255,255,.85)}
+.gb .wrap b{color:var(--gold)}
+.gb .wrap svg{flex:none;width:26px;height:26px;color:var(--gold)}
+.gb .tabs{display:flex;gap:6px;overflow-x:auto;margin:18px -18px 0;padding:0 18px 2px;scrollbar-width:none}.gb .tabs::-webkit-scrollbar{display:none}
+.gb .tabs button{flex:none;padding:9px 14px;border-radius:99px;border:1px solid rgba(179,144,98,.4);background:none;color:#fff;font:600 13px var(--f);cursor:pointer;white-space:nowrap}
+.gb .tabs button.on{background:var(--gold);border-color:var(--gold);color:#0A0A0A}
+.gb .rail{display:flex;gap:10px;overflow-x:auto;margin:16px -18px 0;padding:0 18px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}.gb .rail::-webkit-scrollbar{display:none}
+.gb .rail .bx{flex:0 0 68%;max-width:300px;scroll-snap-align:start}
+.gb .bgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+@media(min-width:700px){.gb .bgrid{grid-template-columns:repeat(3,1fr)}}@media(min-width:1050px){.gb .bgrid{grid-template-columns:repeat(4,1fr)}}
+.bx{display:block;color:inherit;text-decoration:none;border-radius:18px;overflow:hidden;background:#141210;border:1px solid rgba(179,144,98,.18);transition:transform .35s var(--ease),border-color .35s}
+.bx:active{transform:scale(.98)}@media(hover:hover){.bx:hover{border-color:rgba(179,144,98,.6);transform:translateY(-3px)}}
+.bx .im{position:relative;aspect-ratio:4/5;overflow:hidden;background:#1a1714}
+.bx .im img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+@media(hover:hover){.bx:hover .im img{transform:scale(1.04)}}
+.bx .cd{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:99px;background:rgba(10,10,10,.65);backdrop-filter:blur(6px);font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--gold)}
+.bx .fr{position:absolute;right:8px;top:8px;padding:4px 8px;border-radius:99px;background:var(--gold);font-size:10px;font-weight:800;letter-spacing:.04em;color:#0A0A0A}
+.bx .tx{padding:10px 12px 12px}
+.bx .tl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(179,144,98,.85);font-weight:600}
+.bx .nm{margin-top:4px;font-size:15px;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.bx .ct{margin-top:4px;font-size:12px;line-height:1.4;color:rgba(255,255,255,.6);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bx .pr{margin-top:8px;font-size:16px;font-weight:800;color:var(--gold)}
+.gb .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.gb .cta{background:var(--gold);color:#0A0A0A;margin-top:0}
+.gb .cta.ln{background:none;color:#fff;border:1px solid rgba(255,255,255,.35)}
+.gbd{display:grid;gap:18px;margin-top:18px}
+@media(min-width:900px){.gbd{grid-template-columns:1.05fr 1fr;align-items:start}}
+.gbd .ph{border-radius:20px;overflow:hidden;background:#1a1714}.gbd .ph img{display:block;width:100%;height:auto}
+.gbd .nm{margin:6px 0 0;font-weight:900;font-size:clamp(30px,8vw,54px);line-height:.95;letter-spacing:-.035em}
+.gbd .note{margin:12px 0 0;font-size:14px;line-height:1.6;color:rgba(255,255,255,.8)}
+.gbd .card{display:inline-flex;gap:8px;margin-top:12px;padding:8px 12px;border-radius:10px;background:#efe6d6;color:#2a2118;font:italic 600 14px Georgia,serif}
+.gbd ul{list-style:none;margin:16px 0 0;padding:0;border-top:1px solid rgba(179,144,98,.25)}
+.gbd li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(179,144,98,.18);font-size:14px;line-height:1.35}
+.gbd li small{display:block;margin-top:2px;font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.5)}
+.gbd li b{flex:none;font-weight:700;color:#fff}
+.gbd .sum{margin-top:12px;font-size:13px;line-height:1.8;color:rgba(255,255,255,.75)}
+.gbd .sum div{display:flex;justify-content:space-between}
+.gbd .sum .free{color:var(--gold);font-weight:700}
+.gbd .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:1px solid rgba(179,144,98,.4)}
+.gbd .tot span{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.gbd .tot b{font-size:30px;font-weight:900;color:var(--gold);letter-spacing:-.02em}
+.gbd .fx2{margin-top:4px;font-size:12px;color:rgba(255,255,255,.55);text-align:right}
+.st.gbs .ring{background:conic-gradient(from 200deg,var(--gold),#e8cf9f,var(--gold))}
 </style>
 </head>
 <body>
@@ -558,6 +614,77 @@ function gsHTML(page){
   </div></section>`;
 }
 function gsPage(){ document.body.classList.remove("pdp"); clearInterval(heroTimer); $("#main").innerHTML = gsHTML(true) + `<section><div class="sh"><h2>Весь <em>каталог</em></h2></div><div class="rail">${PRODUCTS.filter(p=>p.pics.length&&p.stock>0).slice(0,10).map(p=>tile(p)).join("")}</div></section>`; observe(); }
+
+/* ПОДАРОЧНЫЕ БОКСЫ: составы и цены из каталога бутика (этикетки + Paloma, 18.11.2026). Оформление 2 000 ₸, при сумме товаров от 45 000 ₸ — в подарок. */
+const GB_FEE = 2000, GB_FREE = 45000;
+const GB_TIERS = { B: "До 27 000 ₸", M: "Средние", P: "Премиум", O: "В офис", V: "VIP қазақ" };
+const GB_IT = {
+  hatN: ["Шапка, тёмно-синяя", "", 6990], scarf: ["Шарф, серый", "MS-240914", 9990], socks: ["Носки, 3 пары", "", 2990, "1 комплект"],
+  jmpG: ["Джемпер, серый", "MSS-28089", 19990], poloB: ["Поло на пуговицах, чёрное", "MT-33525", 14990], glov: ["Перчатки кожаные, чёрные", "MS-3008", 8990, "1 пара"],
+  poloO: ["Поло с открытым воротом, коричневое", "MS-6254", 15990], capN: ["Кепка, тёмно-синяя", "", 8990], shirt: ["Рубашка, голубая", "M-1081", 12990],
+  bagS: ["Сумка через плечо, тёмно-синяя", "", 10990], hatB: ["Шапка, чёрная", "", 9990], turtle: ["Водолазка, коричневая", "MT-35125", 16990],
+  card: ["Кардиган на молнии, коричневый", "MS-6136", 17990], hatG: ["Шапка, серая", "", 6990], poloZ: ["Поло на молнии, коричневое", "MSS-28084", 19990],
+  bagF: ["Сумка с клапаном, чёрная", "", 25990], jmpZ: ["Джемпер с молнией, фиолетовый", "MF-28025", 20990], jkt: ["Куртка, тёмно-синяя", "MS-25036", 49990],
+  bagT: ["Сумка через плечо, чёрная", "", 15990], bagT2: ["Сумка через плечо, тёмно-синяя", "", 11990], tieR: ["Галстук, бордово-синяя полоска", "", 5990],
+  tieG: ["Галстук, зелёный с рисунком", "", 5990], capBr: ["Кепка, коричневая", "", 8990], capO: ["Кепка, рыже-коричневая", "", 8990]
+};
+const BOXES = [
+  ["B01","Знак внимания","hatN scarf socks"],["B02","Серый, который согревает","jmpG socks"],["B03","Чёрный характер","poloB glov"],
+  ["B04","Карамель и синий","poloO capN"],["B05","Городской ритм","shirt bagS"],["B06","Маленькая забота","hatB socks"],
+  ["M01","С теплом к нему","turtle hatB glov"],["M02","Зимний выходной","card scarf hatG"],["M03","Тёплый городской","poloZ capN glov"],
+  ["M04","Лёгкость в деталях","jmpG bagS socks"],["M05","Праздник каждый день","shirt poloO capN"],["M06","Всё в его стиле","poloB bagF"],
+  ["P01","Особенному человеку","jmpZ bagF glov"],["P02","Готов к зиме","jkt bagS scarf"],["P03","Продумано до деталей","card shirt bagT glov"],
+  ["P04","Тёплый маршрут","poloO capN bagT2 scarf"],["P05","Шоколадный акцент","poloZ hatB bagF"],["P06","Личный стиль","poloB scarf bagT glov"],
+  ["O01","Первый рабочий день","shirt tieR","Базовый деловой вариант: голубая рубашка и бордово-синий галстук. Галстук добавляет цвет, не споря с рубашкой."],
+  ["O02","Офисный клуб","shirt jmpG tieG","Для офиса со свободным дресс-кодом: серый джемпер, голубая рубашка и зелёный галстук с рисунком."],
+  ["O03","Деловой комплект","shirt card tieR bagT"],
+  ["V01","Шоколад","card capBr glov","Самый цельный вариант в одной гамме: шоколадный кардиган, коричневая кепка и чёрные перчатки."],
+  ["V02","Тёмный акцент","jmpZ capN bagF","Трикотаж с короткой молнией и светлым воротником, тёмно-синяя кепка и чёрная сумка. Контраст держится на фактурах."],
+  ["V03","Тёплый выходной","poloZ capO scarf bagS"]
+].map(([code, name, its, note]) => { const items = its.split(" ").map(k => GB_IT[k]); const goods = items.reduce((n, i) => n + i[2], 0); const free = goods >= GB_FREE;
+  return { code, name, note: note || "", tier: code[0], items, goods, free, total: goods + (free ? 0 : GB_FEE), img: `/p/boxes/${code.toLowerCase()}.jpg`, sm: `/p/boxes/${code.toLowerCase()}-s.jpg` }; });
+const GB_GIFT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S9 8 12 8zm0 0c2-4 6-4 6-1.5S15 8 12 8z"/></svg>`;
+let gbTier = "";
+const gbName = b => (b.tier === "V" ? "VIP қазақ · " : "") + b.name;
+function bxTile(b){
+  return `<a class="bx reveal" href="#b=${b.code}"><div class="im"><img loading="lazy" src="${b.sm}" alt="Подарочный бокс ${esc(gbName(b))}"><span class="cd">${b.code}</span>${b.free?`<span class="fr">Оформление в подарок</span>`:""}</div><div class="tx"><div class="tl">${esc(GB_TIERS[b.tier])}</div><div class="nm">${esc(gbName(b))}</div><div class="ct">${b.items.map(i => esc(i[0].split(",")[0])).join(" · ")}</div><div class="pr">${fmt(b.total)}</div></div></a>`;
+}
+const gbHead = page => `<div class="lights"></div><div class="gin"><div class="tri"><span>Сыйлық</span><i>·</i><span>Syılyq</span><i>·</i><span>Подарок</span></div>
+  <h2>Подарочные<span>боксы</span></h2>
+  <p class="lead">Мы уже собрали подарок за вас: вещи, которые сочетаются между собой, в чёрном боксе ACTUAL с тишью, лентой и открыткой «Для тебя». Останется только подобрать размер и вручить.</p>
+  <div class="wrap">${GB_GIFT}<div>Оформление <b>${fmtT(GB_FEE)}</b>: бокс, тишью, упаковка и пакет. При сумме товаров от <b>${fmtT(GB_FREE)}</b> оформление в подарок. В цене на фото оно уже учтено.</div></div>`;
+function gbHTML(page){
+  const list = BOXES.filter(b => !page || !gbTier || b.tier === gbTier);
+  const pick = page ? list : ["P01","M01","B03","V03","O01","P02","M02","B01"].map(c => BOXES.find(b => b.code === c));
+  return `<section class="gb ${page?"page":""}" id="gb">${gbHead(page)}
+    ${page?`<div class="tabs" id="gbTabs"><button data-t="" class="${gbTier?"":"on"}">Все ${BOXES.length}</button>${Object.entries(GB_TIERS).map(([k,v]) => `<button data-t="${k}" class="${gbTier===k?"on":""}">${esc(v)}</button>`).join("")}</div><div class="bgrid">${list.map(bxTile).join("")}</div>`:`<div class="rail">${pick.map(bxTile).join("")}</div>`}
+    <div class="btns">${page?`<a class="cta" href="#">← В каталог</a>`:`<a class="cta" href="#c=gift-boxes">Все ${BOXES.length} ${plural(BOXES.length,"бокс","бокса","боксов")}</a>`}<a class="cta ln" target="_blank" rel="noopener" href="${wa("Здравствуйте! Хочу собрать свой подарочный бокс ACTUAL. Бюджет: \nДля кого: \nРазмер: ")}">Собрать свой бокс</a></div>
+  </div></section>`;
+}
+function gbPage(){ document.body.classList.remove("pdp"); clearInterval(heroTimer); $("#main").innerHTML = gbHTML(true); bindGb(); observe(); }
+function bindGb(){ const t = $("#gbTabs"); if (!t) return; t.querySelectorAll("button").forEach(b => b.onclick = () => { buzz(); gbTier = b.dataset.t; const y = scrollY; gbPage(); scrollTo(0, y); track({ t: "cat", n: "Боксы: " + (GB_TIERS[gbTier] || "все") }); }); }
+function gbBox(b){
+  document.body.classList.remove("pdp"); clearInterval(heroTimer);
+  const msg = `Здравствуйте! Хочу заказать подарочный бокс с сайта:\n${b.code} «${gbName(b)}» — ${fmtT(b.total)}${b.free?" (оформление в подарок)":" (с оформлением)"}\nСостав:\n${b.items.map((i,n) => `${n+1}) ${i[0]}${i[1]?" "+i[1]:""}`).join("\n")}\nРазмер: подскажите / рост и вес: \nДоставка или самовывоз из Riviera Park: \n${location.href}`;
+  const more = BOXES.filter(x => x.code !== b.code && x.tier === b.tier).concat(BOXES.filter(x => x.tier !== b.tier && Math.abs(x.total - b.total) < 8000)).slice(0, 8);
+  $("#main").innerHTML = `<section class="gb page"><div class="lights"></div><div class="gin">
+    <a class="cta ln" href="#c=gift-boxes" style="display:inline-flex">← Все боксы</a>
+    <div class="gbd"><div class="ph"><img src="${b.img}" alt="Подарочный бокс ${esc(gbName(b))}"></div><div>
+      <div class="tri"><span>${b.code}</span><i>·</i><span>${esc(GB_TIERS[b.tier])}</span></div>
+      <h1 class="nm">${esc(gbName(b))}</h1>
+      ${b.note?`<p class="note">${esc(b.note)}</p>`:""}
+      <div class="card">Для тебя · Саған · Sağan</div>
+      <ul>${b.items.map(i => `<li><div>${esc(i[0])}<small>${i[1]?"Артикул "+esc(i[1])+" · ":""}${esc(i[3]||"1 шт.")}</small></div><b>${fmt(i[2])}</b></li>`).join("")}</ul>
+      <div class="sum"><div><span>Товары</span><span>${fmt(b.goods)}</span></div><div class="${b.free?"free":""}"><span>Оформление: бокс, тишью, упаковка, пакет</span><span>${b.free?"в подарок":fmt(GB_FEE)}</span></div></div>
+      <div class="tot"><span>Итого</span><b>${fmt(b.total)}</b></div>${cur!=="KZT"?`<div class="fx2">Оплата в тенге: ${fmtT(b.total)}</div>`:""}
+      <div class="btns"><a class="cta" target="_blank" rel="noopener" data-box="${b.code}" href="${wa(msg)}">${ICON_WA} Заказать бокс</a><a class="cta ln" target="_blank" rel="noopener" href="${wa(`Здравствуйте! Хочу бокс ${b.code}, но поменять вещь или размер: `)}">Изменить состав</a></div>
+      <p class="note" style="font-size:12px;color:rgba(255,255,255,.55)">Размер подберём в WhatsApp. Можно забрать в Riviera Park или заказать доставку по Алматы.</p>
+    </div></div>
+    ${more.length?`<div class="sh" style="padding:0;margin-top:28px"><h2 style="color:#fff">Ещё <em>боксы</em></h2></div><div class="rail">${more.map(bxTile).join("")}</div>`:""}
+  </div></section>`;
+  const o = $("[data-box]"); if (o) o.onclick = () => track({ t: "order", k: "box-" + b.code, n: "Бокс " + b.code + " " + b.name });
+  observe();
+}
 /* Двойка: к верху предлагаем низ и наоборот */
 const TOPS = /худи|толстовк|свитшот|олимпийк|зип/i, BOTS = /трико|спортивн.*брюк|джоггер|штаны/i;
 function duoFor(p){
@@ -581,7 +708,7 @@ function gridHTML(){
 }
 function storiesHTML(){
   const one = t => PRODUCTS.find(p => p.type === t && p.pics.length);
-  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}${(()=>{ const g = PRODUCTS.find(p => isGS(p) && p.pics.length); return PRODUCTS.some(isGS)?`<button class="st ${state.type==="GS"?"on":""}" data-t="GS"><div class="ring"><div>${g?`<img loading="lazy" src="${esc(g.pics[0])}" alt="">`:`<div class="all" style="font-size:10px">TGS</div>`}</div></div><span>Great Steppe</span></button>`:""; })()}</div>`;
+  return `<div class="stories" id="stories"><button class="st ${state.type?"":"on"}" data-t=""><div class="ring"><div><div class="all">ALL</div></div></div><span>Все</span></button><a class="st gbs" href="#c=gift-boxes"><div class="ring"><div><img loading="lazy" src="/p/boxes/p01-s.jpg" alt=""></div></div><span>Подарки</span></a>${FAV.length?`<button class="st ${state.type==="♥"?"on":""}" data-t="♥"><div class="ring"><div><div class="all" style="color:#D6334A;font-size:16px">♥</div></div></div><span>Избранное</span></button>`:""}${TYPES.map(t => { const p = one(t); return `<button class="st ${state.type===t?"on":""}" data-t="${esc(t)}"><div class="ring"><div>${p?`<img loading="lazy" src="${esc(p.pics[0])}" alt="">`:""}</div></div><span>${esc(t)}</span></button>`; }).join("")}${(()=>{ const g = PRODUCTS.find(p => isGS(p) && p.pics.length); return PRODUCTS.some(isGS)?`<button class="st ${state.type==="GS"?"on":""}" data-t="GS"><div class="ring"><div>${g?`<img loading="lazy" src="${esc(g.pics[0])}" alt="">`:`<div class="all" style="font-size:10px">TGS</div>`}</div></div><span>Great Steppe</span></button>`:""; })()}</div>`;
 }
 function list(){
   document.body.classList.remove("pdp");
@@ -599,6 +726,7 @@ function list(){
     <div class="hdots">${heroes.length<2?"":heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`}
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция<b>●</b></span><span>Доставка по Алматы в день заказа<b>●</b></span><span>Примерка в Riviera Park<b>●</b></span><span>Казпочта и СДЭК по Казахстану<b>●</b></span>`).join("")}</div></div>
   <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
+  ${gbHTML(false)}
   ${looksHTML()}
   ${gsHTML(false)}
   <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
@@ -617,7 +745,7 @@ function bindList(){
   $("#reelGo").onclick = () => openReels(0);
   let tm; $("#q").oninput = e => { state.q = e.target.value; clearTimeout(tm); tm = setTimeout(() => { $("#grid").innerHTML = gridHTML(); observe(); count(); }, 180); };
 }
-function bindStories(){ $("#stories").querySelectorAll(".st").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type === "GS" ? "The Great Steppe" : (state.type || "Все") }); }); }
+function bindStories(){ $("#stories").querySelectorAll(".st[data-t]").forEach(b => b.onclick = () => { buzz(); state.type = b.dataset.t; $("#stories").querySelectorAll(".st[data-t]").forEach(x => x.classList.toggle("on", x === b)); $("#grid").innerHTML = gridHTML(); observe(); count(); track({ t: "cat", n: state.type === "GS" ? "The Great Steppe" : (state.type || "Все") }); }); }
 /* Reels-режим: вертикальная лента товаров на весь экран */
 let reelTimer = null;
 function reelList(){ const q = state.q.trim().toLowerCase(); return PRODUCTS.filter(p => p.pics.length && p.stock > 0 && tOk(p) && (!q || (p.title + " " + p.type).toLowerCase().includes(q))); }
@@ -781,6 +909,9 @@ function vt(go){
   setTimeout(() => { if (!done) { try { t && t.skipTransition(); } catch (e) {} run(); } }, 250);
 }
 function render(){
+  if (location.hash === "#c=gift-boxes") { const go = () => { lastView = ""; gbPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "gift-boxes", n: "Подарочные боксы" }); }; vt(go); return; }
+  const mb = location.hash.match(/^#b=([A-Z]\d\d)$/i), bx = mb && BOXES.find(b => b.code === mb[1].toUpperCase());
+  if (bx) { const go = () => { lastView = "box-" + bx.code; gbBox(bx); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "box-" + bx.code, n: "Бокс " + bx.code + " " + bx.name }); }; vt(go); return; }
   if (location.hash === "#c=great-steppe") { const go = () => { lastView = ""; gsPage(); scrollTo(0,0); $("#hdr").classList.add("solid"); $("#dock").classList.remove("away"); track({ t: "view", k: "great-steppe", n: "Коллекция The Great Steppe" }); }; vt(go); return; }
   const m = location.hash.match(/^#p=(.+)$/);
   const p = m && PRODUCTS.find(x => x.key === decodeURIComponent(m[1]));
