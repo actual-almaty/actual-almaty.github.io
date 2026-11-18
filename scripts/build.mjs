@@ -160,15 +160,30 @@ const photos = loadSitePhotos();
 try { writeTeamStock(pages, stock); } catch (e) { console.error('Остатки сотрудников не записались:', e.message); }
 
 
-// Подарочные боксы: отладочный список кандидатов (временно)
+// Подарочные боксы: остаток и цена каждой вещи бокса по карточкам Paloma (scripts/boxes.json)
+let BOXSTOCK = { ok: false };
 try {
-  const qty = {}; for (const x of (stock || [])) qty[x.json.item_id] = (qty[x.json.item_id] || 0) + Number(x.json.quantity || 0);
-  const rx = /перчат|сумк|кепк|шапк|носк|галст|loro|gucci|lacoste|tommy|polo|moncler|brunello|passo|0055|109649|10012|02503|MT-35125|MS-25036|DS2|MS-3008|MT-33525|MS-6254|MS-6136|MSS-2808|MF-28025|M-1081|MS-240914/i;
-  const out = [];
-  for (const p of pages) for (const it of (p.json.data || [])) { if (!it || it.deleted === true || !it.name || !rx.test(it.name)) continue; out.push([it.id, String(it.name).replace(/\s+/g,' ').trim(), Math.round(Number(it.price)||0), qty[String(it.id)] || 0]); }
-  fs.mkdirSync('p/boxes', { recursive: true }); fs.writeFileSync('p/boxes/debug.json', JSON.stringify(out));
-  console.log('Боксы: кандидатов', out.length);
-} catch (e) { console.error('Боксы debug:', e.message); }
+  const cfg = JSON.parse(fs.readFileSync('scripts/boxes.json', 'utf8'));
+  const byId = {}; for (const p of pages) for (const it of (p.json.data || [])) if (it && it.id != null) byId[String(it.id)] = it;
+  const qty = {}; for (const x of (stock || [])) qty[String(x.json.item_id)] = (qty[String(x.json.item_id)] || 0) + Number(x.json.quantity || 0);
+  const items = {};
+  for (const [k, v] of Object.entries(cfg)) {
+    if (k === '_') continue;
+    const cards = (v.ids || []).map(id => byId[String(id)]).filter(it => it && it.deleted !== true);
+    if (!cards.length) { items[k] = { q: null }; continue; }
+    const sizes = {}; let q = 0;
+    for (const it of cards) {
+      const n = Math.max(0, qty[String(it.id)] || 0); q += n;
+      const m = String(it.name).trim().match(/\s(XXXL|3XL|XXL|XL-2XL|XL|M-L|L|M|М|S)$/);
+      if (m) { const z = m[1] === 'М' ? 'M' : m[1]; sizes[z] = (sizes[z] || 0) + n; }
+    }
+    items[k] = { q, price: Math.round(Number(cards[0].price) || 0), sizes };
+  }
+  BOXSTOCK = { ok: !!stock, date: new Date(Date.now() + 5 * 3600e3).toISOString().slice(0, 16).replace('T', ' '), items };
+  fs.mkdirSync('p/boxes', { recursive: true });
+  fs.writeFileSync('p/boxes/stock.json', JSON.stringify(BOXSTOCK));
+  console.log('Боксы: вещей', Object.keys(items).length, '| нет в Paloma:', Object.keys(items).filter(k => items[k].q === null).join(', ') || '—');
+} catch (e) { console.error('Боксы: остатки не посчитаны:', e.message); }
 const nodes = { 'Загрузить товары Paloma365': pages, 'Остатки из таблицы': stock || [], 'Фото сайта': photos };
 const $ = n => ({ all: () => nodes[n], first: () => nodes[n][0] });
 const catalog = new Function('$', fs.readFileSync('scripts/catalog.js', 'utf8'));
@@ -227,13 +242,13 @@ try {
 } catch (e) { console.log('Курсы не получены:', e.message); }
 if (!RATES) { try { RATES = JSON.parse(fs.readFileSync('index.html', 'utf8').match(/const RATES = (\{.*?\});/)[1]); console.log('Беру прошлые курсы на', RATES.date); } catch (e) { RATES = { date: '', USD: 0, RUB: 0 }; } }
 const ratesJson = JSON.stringify(RATES);
-const html = fs.readFileSync('scripts/template.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson);
+const html = fs.readFileSync('scripts/template.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson).replace('__BOXSTOCK__', () => JSON.stringify(BOXSTOCK));
 const old = fs.existsSync('index.html') ? fs.readFileSync('index.html', 'utf8') : '';
 
 // Предпросмотр нового дизайна: /new/ (тот же каталог, другой шаблон)
 if (fs.existsSync('scripts/template-new.html')) {
   fs.mkdirSync('new', { recursive: true });
-  const nh = fs.readFileSync('scripts/template-new.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson);
+  const nh = fs.readFileSync('scripts/template-new.html', 'utf8').replace('__DATA__', () => data).replace('__RATES__', () => ratesJson).replace('__BOXSTOCK__', () => JSON.stringify(BOXSTOCK));
   if (!fs.existsSync('new/index.html') || fs.readFileSync('new/index.html', 'utf8') !== nh) fs.writeFileSync('new/index.html', nh);
 }
 if (old === html) { console.log('Изменений нет'); } else { fs.writeFileSync('index.html', html); console.log('Сайт обновлён, моделей:', rows.length); }
