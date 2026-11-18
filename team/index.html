@@ -295,6 +295,7 @@ function render(){
   if(!b){ $("#view").innerHTML='<div class="empty"><span class="spin"></span><br>Загружаю…</div>'; return; }
   var fromBoss=false;try{fromBoss=sessionStorage.getItem("from_boss")==="1"||/\/boss\//.test(document.referrer)}catch(e){}
   if(b.me.role==="admin" && ((S.tab!=="tasks" && S.tab!=="stock") || !fromBoss)){ try{ localStorage.setItem("boss_tok", JSON.parse(localStorage.getItem("at_tok"))); }catch(e){} location.replace("../boss/"); return; }
+  if(b.me.role==="viewer"){ S.tab="stock"; return renderStock(); }
   if(S.tab==="stock") return renderStock();
   if(S.tab==="tasks") return renderTasks();
   if(S.tab==="admin" && b.me.role==="admin") return renderAdmin();
@@ -310,6 +311,7 @@ function tabsHtml(){
   var i3='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/></svg>';
   var i4='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg>';
   var t=admin?[["admin","Команда",i3],["tasks","Задачи",i4],["stock","Остатки",i2]]:[["me","Мои продажи",i1],["tasks","Задачи",i4],["stock","Остатки",i2]];
+  if(S.boot&&S.boot.me.role==="viewer") t=[["stock","Остатки",i2]];
   return '<nav class="tabs">'+t.map(function(x){return '<button data-t="'+x[0]+'" class="'+(S.tab===x[0]||(x[0]==="admin"&&S.tab==="me"&&admin)?"on":"")+'">'+x[2]+x[1]+'</button>'}).join("")+'</nav>';
 }
 
@@ -323,7 +325,7 @@ function renderLogin(){
     e.preventDefault(); var u=$("#lu").value.trim().toLowerCase(), p=$("#lp").value;
     if(!u||!p) return; var btn=$("#lb"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
     api("login",{login:u,password:p}).then(function(j){
-      if(j.ok&&j.token){ S.token=j.token; LS.set("at_tok",j.token); S.err=""; S.tab=j.role==="admin"?"admin":"me"; S.boot=null; render(); refresh(); }
+      if(j.ok&&j.token){ S.token=j.token; LS.set("at_tok",j.token); S.err=""; S.tab=j.role==="admin"?"admin":j.role==="viewer"?"stock":"me"; S.boot=null; render(); refresh(); }
       else { btn.disabled=false; btn.textContent="Войти"; $("#le").textContent = j.error==="locked"?"Слишком много попыток. Подождите 30 минут.":j.error==="net"?"Нет соединения. Проверьте интернет.":"Неверный логин или пароль."; }
     });
   };
