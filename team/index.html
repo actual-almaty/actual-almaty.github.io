@@ -295,7 +295,7 @@ function render(){
   if(!b){ $("#view").innerHTML='<div class="empty"><span class="spin"></span><br>Загружаю…</div>'; return; }
   var fromBoss=false;try{fromBoss=sessionStorage.getItem("from_boss")==="1"||/\/boss\//.test(document.referrer)}catch(e){}
   if(b.me.role==="admin" && ((S.tab!=="tasks" && S.tab!=="stock") || !fromBoss)){ try{ localStorage.setItem("boss_tok", JSON.parse(localStorage.getItem("at_tok"))); }catch(e){} location.replace("../boss/"); return; }
-  if(b.me.role==="viewer"){ S.tab="stock"; return renderStock(); }
+  if(b.me.role==="viewer"){ if(S.tab==="tasks") return renderTasks(); S.tab="stock"; return renderStock(); }
   if(S.tab==="stock") return renderStock();
   if(S.tab==="tasks") return renderTasks();
   if(S.tab==="admin" && b.me.role==="admin") return renderAdmin();
@@ -311,7 +311,7 @@ function tabsHtml(){
   var i3='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/></svg>';
   var i4='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M8.5 11l2.5 2.5 4.5-4.5M8.5 17h7"/></svg>';
   var t=admin?[["admin","Команда",i3],["tasks","Задачи",i4],["stock","Остатки",i2]]:[["me","Мои продажи",i1],["tasks","Задачи",i4],["stock","Остатки",i2]];
-  if(S.boot&&S.boot.me.role==="viewer") t=[["stock","Остатки",i2]];
+  if(S.boot&&S.boot.me.role==="viewer") t=[["stock","Остатки",i2],["tasks","Задачи",i4]];
   return '<nav class="tabs">'+t.map(function(x){return '<button data-t="'+x[0]+'" class="'+(S.tab===x[0]||(x[0]==="admin"&&S.tab==="me"&&admin)?"on":"")+'">'+x[2]+x[1]+'</button>'}).join("")+'</nav>';
 }
 
@@ -488,7 +488,7 @@ function tasksApi(a,p){
 function tErr(e){return {net:"Нет соединения, попробуйте ещё раз",need_photo:"Добавьте хотя бы одно фото",need_comment:"Напишите комментарий",already_approved:"Задача уже принята",forbidden:"Нет доступа",auth:"Войдите заново",photo_too_big:"Фото слишком большое"}[e]||"Не получилось, попробуйте ещё раз"}
 function today5(){return new Date(Date.now()+5*3600e3).toISOString().slice(0,10)}
 function addDays(ds,n){var d=new Date(ds+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
-function team(){return ((S.boot&&S.boot.team)||[]).map(function(e){return {login:e.login,name:e.name}})}
+function team(){return ((S.boot&&(S.boot.taskPeople||S.boot.team))||[]).map(function(e){return {login:e.login,name:e.name}})}
 function nameOf(l){var t=team().filter(function(e){return e.login===l})[0];return t?t.name:l}
 function badge(st){var x=TST[st]||TST.new;return '<span class="tier" style="background:'+x[1]+';color:'+x[2]+'">'+x[0]+'</span>'}
 function loadTasks(){
