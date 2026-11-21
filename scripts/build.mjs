@@ -86,25 +86,37 @@ async function loadStock() {
   const ymd = d => new Date(d.getTime() + 5 * 3600e3).toISOString().slice(0, 10);
   const today = ymd(new Date()), tomorrow = ymd(new Date(Date.now() + 864e5));
   const cur = await stockOn(tomorrow);
-  let start = cur, sold = {};
+  // Непроведённые продажи = чеки за сегодня минус то, что уже списано со склада как реализация.
+  // Другие документы (списания, оприходования задним числом) на это не влияют.
+  let unpostedBy = {}, mode = 'чеки−склад';
   try {
-    start = await stockOn(today);
-    const sc = await call('report_sales', { date_from: today, date_to: today, top: 200 });
-    if (sc.success === false) throw new Error(sc.message || 'нет продаж');
-    for (const x of (sc.rows || [])) sold[String(x.group_id)] = Number(x.quantity || 0);
-  } catch (e) { console.error('Сегодняшние продажи не учтены:', e.message); sold = {}; }
+    const rc = await call('report_sales', { date_from: today, date_to: today, top: 200 });
+    if (rc.success === false) throw new Error(rc.message || 'нет чеков');
+    const wh = await call('report_sales', { date_from: today, date_to: today, top: 200, source: 'warehouse' });
+    if (wh.success === false) throw new Error(wh.message || 'нет складских продаж');
+    const posted = {};
+    for (const x of (wh.rows || [])) posted[String(x.group_id)] = (posted[String(x.group_id)] || 0) + Number(x.quantity || 0);
+    for (const x of (rc.rows || [])) { const id = String(x.group_id); unpostedBy[id] = Math.max(0, Number(x.quantity || 0) - (posted[id] || 0)); }
+  } catch (e) {
+    // запасной способ: по разнице остатков начала и конца дня
+    console.error('Точный учёт чеков не сработал, запасной способ:', e.message); mode = 'разница остатков';
+    try {
+      const start = await stockOn(today);
+      const sc = await call('report_sales', { date_from: today, date_to: today, top: 200 });
+      for (const x of (sc.rows || [])) { const id = String(x.group_id); const postedOut = Math.max(0, (start[id] || 0) - (cur[id] || 0)); unpostedBy[id] = Math.max(0, Number(x.quantity || 0) - postedOut); }
+    } catch (e2) { console.error('Сегодняшние продажи не учтены:', e2.message); unpostedBy = {}; }
+  }
+  const sold = unpostedBy;
   let adj = 0;
   const ids = new Set([...Object.keys(cur), ...Object.keys(sold)]);
   const rows = [];
   for (const id of ids) {
-    const c = cur[id] || 0, s = sold[id] || 0;
-    const postedOut = Math.max(0, (start[id] || 0) - c);
-    const unposted = Math.max(0, s - postedOut);
-    const q = Math.max(0, c - unposted);
+    const c = cur[id] || 0;
+    const q = Math.max(0, c - (sold[id] || 0));
     if (q !== c) adj++;
     if (q > 0 || c > 0) rows.push({ json: { item_id: id, quantity: q } });
   }
-  console.log('Строк остатков:', rows.length, '| продано сегодня позиций:', Object.keys(sold).length, '| поправлено с учётом чеков:', adj);
+  console.log('Строк остатков:', rows.length, '| способ:', mode, '| продано сегодня позиций:', Object.keys(sold).length, '| поправлено с учётом чеков:', adj);
   return rows;
 }
 
