@@ -88,15 +88,19 @@ async function loadStock() {
   const cur = await stockOn(tomorrow);
   // Непроведённые продажи = чеки за сегодня минус то, что уже списано со склада как реализация.
   // Другие документы (списания, оприходования задним числом) на это не влияют.
-  let unpostedBy = {}, mode = 'чеки−склад';
+  let unpostedBy = {}, mode = 'открытые смены';
   try {
-    const rc = await call('report_sales', { date_from: today, date_to: today, top: 200 });
-    if (rc.success === false) throw new Error(rc.message || 'нет чеков');
-    const wh = await call('report_sales', { date_from: today, date_to: today, top: 200, source: 'warehouse' });
-    if (wh.success === false) throw new Error(wh.message || 'нет складских продаж');
-    const posted = {};
-    for (const x of (wh.rows || [])) posted[String(x.group_id)] = (posted[String(x.group_id)] || 0) + Number(x.quantity || 0);
-    for (const x of (rc.rows || [])) { const id = String(x.group_id); unpostedBy[id] = Math.max(0, Number(x.quantity || 0) - (posted[id] || 0)); }
+    // Палома списывает чеки со склада при закрытии смены: всё, что пробито в ещё открытых сменах, вычитаем.
+    const d3 = ymd(new Date(Date.now() - 3 * 864e5));
+    const sh = await call('query_metrics', { metrics: ['shifts'], group_by: ['shift'], date_from: d3, date_to: today, top: 50 });
+    if (sh.success === false) throw new Error(sh.message || 'нет смен');
+    const open = (sh.sections?.[0]?.rows || []).map(r => r.dims?.shift).filter(x => x && x.status === 'open');
+    for (const s1 of open) {
+      const r = await call('query_metrics', { metrics: ['quantity'], group_by: ['item'], shift_id: String(s1.id), top: 200 });
+      if (r.success === false) throw new Error(r.message || 'нет чеков смены');
+      for (const x of (r.sections?.[0]?.rows || [])) { const id = String(x.dims?.item?.id); unpostedBy[id] = (unpostedBy[id] || 0) + Math.max(0, Number(x.values?.quantity || 0)); }
+    }
+    mode += ': ' + open.length;
   } catch (e) {
     // запасной способ: по разнице остатков начала и конца дня
     console.error('Точный учёт чеков не сработал, запасной способ:', e.message); mode = 'разница остатков';
