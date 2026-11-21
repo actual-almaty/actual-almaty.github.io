@@ -1,0 +1,10 @@
+Проверка: 2026-11-21 21:41
+Публикация Pages: success
+200 215280 /
+200 75085 /team/
+200 224 /team/d/users.json
+200 77 /team/d/stock-meta.json
+200 59132 /gift/
+200 177192 /gift/photo.jpg
+Каталог: 80 моделей
+Остатки сотрудников: {"version":"2026-11-21T16:39:40.367Z","hash":"dbdb90b197cfd57d","count":8145}
