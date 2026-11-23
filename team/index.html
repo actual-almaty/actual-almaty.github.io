@@ -278,11 +278,13 @@ function monthStats(emp, ym, tiers){
   var sales=0,ret=0,best=null,work=0;days.forEach(function(d){sales+=d[1];ret+=d[2];var g=d[1]+d[2];if(g>0)work++;if(!best||d[1]>best[3])best=[d[0],g,d[2],d[1]]});
   var plan = emp.plan_month===ym ? emp.plan : 0;
   var pct = plan ? sales/plan*100 : null;
-  var rate = plan ? tierFor(pct,tiers) : null;
+  /* добавленный план (от уволенных): процент по шкале считается от личного плана, продажи сверх личного плана — по extra_rate (1%) */
+  var base = (plan && emp.base_plan && emp.base_plan<plan) ? emp.base_plan : 0;
+  var rate = plan ? tierFor(base ? sales/base*100 : pct,tiers) : null;
   var last = days.length?days.map(function(d){return d[0]}).sort().pop():null;
   var forecast=null, forecastPct=null;
   if(last && ym===ymNow()){ var y=+ym.slice(0,4),m=+ym.slice(5,7); var dim=new Date(Date.UTC(y,m,0)).getUTCDate(); var el=+last.slice(8,10); if(el>=3){ forecast=sales/el*dim; forecastPct=plan?forecast/plan*100:null; } }
-  return {days:days, sales:sales, ret:ret, gross:sales+ret, plan:plan, pct:pct, rate:rate, bonus: rate!=null ? Math.max(0,sales)*rate/100 : null, last:last, workDays:work, avg: work?sales/work:0, best:best, forecast: plan?forecast:null, forecastPct:forecastPct};
+  return {days:days, sales:sales, ret:ret, gross:sales+ret, plan:plan, pct:pct, rate:rate, bonus: rate!=null ? (base ? Math.min(Math.max(0,sales),base)*rate/100 + Math.max(0,sales-base)*(emp.extra_rate||0)/100 : Math.max(0,sales)*rate/100) : null, base:base, basePct: base?sales/base*100:null, extraRate: emp.extra_rate||0, last:last, workDays:work, avg: work?sales/work:0, best:best, forecast: plan?forecast:null, forecastPct:forecastPct};
 }
 
 /* ---------- render ---------- */
@@ -340,12 +342,12 @@ function renderMe(){
   h+='<div class="chips">'+months.map(function(m){return '<button class="chip '+(m===S.month?"on":"")+'" data-m="'+m+'">'+cap(monthName(m))+'</button>'}).join("")+'</div>';
   h+=summaryCard(st, monthName(S.month));
   if(st.plan){
-    h+='<div class="grid2"><div class="card"><div class="kicker">Бонус сейчас</div><div class="mid">'+money(st.bonus)+'</div><div class="small muted"><span class="tier t'+st.rate+'">'+st.rate+'%</span> от итога</div></div>';
+    h+='<div class="grid2"><div class="card"><div class="kicker">Бонус сейчас</div><div class="mid">'+money(st.bonus)+'</div><div class="small muted"><span class="tier t'+st.rate+'">'+st.rate+'%</span> '+(st.base?'до личного плана '+short(st.base)+' ('+Math.round(st.basePct)+'%), сверх него '+st.extraRate+'%':'от итога')+'</div></div>';
     var okl = emp.fixed ? emp.fixed : emp.hourly*emp.hours;
     h+='<div class="card"><div class="kicker">Оклад</div><div class="mid">'+money(okl)+'</div><div class="small muted">'+(emp.fixed?"фиксированный":emp.hours+" ч × "+emp.hourly+" ₸ по графику")+'</div></div></div>';
     if(S.month===cur && st.forecast!=null){
-      var fr=tierFor(st.forecastPct,tiers);
-      h+='<div class="card"><div class="kicker">Прогноз на конец месяца</div><div class="row" style="margin-top:6px"><div class="mid">'+money(st.forecast)+'</div><div><b>'+Math.round(st.forecastPct)+'%</b> <span class="tier t'+fr+'">'+fr+'%</span></div></div><div class="small muted" style="margin-top:4px;line-height:1.5">Если продавать в том же темпе, что с 1 числа. Бонус по прогнозу ≈ '+money(Math.max(0,st.forecast)*fr/100)+', вместе с окладом ≈ '+money(Math.max(0,st.forecast)*fr/100+okl)+'.</div></div>';
+      var fr=tierFor(st.base?st.forecast/st.base*100:st.forecastPct,tiers); var fb=st.base?Math.min(Math.max(0,st.forecast),st.base)*fr/100+Math.max(0,st.forecast-st.base)*st.extraRate/100:Math.max(0,st.forecast)*fr/100;
+      h+='<div class="card"><div class="kicker">Прогноз на конец месяца</div><div class="row" style="margin-top:6px"><div class="mid">'+money(st.forecast)+'</div><div><b>'+Math.round(st.forecastPct)+'%</b> <span class="tier t'+fr+'">'+fr+'%</span></div></div><div class="small muted" style="margin-top:4px;line-height:1.5">Если продавать в том же темпе, что с 1 числа. Бонус по прогнозу ≈ '+money(fb)+', вместе с окладом ≈ '+money(fb+okl)+'.</div></div>';
     }
     h+='<div class="card"><div class="kicker">Шкала бонуса</div><div style="margin-top:8px">'+tiers.map(function(t,i){var nx=tiers[i+1];var lbl=i===0?"до "+nx[0]+"%":nx?t[0]+"–"+(nx[0]-1)+"%":t[0]+"%+";var on=st.rate===t[1]&&st.pct!=null;return '<div class="row" style="padding:6px 0;'+(on?"font-weight:700":"")+'"><span>'+lbl+(on?" · вы здесь":"")+'</span><span><span class="muted small" style="margin-right:8px">от '+short(st.plan*t[0]/100)+'</span><span class="tier t'+t[1]+'">'+t[1]+'%</span></span></div>'}).join("")+'</div></div>';
   }
