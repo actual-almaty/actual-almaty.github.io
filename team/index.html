@@ -276,13 +276,15 @@ function nextTier(pct, tiers){for(var i=0;i<tiers.length;i++){if(tiers[i][0]>pct
 function monthStats(emp, ym, tiers){
   var days=(emp.days||[]).filter(function(d){return d[0].slice(0,7)===ym});
   var sales=0,ret=0,best=null,work=0;days.forEach(function(d){sales+=d[1];ret+=d[2];var g=d[1]+d[2];if(g>0)work++;if(!best||d[1]>best[3])best=[d[0],g,d[2],d[1]]});
-  var plan = emp.plan_month===ym ? emp.plan : 0;
+  var plan = emp.plan_month===ym ? emp.plan : 0, fullPlan = plan;
+  /* план от уволенных добавлен отдельно: процент и бонус — от первоначального личного плана */
+  var base = (plan && emp.base_plan && emp.base_plan<plan) ? emp.base_plan : 0; if(base) plan = base;
   var pct = plan ? sales/plan*100 : null;
   var rate = plan ? tierFor(pct,tiers) : null;
   var last = days.length?days.map(function(d){return d[0]}).sort().pop():null;
   var forecast=null, forecastPct=null;
   if(last && ym===ymNow()){ var y=+ym.slice(0,4),m=+ym.slice(5,7); var dim=new Date(Date.UTC(y,m,0)).getUTCDate(); var el=+last.slice(8,10); if(el>=3){ forecast=sales/el*dim; forecastPct=plan?forecast/plan*100:null; } }
-  return {days:days, sales:sales, ret:ret, gross:sales+ret, plan:plan, pct:pct, rate:rate, bonus: rate!=null ? Math.max(0,sales)*rate/100 : null, last:last, workDays:work, avg: work?sales/work:0, best:best, forecast: plan?forecast:null, forecastPct:forecastPct};
+  return {fullPlan:fullPlan, added: base?fullPlan-base:0, addedDone: base?Math.max(0,Math.min(sales-base,fullPlan-base)):0, days:days, sales:sales, ret:ret, gross:sales+ret, plan:plan, pct:pct, rate:rate, bonus: rate!=null ? Math.max(0,sales)*rate/100 : null, last:last, workDays:work, avg: work?sales/work:0, best:best, forecast: plan?forecast:null, forecastPct:forecastPct};
 }
 
 /* ---------- render ---------- */
@@ -341,6 +343,7 @@ function renderMe(){
   h+=summaryCard(st, monthName(S.month));
   if(st.plan){
     h+='<div class="grid2"><div class="card"><div class="kicker">Бонус сейчас</div><div class="mid">'+money(st.bonus)+'</div><div class="small muted"><span class="tier t'+st.rate+'">'+st.rate+'%</span> от итога</div></div>';
+    if(st.added) h+='<div class="card"><div class="kicker">Добавлено от уволенных</div><div class="row" style="margin-top:6px"><div class="mid">'+money(st.addedDone)+'</div><div class="small muted">из '+money(st.added)+' · '+Math.round(st.addedDone/st.added*100)+'%</div></div><div class="small muted" style="margin-top:4px;line-height:1.5">Считается, когда продажи выше личного плана '+money(st.plan)+'. Бонус — по шкале от личного плана.</div></div>';
     var okl = emp.fixed ? emp.fixed : emp.hourly*emp.hours;
     h+='<div class="card"><div class="kicker">Оклад</div><div class="mid">'+money(okl)+'</div><div class="small muted">'+(emp.fixed?"фиксированный":emp.hours+" ч × "+emp.hourly+" ₸ по графику")+'</div></div></div>';
     if(S.month===cur && st.forecast!=null){
@@ -623,10 +626,10 @@ function renderAdmin(){
   var h='<h1>Команда</h1><div class="muted small">Видите только вы, как руководитель</div>';
   h+='<div class="chips">'+months.map(function(m){return '<button class="chip '+(m===S.month?"on":"")+'" data-m="'+m+'">'+monthName(m)[0].toUpperCase()+monthName(m).slice(1)+'</button>'}).join("")+'</div>';
   var tot=0,totPlan=0,gr=0,rt=0;
-  var rows=(b.team||[]).map(function(e){var s=monthStats(e,S.month,b.tiers);tot+=s.sales;totPlan+=s.plan;gr+=s.gross;rt+=s.ret;return {e:e,s:s}});
+  var rows=(b.team||[]).map(function(e){var s=monthStats(e,S.month,b.tiers);tot+=s.sales;totPlan+=s.fullPlan;gr+=s.gross;rt+=s.ret;return {e:e,s:s}});
   if(S.adminEmp){ var x=rows.filter(function(r){return r.e.emp_id===S.adminEmp})[0]; if(x){ h='<button class="chip" id="bk" style="margin-top:14px">← Вся команда</button><h1>'+esc(x.e.name)+'</h1><div class="chips">'+months.map(function(m){return '<button class="chip '+(m===S.month?"on":"")+'" data-m="'+m+'">'+cap(monthName(m))+'</button>'}).join("")+'</div>'+summaryCard(x.s,monthName(S.month))+(x.s.plan?'<div class="card"><div class="row"><span class="kicker">Бонус сейчас</span><span><b>'+money(x.s.bonus)+'</b> <span class="tier t'+x.s.rate+'">'+x.s.rate+'%</span></span></div></div>':'')+daysBlock(x.s); $("#view").innerHTML=h; $("#bk").onclick=function(){S.adminEmp=null;renderAdmin();scrollTo(0,0)}; document.querySelectorAll(".chip[data-m]").forEach(function(c){c.onclick=function(){S.month=c.dataset.m;renderAdmin()}}); return; } S.adminEmp=null; }
   h+=summaryCard({sales:tot,gross:gr,ret:rt,plan:totPlan,pct:totPlan?tot/totPlan*100:null,days:rows.length?[1]:[]}, monthName(S.month), true).replace('Итог за','Магазин, итог за').replace(/<div class="small" style="color:#9a9286[^<]*<\/div>/,'');
-  h+='<div class="list">'+rows.map(function(x){var s=x.s;return '<div class="li" data-e="'+esc(x.e.emp_id)+'" style="cursor:pointer"><div><b>'+esc(x.e.name)+'</b><div class="small muted">'+(s.plan?"план "+short(s.plan):"без плана")+(s.ret?" · возвраты "+short(s.ret):"")+(s.last?" · до "+s.last.slice(8,10)+"."+s.last.slice(5,7):"")+'</div></div><div class="r"><b>'+money(s.sales)+'</b><div class="small">'+(s.plan?Math.round(s.pct)+'% <span class="tier t'+s.rate+'">'+s.rate+'%</span>':"")+' ›</div></div></div>'}).join("")+'</div><div class="small muted" style="margin:0 2px">Нажмите на сотрудника, чтобы увидеть его продажи по дням.</div>';
+  h+='<div class="list">'+rows.map(function(x){var s=x.s;return '<div class="li" data-e="'+esc(x.e.emp_id)+'" style="cursor:pointer"><div><b>'+esc(x.e.name)+'</b><div class="small muted">'+(s.plan?"план "+short(s.plan)+(s.added?" + "+short(s.added)+" от уволенных":""):"без плана")+(s.ret?" · возвраты "+short(s.ret):"")+(s.last?" · до "+s.last.slice(8,10)+"."+s.last.slice(5,7):"")+'</div></div><div class="r"><b>'+money(s.sales)+'</b><div class="small">'+(s.plan?Math.round(s.pct)+'% <span class="tier t'+s.rate+'">'+s.rate+'%</span>':"")+' ›</div></div></div>'}).join("")+'</div><div class="small muted" style="margin:0 2px">Нажмите на сотрудника, чтобы увидеть его продажи по дням.</div>';
   h+='<h2>Загрузить продажи</h2><div class="card"><div style="font-size:14px;line-height:1.55">Paloma → «Отчёт по сотрудникам» → выгрузите в Excel <b>по дням</b> (или за один день) и выберите файл здесь. Повторная загрузка тех же дней заменит данные.</div><input type="file" id="xf" accept=".xlsx,.xls" class="hidden"><button class="btn gold" id="xb">Выбрать файл отчёта</button><div id="xr" class="small" style="margin-top:10px;line-height:1.5">'+(S.upMsg||"")+'</div></div>';
   var ch=(b.checks||[]); var diff=ch.filter(function(c){return c.fact!==c.system});
   h+='<h2>Сверки товара</h2>';
