@@ -1041,6 +1041,33 @@ function breakdownCard(){
     <div class="note">Скидка = цена в каталоге Paloma × количество минус сумма в чеке. Если цену товара меняли после продажи, скидка по нему может быть неточной.</div></div>`;
 }
 
+/* ---------- факт продаж из Paloma: по чекам, по дням, кто пробил (обновляется каждые 15 минут) ---------- */
+function palApply(list){
+  const P = S.pal; if (!P) return list;
+  const m1 = P.from.slice(0,7), m2 = P.to.slice(0,7);
+  const keep = (list || []).filter(x => x.day ? (x.day < P.from || x.day > P.to) : !(x.month >= m1 && x.month <= m2));
+  const add = (P.rows || []).map(r => ({id: "d_" + r[1] + "_" + r[0], day: r[1], month: r[1].slice(0,7), employeeId: r[0], name: empName(r[0]), sales: r[2], returns: r[3], shifts: r[4] > 0 ? 1 : 0, to: r[1], source: "Paloma (чеки)", updatedAt: Date.parse(P.version)}));
+  return keep.concat(add);
+}
+async function loadPal(){
+  try {
+    const t = JSON.parse(tok || "null"); if (!t || !t.l || !t.k) return;
+    const box = await fetch("../team/d/" + t.l + ".json?t=" + Date.now(), {cache: "no-store"}).then(r => r.json());
+    const m = await aesOpen(unhex(t.k), box); if (!m.ek) return;
+    const f = await fetch("../team/d/sales.json?t=" + Date.now(), {cache: "no-store"}).then(r => r.json());
+    const b = f.boxes && f.boxes[t.l]; if (!b) return;
+    if (S.pal && S.pal.version === f.version) return;
+    const priv = await crypto.subtle.importKey("pkcs8", b64(m.ek), {name: "ECDH", namedCurve: "P-256"}, false, ["deriveBits"]);
+    const pub = await crypto.subtle.importKey("raw", b64(b.epk), {name: "ECDH", namedCurve: "P-256"}, false, []);
+    const key = new Uint8Array(await crypto.subtle.digest("SHA-256", await crypto.subtle.deriveBits({name: "ECDH", public: pub}, priv, 256)));
+    S.pal = await aesOpen(key, b);
+    if (S.rawEmpSales) S.data.empSales = palApply(S.rawEmpSales);
+    scheduleRender();
+  } catch (e) {}
+}
+setTimeout(loadPal, 500); setInterval(() => { if (document.visibilityState === "visible") loadPal(); }, 5 * 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadPal(); });
+
 /* ========== база (сотрудники, расходы и т.д.) ========== */
 const COLS = ["employees","shifts","expenses","channels","tasks","empSales","attendance","schedule","plans","returnsLog"];
 function startDb(){
@@ -1050,6 +1077,7 @@ function startDb(){
   COLS.forEach(c => {
     S.db.collection(c).onSnapshot(snap => {
       S.data[c] = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      if (c === "empSales") { S.rawEmpSales = S.data[c]; S.data[c] = palApply(S.rawEmpSales); }
       if (!snap.metadata.fromCache){ got++; if (got >= COLS.length){ clearTimeout(timer); S.dbState = "ok"; } }
       if (S.dbState === "loading" && got > 0) S.dbState = "ok";
       scheduleRender();

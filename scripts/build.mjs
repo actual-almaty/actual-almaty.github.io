@@ -121,6 +121,7 @@ async function loadStock() {
     if (q > 0 || c > 0) rows.push({ json: { item_id: id, quantity: q } });
   }
   console.log('Строк остатков:', rows.length, '| способ:', mode, '| продано сегодня позиций:', Object.keys(sold).length, '| поправлено с учётом чеков:', adj);
+  try { await writeTeamSales(call, today); } catch (e) { console.error('Продажи сотрудников не обновились:', e.message); }
   return rows;
 }
 
@@ -142,6 +143,46 @@ function loadSitePhotos() {
   return out;
 }
 
+
+// Факт продаж сотрудников из Paloma: по чекам, по дням, по сотруднику, который пробил чек.
+// Каждый получает только свои строки (шифруется его личным ключом), руководитель — всех.
+async function writeTeamSales(call, today) {
+  const kp = 'team/d/sales-keys.json';
+  if (!fs.existsSync(kp)) return;
+  const keys = JSON.parse(fs.readFileSync(kp, 'utf8'));
+  const empOf = keys._emp || {};
+  const d = new Date(today + 'T12:00:00Z'); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() - 1);
+  const from = d.toISOString().slice(0, 10);
+  const rows = [];
+  for (let offset = 0, n = 0; n < 20; n++) {
+    const sc = await call('query_metrics', { metrics: ['net', 'returns', 'orders'], group_by: ['day', 'employee'], date_from: from, date_to: today, top: 200, offset });
+    if (sc.success === false) throw new Error(sc.message || sc.reason || 'нет данных');
+    const sec = (sc.sections || [])[0] || {};
+    for (const r of (sec.rows || [])) {
+      const emp = empOf[String(r.dims?.employee?.id)];
+      const day = r.dims?.day?.id;
+      if (!emp || !day) continue;
+      rows.push([emp, day, Math.round(Number(r.values?.net || 0) * 100) / 100, Math.round(Number(r.values?.returns || 0) * 100) / 100, Number(r.values?.orders || 0)]);
+    }
+    if (!sec.has_more) break;
+    offset = sec.next_offset;
+  }
+  rows.sort((a, b) => a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : a[0] < b[0] ? -1 : 1);
+  const version = new Date().toISOString();
+  const boxes = {};
+  for (const [login, k] of Object.entries(keys)) {
+    if (login.startsWith('_') || !k.pub) continue;
+    const mine = k.role === 'admin' ? rows : rows.filter(r => r[0] === k.emp);
+    if (k.role !== 'admin' && !k.pid) continue;
+    const ecdh = crypto.createECDH('prime256v1'); ecdh.generateKeys();
+    const key = crypto.createHash('sha256').update(ecdh.computeSecret(Buffer.from(k.pub, 'base64'))).digest();
+    const iv = crypto.randomBytes(12); const c = crypto.createCipheriv('aes-256-gcm', key, iv);
+    const ct = Buffer.concat([c.update(JSON.stringify({ from, to: today, version, rows: mine }), 'utf8'), c.final(), c.getAuthTag()]);
+    boxes[login] = { epk: ecdh.getPublicKey().toString('base64'), iv: iv.toString('base64'), ct: ct.toString('base64') };
+  }
+  fs.writeFileSync('team/d/sales.json', JSON.stringify({ version, from, to: today, boxes }));
+  console.log('Продажи сотрудников из Paloma:', rows.length, 'строк, с', from, 'по', today);
+}
 
 // Остатки для кабинета сотрудников: шифруются публичным ключом, открыть могут только сотрудники
 function writeTeamStock(pages, stock) {
