@@ -455,6 +455,17 @@ footer{background:#050505;border-top:1px solid var(--line)}
 .gbd .avl{margin-top:14px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:600}
 .gbd .avl.ok{background:rgba(70,160,90,.15);color:#9fe0ae}.gbd .avl.no{background:rgba(214,51,74,.15);color:#ff9aa8}.gbd .avl.q{background:rgba(179,144,98,.15);color:var(--gold)}
 .gbd li.none{opacity:.55}
+
+/* Новый год */
+.nybar{display:flex;align-items:center;justify-content:center;gap:10px;margin:66px 10px 0;max-width:1260px;padding:12px 16px;border-radius:18px;background:linear-gradient(100deg,#0A0A0A,#1d1712 55%,#0A0A0A);color:#fff;font-size:13px;font-weight:600;line-height:1.35;text-align:center;text-decoration:none;border:1px solid rgba(179,144,98,.35);position:relative;overflow:hidden}
+.nybar + .hero{margin-top:8px!important}
+@media(min-width:1280px){.nybar{margin-left:auto;margin-right:auto}}
+.nybar .tw{color:var(--gold);animation:twk 1.6s ease-in-out infinite alternate}.nybar .ar{color:var(--gold);font-weight:800}
+.nybar::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,220,160,.18) 50%,transparent 70%);transform:translateX(-100%);animation:nysh 4.5s ease-in-out infinite}
+@keyframes nysh{60%,100%{transform:translateX(100%)}}
+body.ny #hdr::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:8px;pointer-events:none;background:radial-gradient(circle at 6px 3px,#ffd27a 2.2px,transparent 3px) 0 0/34px 8px,radial-gradient(circle at 23px 4px,#e9b35a 1.8px,transparent 2.6px) 0 0/34px 8px;filter:drop-shadow(0 0 3px rgba(255,200,110,.85));animation:twk 2.4s ease-in-out infinite alternate}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:60}
+@media(prefers-reduced-motion:reduce){#snow{display:none}.nybar::after,.nybar .tw,body.ny #hdr::after{animation:none}}
 </style>
 </head>
 <body>
@@ -548,6 +559,8 @@ $("#waTop").addEventListener("click", function(){ const o = rid(4).toUpperCase()
 /* Акция 11.11: −10% на всё. 11.11 — «только сегодня», 12.11 — «по просьбе клиентов продлили на 1 день». С 13.11 цены обычные. */
 const SALE = { pct: 10, from: Date.parse("2026-11-11T00:00:00+05:00"), until: Date.parse("2026-11-13T00:00:00+05:00"), ext: Date.parse("2026-11-12T00:00:00+05:00") };
 const SALE_ON = Date.now() >= SALE.from && Date.now() < SALE.until;
+/* ===== Новогоднее оформление: снег, гирлянда, полоса с подарками. Выключится само 8 января ===== */
+const NY_ON = Date.now() < Date.parse("2027-01-08T00:00:00+05:00");
 const SALE_EXT = SALE_ON && Date.now() >= SALE.ext;
 const saleP = n => SALE_ON && n ? Math.round(n * (100 - SALE.pct) / 100 / 10) * 10 : n;
 const PRODUCTS = DATA.map(r => { let v = {}; try { v = JSON.parse(r.variants || "{}"); } catch(e){} return { key: r.model_key, title: r.title, type: r.category_id, price: +r.price, img: r.image_url, colors: v.colors || [], code: v.code || "", desc: v.desc || "" }; })
@@ -559,16 +572,17 @@ const TYPES = [...new Set(PRODUCTS.map(p => p.type).filter(Boolean))].sort((a,b)
 const LIVE = { on: false, url: "https://instagram.com/actual.almaty", text: "Эфир · новинки" };
 /* ===== Готовые образы: [модель, цвет] — карточка появляется, если в наличии хотя бы 3 вещи ===== */
 const LOOKS = [
-  { t: "Зимний город", s: "Тёплый биопух, водолазка и челси на меху — для морозного Алматы.", items: [["ms-25555","Тёмно-синий"],["mt-35125","Коричневый"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] },
-  { t: "Классика в пальто", s: "Строгий силуэт: пальто, водолазка, брюки и чёрные кожаные челси.", items: [["mt-11025","Серый"],["mt-35125","Тёмно-синий"],["mt-57726","Чёрный"],["ky001-327","Чёрный"]] },
-  { t: "Тёплый casual", s: "Кофейные оттенки: кардиган, рубашка, чинос и коричневые челси.", items: [["mss-28096","Кофейный"],["m-1081","Белый"],["mss-29900","Кофейный"],["plt2854-2b","Коричневый"]] },
-  { t: "Каждый день", s: "Куртка с орнаментом, базовая кофта, джинсы и ботинки.", items: [["mt-25626","Чёрный"],["m-161-1","Чёрный"],["mt-80026","Джинсовый"],["sdy001-699","Тёмно-синий"]] }
+  { t: "Классика на корпоратив", s: "Чёрный костюм, голубая рубашка и чёрные туфли. Надёжный вариант для вечера в ресторане.", items: [["mt-40626","Чёрный"],["ms-26614","Голубой"],["ky001-23","Чёрный"]] },
+  { t: "Тёплый смарт", s: "Кофейный костюм с коричневой водолазкой вместо рубашки и коричневые челси. Нарядно, но без галстука.", items: [["ms-9220-3","Кофейный"],["mt-35125","Коричневый"],["plt2854-2b","Коричневый"]] },
+  { t: "Без пиджака", s: "Серый кардиган поверх голубой рубашки, тёмно-синие слаксы и чёрные челси. Для корпоратива в офисе.", items: [["ms-6360","Серый меланж"],["m-1081","Голубой"],["mt-50926","Тёмно-синий"],["ky001-327","Чёрный"]] },
+  { t: "Тёмно-синий вечер", s: "Чёрное пальто, тёмно-синяя водолазка, брюки и челси в тон. Строго и тепло по дороге на праздник.", items: [["mt-11025","Чёрный"],["ms-6299","Тёмно-синий"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] },
+  { t: "Зимний город", s: "Тёплый биопух, водолазка и челси на меху — для морозного Алматы.", items: [["ms-25555","Тёмно-синий"],["mt-35125","Коричневый"],["mt-57726","Тёмно-синий"],["ky001-222","Тёмно-синий"]] }
 ];
 function lookItems(L){ return L.items.map(([k, cn]) => { const p = PRODUCTS.find(x => x.key === k); if (!p || p.stock <= 0) return null; let c = p.colors.find(x => (x.name||"").toLowerCase() === cn.toLowerCase() && x.images && x.images.length && x.sizes.some(z => z.qty > 0)) || p.colors.find(x => x.images && x.images.length && x.sizes.some(z => z.qty > 0)) || p.colors.find(x => x.images && x.images.length) || p.colors[0]; const img = (c.images && c.images[0]) || p.pics[0]; if (!img) return null; const pr = (c.sizes.find(z => z.qty > 0) || c.sizes[0] || {}).price || p.price; return { p, c, img, pr }; }).filter(Boolean); }
 function looksHTML(){
-  const ls = LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length >= 3);
+  const ls = LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length >= Math.min(3, x.L.items.length));
   if (!ls.length) return "";
-  return `<section class="lk"><div class="sh"><h2>Готовые <em>образы</em></h2><small>${ls.length} образа</small></div><div class="looks">${ls.map(({L, it}) => { const sum = it.reduce((n, x) => n + x.pr, 0);
+  return `<section class="lk"><div class="sh"><h2>${NY_ON?"Образы <em>на корпоратив</em>":"Готовые <em>образы</em>"}</h2><small>${ls.length} ${plural(ls.length,"образ","образа","образов")}</small></div><div class="looks">${ls.map(({L, it}) => { const sum = it.reduce((n, x) => n + x.pr, 0);
     const msg = `Здравствуйте! Хочу заказать образ «${L.t}» с сайта:\n` + it.map((x, i) => `${i+1}) ${x.p.title}, цвет ${x.c.name||"—"} — ${fmtT(x.pr)}`).join("\n") + `\nИтого: ${fmtT(sum)}\nРазмеры: подскажите / мой рост и вес: `;
     return `<div class="look"><div class="lg">${it.map(x => `<a href="#p=${encodeURIComponent(x.p.key)}"><img loading="lazy" src="${esc(x.img)}" alt="${esc(x.p.title)}" onerror="this.remove()"><span>${esc(x.p.type||"")}</span></a>`).join("")}</div><h3>${esc(L.t)}</h3><p class="ls">${esc(L.s)}</p><div class="lf"><b>${fmt(sum)}</b><a target="_blank" rel="noopener" data-look="${esc(L.t)}" href="${wa(msg)}">Заказать образ</a></div></div>`; }).join("")}</div></section>`;
 }
@@ -620,6 +634,9 @@ function gsHTML(page){
 }
 function gsPage(){ document.body.classList.remove("pdp"); clearInterval(heroTimer); $("#main").innerHTML = gsHTML(true) + `<section><div class="sh"><h2>Весь <em>каталог</em></h2></div><div class="rail">${PRODUCTS.filter(p=>p.pics.length&&p.stock>0).slice(0,10).map(p=>tile(p)).join("")}</div></section>`; observe(); }
 
+
+/* Новогодний снег: лёгкий, не мешает нажатиям, пауза в фоне */
+if (NY_ON) { document.body.classList.add("ny"); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const cv = document.createElement("canvas"); cv.id = "snow"; document.body.appendChild(cv); const cx = cv.getContext("2d"); let W, H, F = []; const rs = () => { const d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); const n = Math.round(Math.min(70, W * H / 14000)); F = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.9, v: .25 + Math.random() * .7, w: Math.random() * 6.28, o: .35 + Math.random() * .5 })); }; rs(); addEventListener("resize", rs); const tick = () => { if (!document.hidden) { cx.clearRect(0, 0, W, H); for (const f of F) { f.y += f.v; f.w += .012; f.x += Math.sin(f.w) * .35; if (f.y > H + 4) { f.y = -4; f.x = Math.random() * W; } cx.globalAlpha = f.o; cx.fillStyle = "#fff"; cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.283); cx.fill(); } } requestAnimationFrame(tick); }; tick(); } }
 /* ПОДАРОЧНЫЕ БОКСЫ: составы и цены из каталога бутика (этикетки + Paloma, 18.11.2026). Оформление 2 000 ₸, при сумме товаров от 45 000 ₸ — в подарок. */
 const BOXSTOCK = (() => { try { return __BOXSTOCK__; } catch (e) { return { ok: false }; } })();
 const GB_FEE = 2000, GB_FREE = 45000;
@@ -731,6 +748,7 @@ function list(){
   const picks = PRODUCTS.filter(p => p.pics.length >= 2 && p.stock > 0).sort((a,b) => b.price - a.price).slice(0, 8);
   const shopImg = "/p/brand/store-entrance.jpg";
   $("#main").innerHTML = `
+  ${NY_ON && !SALE_ON?`<a class="nybar" href="#c=gift-boxes"><span class="tw">✦</span><span>С наступающим 2027! Подарочные боксы от ${fmt(Math.min(...(BOXES.filter(b => b.avail !== 0).length ? BOXES.filter(b => b.avail !== 0) : BOXES).map(b => b.total)))} — соберём и упакуем</span><span class="ar">→</span></a>`:""}
   ${SALE_ON?`<a class="salebar" href="#cat" onclick="event.preventDefault();document.getElementById('cat').scrollIntoView({behavior:'smooth'})"><b>11.11</b><span>${SALE_EXT?"По просьбе клиентов продлили на 1 день · ":"Всемирный день шопинга · "}−${SALE.pct}% на всё · только сегодня</span><i id="saleCd"></i></a>`:""}
   ${SALE_ON ? `<div class="hero hsale" id="hero"><img class="bgb" src="/p/sale/1111.jpg" alt=""><img class="fg" src="/p/sale/1111.jpg" alt="11.11 — Всемирный день шопинга в ACTUAL"><div class="cap"><button class="cta gold" id="toCat">−${SALE.pct}% на всё · в каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>` : `<div class="hero" id="hero">${LIVE.on?`<a class="live" target="_blank" rel="noopener" href="${esc(LIVE.url)}"><i></i>${esc(LIVE.text)}</a>`:""}${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}">${h.vid?`<video src="${esc(h.vid)}" poster="${esc((h.p.colors.find(c => c.videos) || h.p.colors[0]).images[0] || "")}" muted loop playsinline autoplay preload="auto"></video>`:`<img src="${esc(h.src)}" alt="${esc(h.p.title)}">`}</a>`).join("")}
     <div class="cap">${featVid?`<div class="kicker">Снова в наличии</div><h1>Орнамент<br>от капли<br>воды</h1><p>Куртка ${esc(FEAT.title.replace(/^Куртка\s*/,""))}: под дождём на ней проявляется наш орнамент. ${fmt(FEAT.price)}</p><a class="cta" href="#p=${encodeURIComponent(FEAT.key)}">Смотреть куртку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a> <button class="cta" id="toCat" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(8px)">Каталог</button>`:`<div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br>style</h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}</div>
