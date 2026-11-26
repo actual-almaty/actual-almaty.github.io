@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0A0A0A">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#F7F3EC">
+<meta name="color-scheme" content="light">
 <link rel="manifest" href="/app/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/app/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ACTUAL">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>ACTUAL · Мужская одежда · Алматы</title>
 <meta name="description" content="ACTUAL — бутик мужской одежды в ТРЦ Riviera Park, Алматы. Каталог, размеры, заказ онлайн.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#FFFFFF;--bg2:#F4F4F2;--card:#EFEFEC;--ink:#0A0A0A;--ink2:#6E6E6A;--line:#E3E2DE;--gold:#B39062;--gold2:#8C6C3F;--f:"Inter Tight",system-ui,sans-serif;--ease:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -466,6 +466,88 @@ footer{background:#050505;border-top:1px solid var(--line)}
 
 #snow{position:fixed;inset:0;pointer-events:none;z-index:60}
 @media(prefers-reduced-motion:reduce){#snow{display:none}.nybar::after,.nybar .tw,body.ny #hdr::after{animation:none}}
+
+/* ===== СВЕТЛАЯ ТЕМА «ТИХАЯ РОСКОШЬ»: кремовый фон, графитовый текст, золото и бордо как акценты ===== */
+:root{--bg:#F7F3EC;--bg2:#EFE8DD;--card:#E8E0D3;--ink:#1E1B17;--ink2:#7B7166;--line:#E0D6C7;--gold:#9C7A45;--gold2:#7E6136;--wine:#6B1F2A;--serif:"Cormorant Garamond",Georgia,serif}
+html,body{background:var(--bg);color:var(--ink)}
+::selection{background:var(--ink);color:var(--bg)}
+.intro{background:var(--bg)}.intro .w{color:var(--ink);font-family:var(--serif);font-weight:500;letter-spacing:.22em}.intro .s{color:var(--ink2)}.intro .ln{background:var(--gold)}
+header{background:rgba(247,243,236,.9)}header.solid{box-shadow:0 1px 0 var(--line)}
+.logo{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:.34em;padding-left:.34em}
+.curb{color:var(--ink)!important;border-color:var(--line)!important;background:none!important}
+.hero{border-radius:3px;background:var(--card)}
+.hero::after{background:linear-gradient(180deg,rgba(20,16,12,0) 40%,rgba(20,16,12,.62) 100%)}
+.kicker{color:var(--gold);letter-spacing:.26em;font-size:10.5px}
+.hero .kicker{color:#EFDDBD}
+.hero h1{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:-.005em;line-height:.95;font-size:clamp(50px,14vw,112px)}
+.hero p{font-size:13.5px}
+.cta{border-radius:1px;letter-spacing:.16em;text-transform:uppercase;font-size:11.5px;font-weight:600;padding:16px 24px;background:var(--bg);color:var(--ink)}
+.cta.gold,.bout .cta.gold,.btn{background:var(--ink);color:var(--bg)}
+.hero .cta{background:var(--bg);color:var(--ink)}
+.mq{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:14px}.mq span{color:var(--ink);font-weight:500;letter-spacing:.22em;font-size:10.5px}.mq span b{color:var(--gold);font-size:7px;vertical-align:2px}
+section{padding-top:46px}
+.sh h2{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:-.005em;line-height:1;font-size:clamp(36px,10vw,60px);margin-top:6px}
+.sh h2 em{font-style:italic;color:var(--wine)}
+.sh small{letter-spacing:.06em}
+.st{background:none;border:1px solid var(--line);border-radius:1px;height:44px;font-size:13px}
+.st .ring{border-radius:1px}
+.st.on,.size.on,.reelbtn{background:var(--ink);color:var(--bg)}
+.st.on .all{color:var(--bg)}
+.reelbtn{border-radius:1px!important;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px!important}
+.search{border-radius:1px;background:none;border:1px solid var(--line)}
+.tile .im{border-radius:2px}
+.tile .tag,.tile .sw{background:rgba(247,243,236,.88);color:var(--ink)}
+.fav{background:rgba(247,243,236,.85);color:var(--ink)}
+.tile .t{font-weight:500;font-size:13px}.tile .p{color:var(--ink);font-weight:600}
+.dock{background:rgba(30,27,23,.94);box-shadow:0 14px 34px rgba(30,27,23,.28)}
+.dock .on{background:var(--bg);color:var(--ink)}.dock .wa{background:var(--gold);color:#fff}
+.sheet{background:var(--bg);color:var(--ink)}
+.fld input,.fld textarea,.fld select{background:#fff;color:var(--ink);border-color:var(--line)}
+.buy{background:rgba(247,243,236,.96);border-top-color:var(--line)}
+.gal .bk{background:rgba(247,243,236,.88);color:var(--ink)}
+.color.on,.curs button.on{background:var(--bg2);border-color:var(--ink)}
+footer{background:var(--ink);color:rgba(247,243,236,.7);border-top:0}footer .logo{font-family:var(--serif);color:var(--gold);letter-spacing:.34em}
+.bout{border-radius:3px}.bout h3{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:0;line-height:.95}
+.perk{background:none;border:1px solid var(--line);border-radius:1px}
+.inst{background:var(--ink)}
+.early{background:var(--bg2)!important;color:var(--ink)!important;border-radius:3px!important}
+.early h3{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:0}
+.early p,.early li{color:var(--ink2)!important}
+/* образы */
+.looks{gap:12px}
+.look{background:#FFFDF9;border-color:var(--line);border-radius:3px;padding:8px}
+.look .lg a{border-radius:1px;background:var(--card)}
+.look .lg a span{background:rgba(247,243,236,.9);color:var(--ink);border-radius:1px;letter-spacing:.06em}
+.look h3{font-family:var(--serif);font-weight:500;text-transform:none;font-size:25px;letter-spacing:0;margin-top:14px}
+.look .lf b{color:var(--ink);font-weight:600}
+.look .lf a{background:var(--ink);color:var(--bg);border-radius:1px;text-transform:uppercase;letter-spacing:.14em;font-size:10.5px;font-weight:600}
+/* подборки с вкладками */
+.ed .sh{margin-bottom:6px}
+.ed .etabs{display:flex;gap:24px;overflow-x:auto;padding:0 14px;margin:0 0 16px;border-bottom:1px solid var(--line);scrollbar-width:none}.ed .etabs::-webkit-scrollbar{display:none}
+.ed .etabs button{flex:none;background:none;border:0;padding:14px 0 12px;font:600 11px var(--f);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid transparent;margin-bottom:-1px;cursor:pointer}
+.ed .etabs button.on{color:var(--ink);border-color:var(--ink)}
+.ed .note{margin:0 14px 14px;font-size:13px;line-height:1.55;color:var(--ink2);max-width:520px}
+.ed .more{display:inline-block;margin:18px 14px 0;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:4px}
+.ed .gbr{display:flex;gap:10px;overflow-x:auto;padding:0 14px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}.ed .gbr::-webkit-scrollbar{display:none}
+.ed .bx{flex:0 0 62%;max-width:280px;scroll-snap-align:start;background:#FFFDF9;border:1px solid var(--line);border-radius:3px;opacity:1;transform:none}
+.ed .bx .im{background:var(--card)}.ed .bx .cd{background:rgba(247,243,236,.9);color:var(--ink)}
+.ed .bx .tl{color:var(--gold)}.ed .bx .nm{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:0}.ed .bx .ct{color:var(--ink2)}.ed .bx .pr{color:var(--ink);font-weight:600}
+.ed .bx .fr{background:var(--wine);color:#F3E6D3}
+/* новогодняя полоса: бордо и крем */
+.nybar{margin:60px 0 0!important;max-width:none!important;border-radius:0!important;background:var(--wine)!important;color:#F3E6D3!important;border:0!important;padding:11px 16px!important;font-size:10.5px!important;font-weight:600!important;letter-spacing:.2em;text-transform:uppercase;box-shadow:none!important}
+.nybar .ar{color:#E7C98F}
+.nybar + .hero{margin-top:10px!important}
+/* подарочные боксы и Great Steppe остаются тёмными «бархатными» блоками; боксы — в бордо */
+.gb{background:radial-gradient(120% 70% at 85% 0%,#5c1c27 0%,#2b0d13 58%,#1d090d 100%);border-radius:3px}
+.gb h2,.gbd .nm{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:0}
+.gs{border-radius:3px}
+#snow{opacity:.55}
+.tile .ph{background:linear-gradient(160deg,#EFE8DD,#E3D9CA);color:var(--gold2)}.tile .ph b{font-family:var(--serif);font-weight:600}
+.st .all{color:var(--ink)}.st.on .ring{background:var(--bg)}.st.on .all{color:var(--ink)}
+.info h1{font-family:var(--serif);font-weight:500;text-transform:none;letter-spacing:0;font-size:clamp(34px,9vw,48px);line-height:1}
+.perk b{font-weight:600;text-transform:none;letter-spacing:0;font-family:var(--serif);font-size:19px}
+.gb h2 span{color:#E2C38D;-webkit-text-stroke:0;font-style:italic}
+.size{border-radius:1px!important}
 </style>
 </head>
 <body>
@@ -580,13 +662,31 @@ const LOOKS = [
   { t: "Чёрное пальто и беж", s: "Чёрное пальто, бежевая водолазка, кофейные брюки и коричневые челси. Тёплый контраст на зимний вечер.", items: [["mt-11025","Чёрный"],["mt-8326","Бежевый"],["mss-29900","Кофейный"],["plt2854-2b","Коричневый"]] }
 ];
 function lookItems(L){ return L.items.map(([k, cn]) => { const p = PRODUCTS.find(x => x.key === k); if (!p || p.stock <= 0) return null; let c = p.colors.find(x => (x.name||"").toLowerCase() === cn.toLowerCase() && x.images && x.images.length && x.sizes.some(z => z.qty > 0)); if (!c) return null; const img = (c.images && c.images[0]) || p.pics[0]; if (!img) return null; const pr = (c.sizes.find(z => z.qty > 0) || c.sizes[0] || {}).price || p.price; return { p, c, img, pr }; }).filter(Boolean); }
-function looksHTML(){
-  const ls = LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length === x.L.items.length);
+function lookCard({L, it}){ const sum = it.reduce((n, x) => n + x.pr, 0);
+  const msg = `Здравствуйте! Хочу заказать образ «${L.t}» с сайта:\n` + it.map((x, i) => `${i+1}) ${x.p.title}, цвет ${x.c.name||"—"} — ${fmtT(x.pr)}`).join("\n") + `\nИтого: ${fmtT(sum)}\nРазмеры: подскажите / мой рост и вес: `;
+  return `<div class="look"><div class="lg">${it.map(x => `<a href="#p=${encodeURIComponent(x.p.key)}"><img loading="lazy" src="${esc(x.img)}" alt="${esc(x.p.title)}" onerror="this.remove()"><span>${esc(x.p.type||"")}</span></a>`).join("")}</div><h3>${esc(L.t)}</h3><p class="ls">${esc(L.s)}</p><div class="lf"><b>${fmt(sum)}</b><a target="_blank" rel="noopener" data-look="${esc(L.t)}" href="${wa(msg)}">Заказать образ</a></div></div>`; }
+const looksList = () => LOOKS.map(L => ({ L, it: lookItems(L) })).filter(x => x.it.length === x.L.items.length);
+function looksHTML(bare){
+  const ls = looksList();
   if (!ls.length) return "";
-  return `<section class="lk"><div class="sh"><h2>${NY_ON?"Образы <em>на корпоратив</em>":"Готовые <em>образы</em>"}</h2><small>${ls.length} ${plural(ls.length,"образ","образа","образов")}</small></div><div class="looks">${ls.map(({L, it}) => { const sum = it.reduce((n, x) => n + x.pr, 0);
-    const msg = `Здравствуйте! Хочу заказать образ «${L.t}» с сайта:\n` + it.map((x, i) => `${i+1}) ${x.p.title}, цвет ${x.c.name||"—"} — ${fmtT(x.pr)}`).join("\n") + `\nИтого: ${fmtT(sum)}\nРазмеры: подскажите / мой рост и вес: `;
-    return `<div class="look"><div class="lg">${it.map(x => `<a href="#p=${encodeURIComponent(x.p.key)}"><img loading="lazy" src="${esc(x.img)}" alt="${esc(x.p.title)}" onerror="this.remove()"><span>${esc(x.p.type||"")}</span></a>`).join("")}</div><h3>${esc(L.t)}</h3><p class="ls">${esc(L.s)}</p><div class="lf"><b>${fmt(sum)}</b><a target="_blank" rel="noopener" data-look="${esc(L.t)}" href="${wa(msg)}">Заказать образ</a></div></div>`; }).join("")}</div></section>`;
+  if (bare) return `<div class="looks">${ls.map(lookCard).join("")}</div>`;
+  return `<section class="lk"><div class="sh"><h2>${NY_ON?"Образы <em>на корпоратив</em>":"Готовые <em>образы</em>"}</h2><small>${ls.length} ${plural(ls.length,"образ","образа","образов")}</small></div><div class="looks">${ls.map(lookCard).join("")}</div></section>`;
 }
+/* Главная: одна секция «Подборки» с вкладками вместо четырёх блоков подряд */
+function edHTML(picks){
+  const T = [];
+  const ls = looksList();
+  if (ls.length) T.push(["lk", NY_ON ? "Корпоратив" : "Образы", `<p class="note">${NY_ON ? "Готовые сочетания на праздничный вечер. Показываем, только когда все вещи образа есть в бутике." : "Готовые сочетания из наличия бутика."}</p>${looksHTML(true)}`]);
+  const gpick = ["P","M","B","V","O"].flatMap(t => BOXES.filter(b => b.tier === t && b.avail !== 0).slice(0, 2)).slice(0, 8);
+  if (gpick.length) T.push(["gb", "Подарки", `<p class="note">Собранные боксы с упаковкой и открыткой. Оформление ${fmtT(GB_FEE)}, от ${fmtT(GB_FREE)} — в подарок.</p><div class="gbr">${gpick.map(bxTile).join("")}</div><a class="more" href="#c=gift-boxes">Все ${BOXES.length} ${plural(BOXES.length,"бокс","бокса","боксов")}</a>`]);
+  const gs = PRODUCTS.filter(p => isGS(p) && p.pics.length);
+  if (gs.length) T.push(["gs", "Great Steppe", `<p class="note">Ұлы Дала — наша спортивная коллекция в цветах степи.</p><div class="rail">${gs.map(p => tile(p)).join("")}</div><a class="more" href="#c=great-steppe">Вся коллекция</a>`]);
+  T.push(["nw", "Выбор ACTUAL", `<div class="rail">${picks.map(p => tile(p)).join("")}</div>`]);
+  return `<section class="ed" id="ed"><div class="sh"><div><div class="kicker">${NY_ON ? "Сезон праздников" : "ACTUAL"}</div><h2>${NY_ON ? "Подборки <em>к праздникам</em>" : "Подборки"}</h2></div></div>
+  <div class="etabs" id="edTabs">${T.map((t, i) => `<button data-e="${t[0]}" class="${i ? "" : "on"}">${t[1]}</button>`).join("")}</div>
+  ${T.map((t, i) => `<div class="ep ${i ? "hidden" : ""}" data-e="${t[0]}">${t[2]}</div>`).join("")}</section>`;
+}
+function bindEd(){ const t = $("#edTabs"); if (!t) return; t.querySelectorAll("button").forEach(b => b.onclick = () => { buzz(); t.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); document.querySelectorAll("#ed .ep").forEach(p => p.classList.toggle("hidden", p.dataset.e !== b.dataset.e)); observe(); track({ t: "cat", n: "Подборка: " + b.textContent }); }); }
 function earlyHTML(){
   return `<div class="early"><div class="kicker">Клуб ACTUAL</div><h3>Ранний доступ<br>к новинкам</h3><p>Новые поступления и коллекция The Great Steppe — сначала клиентам из списка, на день раньше всех.</p><ul><li>Фото новинок до публикации</li><li>Бронь размера до выкладки в бутике</li><li>Приглашения на эфиры и закрытые показы</li></ul><a class="cta gold" id="earlyGo" target="_blank" rel="noopener" href="${wa("Здравствуйте! Хочу ранний доступ к новинкам ACTUAL. Добавьте меня в список, пожалуйста.")}">Вступить в WhatsApp</a></div>`;
 }
@@ -637,9 +737,9 @@ function gsPage(){ document.body.classList.remove("pdp"); clearInterval(heroTime
 
 
 /* Новогодний снег: лёгкий, не мешает нажатиям, пауза в фоне */
-if (NY_ON) { document.body.classList.add("ny"); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const cv = document.createElement("canvas"); cv.id = "snow"; document.body.appendChild(cv); const cx = cv.getContext("2d"); let W, H, F = []; const rs = () => { const d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); const n = Math.round(Math.min(70, W * H / 14000)); F = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.9, v: .25 + Math.random() * .7, w: Math.random() * 6.28, o: .35 + Math.random() * .5 })); }; rs(); addEventListener("resize", rs); const tick = () => { if (!document.hidden) { cx.clearRect(0, 0, W, H); for (const f of F) { f.y += f.v; f.w += .012; f.x += Math.sin(f.w) * .35; if (f.y > H + 4) { f.y = -4; f.x = Math.random() * W; } cx.globalAlpha = f.o; cx.fillStyle = "#fff"; cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.283); cx.fill(); } } requestAnimationFrame(tick); }; tick(); } }
+if (NY_ON) { document.body.classList.add("ny"); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const cv = document.createElement("canvas"); cv.id = "snow"; document.body.appendChild(cv); const cx = cv.getContext("2d"); let W, H, F = []; const rs = () => { const d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); const n = Math.round(Math.min(28, W * H / 30000)); F = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 1.9, v: .25 + Math.random() * .7, w: Math.random() * 6.28, o: .35 + Math.random() * .5 })); }; rs(); addEventListener("resize", rs); const tick = () => { if (!document.hidden) { cx.clearRect(0, 0, W, H); for (const f of F) { f.y += f.v; f.w += .012; f.x += Math.sin(f.w) * .35; if (f.y > H + 4) { f.y = -4; f.x = Math.random() * W; } cx.globalAlpha = f.o; cx.fillStyle = "#B8955A"; cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.283); cx.fill(); } } requestAnimationFrame(tick); }; tick(); } }
 /* ПОДАРОЧНЫЕ БОКСЫ: составы и цены из каталога бутика (этикетки + Paloma, 18.11.2026). Оформление 2 000 ₸, при сумме товаров от 45 000 ₸ — в подарок. */
-const BOXSTOCK = (() => { try { return {"ok":true,"date":"2026-11-27 01:06","items":{"hatN":{"q":5,"price":6990,"sizes":{}},"scarf":{"q":2,"price":9990,"sizes":{}},"socks":{"q":5,"price":2990,"sizes":{}},"jmpG":{"q":5,"price":19990,"sizes":{"M":1,"L":1,"XL":2,"XXL":1}},"poloB":{"q":4,"price":14990,"sizes":{"M":1,"L":1,"XL":2}},"glov":{"q":6,"price":8990,"sizes":{"M":2,"M-L":1,"XL-2XL":3}},"poloO":{"q":9,"price":15990,"sizes":{"M":2,"L":2,"XL":3,"XXL":2}},"capN":{"q":4,"price":8990,"sizes":{}},"capBr":{"q":4,"price":8990,"sizes":{}},"capO":{"q":4,"price":8990,"sizes":{}},"shirt":{"q":3,"price":12990,"sizes":{"M":2,"L":0,"XL":0,"XXL":1}},"bagS":{"q":7,"price":10990,"sizes":{}},"hatB":{"q":0,"price":9990,"sizes":{}},"turtle":{"q":4,"price":16990,"sizes":{"M":1,"L":1,"XL":2}},"card":{"q":8,"price":17990,"sizes":{"M":1,"L":4,"XL":2,"XXL":1}},"hatG":{"q":3,"price":6990,"sizes":{}},"poloZ":{"q":6,"price":19990,"sizes":{"M":2,"L":1,"XL":2,"XXL":1}},"bagF":{"q":1,"price":25990,"sizes":{}},"jmpZ":{"q":6,"price":20990,"sizes":{"M":0,"L":4,"XL":2}},"jkt":{"q":9,"price":49990,"sizes":{"M":3,"L":1,"XL":2,"XXL":3}},"bagT":{"q":6,"price":15990,"sizes":{}},"bagT2":{"q":2,"price":11990,"sizes":{}},"tieR":{"q":2,"price":5990,"sizes":{}},"tieG":{"q":2,"price":5990,"sizes":{}}}}; } catch (e) { return { ok: false }; } })();
+const BOXSTOCK = (() => { try { return {"ok":true,"date":"2026-11-27 01:09","items":{"hatN":{"q":5,"price":6990,"sizes":{}},"scarf":{"q":2,"price":9990,"sizes":{}},"socks":{"q":5,"price":2990,"sizes":{}},"jmpG":{"q":5,"price":19990,"sizes":{"M":1,"L":1,"XL":2,"XXL":1}},"poloB":{"q":4,"price":14990,"sizes":{"M":1,"L":1,"XL":2}},"glov":{"q":6,"price":8990,"sizes":{"M":2,"M-L":1,"XL-2XL":3}},"poloO":{"q":9,"price":15990,"sizes":{"M":2,"L":2,"XL":3,"XXL":2}},"capN":{"q":4,"price":8990,"sizes":{}},"capBr":{"q":4,"price":8990,"sizes":{}},"capO":{"q":4,"price":8990,"sizes":{}},"shirt":{"q":3,"price":12990,"sizes":{"M":2,"L":0,"XL":0,"XXL":1}},"bagS":{"q":7,"price":10990,"sizes":{}},"hatB":{"q":0,"price":9990,"sizes":{}},"turtle":{"q":4,"price":16990,"sizes":{"M":1,"L":1,"XL":2}},"card":{"q":8,"price":17990,"sizes":{"M":1,"L":4,"XL":2,"XXL":1}},"hatG":{"q":3,"price":6990,"sizes":{}},"poloZ":{"q":6,"price":19990,"sizes":{"M":2,"L":1,"XL":2,"XXL":1}},"bagF":{"q":1,"price":25990,"sizes":{}},"jmpZ":{"q":6,"price":20990,"sizes":{"M":0,"L":4,"XL":2}},"jkt":{"q":9,"price":49990,"sizes":{"M":3,"L":1,"XL":2,"XXL":3}},"bagT":{"q":6,"price":15990,"sizes":{}},"bagT2":{"q":2,"price":11990,"sizes":{}},"tieR":{"q":2,"price":5990,"sizes":{}},"tieG":{"q":2,"price":5990,"sizes":{}}}}; } catch (e) { return { ok: false }; } })();
 const GB_FEE = 2000, GB_FREE = 45000;
 const GB_TIERS = { B: "До 27 000 ₸", M: "Средние", P: "Премиум", O: "В офис", V: "VIP қазақ" };
 const GB_IT = {
@@ -745,32 +845,29 @@ function list(){
   const FEAT = PRODUCTS.find(x => x.key === "mt-25626");
   const featVid = FEAT && (FEAT.colors.find(c => c.videos && c.videos.length) || {}).videos?.[0];
   const HERO = [["p/mt-40626/4.jpg","mt-40626"],["p/ms-161-1/1.jpg","m-161-1"],["p/mt-40626/5.jpg","mt-40626"]];
-  const heroes = featVid ? [{ vid: featVid, p: FEAT }] : HERO.map(([src,k]) => ({ src: "/" + src, p: PRODUCTS.find(x => x.key === k) })).filter(h => h.p);
+  const heroes = (featVid && !NY_ON) ? [{ vid: featVid, p: FEAT }] : HERO.map(([src,k]) => ({ src: "/" + src, p: PRODUCTS.find(x => x.key === k) })).filter(h => h.p);
   const picks = PRODUCTS.filter(p => p.pics.length >= 2 && p.stock > 0).sort((a,b) => b.price - a.price).slice(0, 8);
   const shopImg = "/p/brand/store-entrance.jpg";
   $("#main").innerHTML = `
-  ${NY_ON && !SALE_ON?`<a class="nybar" href="#c=gift-boxes"><span class="tw">✦</span><span>С наступающим 2027! Подарочные боксы от ${fmt(Math.min(...(BOXES.filter(b => b.avail !== 0).length ? BOXES.filter(b => b.avail !== 0) : BOXES).map(b => b.total)))} — соберём и упакуем</span><span class="ar">→</span></a>`:""}
+  ${NY_ON && !SALE_ON?`<a class="nybar" href="#c=gift-boxes"><span>Новогодние подарки · упакуем бесплатно от ${fmtT(GB_FREE)}</span><span class="ar">→</span></a>`:""}
   ${SALE_ON?`<a class="salebar" href="#cat" onclick="event.preventDefault();document.getElementById('cat').scrollIntoView({behavior:'smooth'})"><b>11.11</b><span>${SALE_EXT?"По просьбе клиентов продлили на 1 день · ":"Всемирный день шопинга · "}−${SALE.pct}% на всё · только сегодня</span><i id="saleCd"></i></a>`:""}
   ${SALE_ON ? `<div class="hero hsale" id="hero"><img class="bgb" src="/p/sale/1111.jpg" alt=""><img class="fg" src="/p/sale/1111.jpg" alt="11.11 — Всемирный день шопинга в ACTUAL"><div class="cap"><button class="cta gold" id="toCat">−${SALE.pct}% на всё · в каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>` : `<div class="hero" id="hero">${LIVE.on?`<a class="live" target="_blank" rel="noopener" href="${esc(LIVE.url)}"><i></i>${esc(LIVE.text)}</a>`:""}${heroes.map((h,i) => `<a class="slide ${i?"":"on"}" href="#p=${encodeURIComponent(h.p.key)}">${h.vid?`<video src="${esc(h.vid)}" poster="${esc((h.p.colors.find(c => c.videos) || h.p.colors[0]).images[0] || "")}" muted loop playsinline autoplay preload="auto"></video>`:`<img src="${esc(h.src)}" alt="${esc(h.p.title)}">`}</a>`).join("")}
-    <div class="cap">${featVid?`<div class="kicker">Снова в наличии</div><h1>Орнамент<br>от капли<br>воды</h1><p>Куртка ${esc(FEAT.title.replace(/^Куртка\s*/,""))}: под дождём на ней проявляется наш орнамент. ${fmt(FEAT.price)}</p><a class="cta" href="#p=${encodeURIComponent(FEAT.key)}">Смотреть куртку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a> <button class="cta" id="toCat" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(8px)">Каталог</button>`:`<div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br>style</h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}</div>
+    <div class="cap">${NY_ON?`<div class="kicker">Сезон праздников · 2027</div><h1>Вечер,<br>который<br>запомнят</h1><p>Образы на корпоратив и подарки, собранные в бутике ACTUAL.</p><button class="cta" id="toCat" onclick="event.stopPropagation()">Смотреть подборки</button>`:featVid?`<div class="kicker">Снова в наличии</div><h1>Орнамент<br>от капли<br>воды</h1><p>Куртка ${esc(FEAT.title.replace(/^Куртка\s*/,""))}: под дождём на ней проявляется наш орнамент. ${fmt(FEAT.price)}</p><a class="cta" href="#p=${encodeURIComponent(FEAT.key)}">Смотреть куртку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a> <button class="cta" id="toCat" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(8px)">Каталог</button>`:`<div class="kicker">Riviera Park · Алматы</div><h1>Timeless<br>style</h1><p>Мужская одежда, которую выбирают надолго. Примерка в бутике, доставка по Алматы в день заказа.</p><button class="cta" id="toCat">Смотреть каталог <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}</div>
     <div class="hdots">${heroes.length<2?"":heroes.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`}
   <div class="mq"><div class="tr">${Array(2).fill(`<span>Новая коллекция<b>●</b></span><span>Доставка по Алматы в день заказа<b>●</b></span><span>Примерка в Riviera Park<b>●</b></span><span>Казпочта и СДЭК по Казахстану<b>●</b></span>`).join("")}</div></div>
-  <section><div class="sh"><h2>Выбор <em>ACTUAL</em></h2><small id="cnt"></small></div><div class="rail">${picks.map(p => tile(p)).join("")}</div></section>
-  ${gbHTML(false)}
-  ${looksHTML()}
-  ${gsHTML(false)}
+  ${edHTML(picks)}
   <section id="cat"><div class="sh"><h2>Каталог</h2><button class="reelbtn" id="reelGo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Смотреть как Reels</button></div>${storiesHTML()}
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="q" type="search" placeholder="Поиск: куртка, чёрный, джинсы…" value="${esc(state.q)}" autocomplete="off"></label>
     <div id="grid">${gridHTML()}</div></section>
   ${earlyHTML()}
   <div class="bout"><video class="bvid" src="/p/brand/brand-video.mp4" poster="${esc(shopImg)}" muted loop playsinline autoplay preload="metadata"></video><div class="in"><div class="kicker">Бутик</div><h3>Приходите<br>на примерку</h3><p>ТРЦ Riviera Park, 1 этаж · ежедневно 10:00–22:00</p><a class="cta gold" href="https://2gis.kz/almaty/search/Riviera%20Park" target="_blank" rel="noopener">Маршрут в 2ГИС</a></div></div>
   <div class="perks"><div class="perk"><b>Сегодня</b>доставка по Алматы</div><div class="perk"><b>Примерка</b>в бутике до покупки</div><div class="perk"><b>KZ</b>Казпочта и СДЭК</div></div>`;
-  bindList(); startHero(); observe(); count();
+  bindList(); bindEd(); startHero(); observe(); count();
   document.querySelectorAll("#hero video").forEach(v => { v.muted = true; v.play().catch(() => {}); });
 }
 function count(){ const n = $("#grid").querySelectorAll(".tile").length; if ($("#cnt")) $("#cnt").textContent = `${PRODUCTS.length} ${plural(PRODUCTS.length,"модель","модели","моделей")} →`; }
 function bindList(){
-  $("#toCat").onclick = () => $("#cat").scrollIntoView({ behavior: "smooth" });
+  $("#toCat").onclick = () => ($("#ed") && NY_ON ? $("#ed") : $("#cat")).scrollIntoView({ behavior: "smooth" });
   bindStories();
   $("#reelGo").onclick = () => openReels(0);
   let tm; $("#q").oninput = e => { state.q = e.target.value; clearTimeout(tm); tm = setTimeout(() => { $("#grid").innerHTML = gridHTML(); observe(); count(); }, 180); };
